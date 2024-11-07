@@ -1,0 +1,3740 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Vulnerability Scan Report</title>
+  <link rel="icon" href="https://google.github.io/osv.dev/assets/icon.png" type="image/x-icon" />
+  <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #292929;
+    color: #fff;
+    overflow-y: scroll;
+    font-family: "Overpass Mono", monospace;
+    font-size: 12pt;
+    font-weight: 100;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 50px auto;
+     
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
+    min-height: 90vh;
+  }
+
+  h2 {
+    margin-top: 50px;
+    font-size: 15pt;
+  }
+
+  h3 {
+    font-size: 12pt;
+    margin-top: 30px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Overpass Mono", monospace;
+    font-weight: normal;
+  }
+
+  .ecosystem {
+    margin-top: 20px;
+  }
+
+  .vulnerability {
+    padding: 5px;
+    border-radius: 3px;
+  }
+
+  details summary {
+    cursor: pointer;
+  }
+
+  details p {
+    margin-left: 10px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .logo {
+    height: 20px;
+     
+     
+  }
+
+  header .vl {
+    border-left: 2px solid #fff;
+    height: 25px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  header h1 {
+    font-size: 23px;
+  }
+
+  .material-icons {
+    vertical-align: middle;
+  }
+
+  .vuln-table {
+    width: 100%;
+    text-align: left;
+    border-radius: 5px;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.87);
+    border-spacing: 0;
+  }
+
+  .vuln-table th {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 16px;
+  }
+
+  .table-tr {
+    line-height: 30px;
+  }
+
+  .table-tr td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    word-break: break-word;
+    width: 200px;
+    padding: 16px;
+  }
+
+  .table-tr:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .vuln-id {
+    color: #d9534f;
+  }
+
+  .package-details {
+    text-align: left;
+    padding: 0 50px;
+    display: none;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    max-height: 800px;
+    overflow: overlay;
+  }
+
+  .table-tr:hover .open-in-tab-tag {
+    display: inline;
+  }
+
+  .open-in-tab-tag {
+    display: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 5px 5px;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  .open-in-tab-cell {
+    width: 90px !important;
+    cursor: pointer;
+  }
+
+  .severity-cell {
+    width: 60px !important;
+  }
+
+  .fixable-tag {
+    border-radius: 4px;
+    max-width: 250px;
+    width: fit-content;
+    padding: 0 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .has-fix {
+    background-color: #6a6a6a;
+  }
+
+  .no-fix {
+    background-color: #252525;
+    border: 1px solid #3c4043;
+  }
+
+  .uncalled-tr {
+    display: none;
+  }
+
+  .uncalled-text {
+    color: #808080;
+  }
+
+  #vuln-tab {
+    display: none;
+    margin-top: 40px;
+  }
+
+  #tab-switch {
+    text-align: left;
+    border-bottom: 1px solid #6c6c6c;
+    padding-left: 20px;
+    display: flex;
+    margin-bottom: 50px;
+  }
+
+  .tab-switch-button {
+    width: 180px;
+    outline: 0;
+    cursor: pointer;
+    background-color: transparent;
+    text-align: center;
+    display: flex;
+  }
+
+  .tab-button-text-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-button-text-container p {
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 2px solid transparent;
+    color: #5f6368;
+  }
+
+  .tab-switch-button span {
+    cursor: pointer;
+    font-size: 16px;
+    display: none;
+  }
+
+  .tab-switch-button-border {
+    width: 85%;
+    height: 3px;
+    background-color: transparent;
+    margin: auto;
+  }
+
+  .tab-button-text-container:hover p {
+    color: #fff;
+  }
+
+  .tab-switch-button-selected:hover span {
+    display: block;
+  }
+
+  .tab-switch-button-selected .tab-switch-button-border {
+    background-color: #eee;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .tab-switch-button-selected p {
+    color: #fff;
+  }
+
+  .osv-tab iframe {
+    width: 100%;
+    min-height: 1000px;
+    border: none;
+  }
+
+  #vuln-tab {
+    display: block;
+  }
+
+  .expand-icon {
+    cursor: pointer;
+  }
+
+  .icon-td {
+    width: 10px !important;
+  }
+
+  #filter-section {
+    display: flex;
+    width: 60%;
+  }
+
+  .filter-container {
+    margin-right: 20px;
+    max-width: 600px;
+  }
+
+  .filter {
+    margin-top: 10px;
+    max-width: 600px;
+    min-width: 250px;
+    background-color: transparent;
+    border-radius: 10px;
+    overflow: hidden;
+    color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  #layer-filter {
+    width: 400px !important;
+  }
+
+  .filter-selected {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .filter-option-container {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    position: absolute;
+    background-color: #292929;
+    min-width: 200px;
+    max-width: 1400px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    display: none;
+  }
+
+  .filter-option {
+    border-bottom: 1px dotted #ddd;
+    padding: 15px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  #layer-filter-option-container {
+    width: 1400px;
+  }
+
+  .layer-filter-option {
+    display: flex;
+    justify-content: space-between;
+    overflow: hidden;
+  }
+
+  .filter-option:hover {
+    background-color: black;
+  }
+
+  .filter-icon i {
+    position: relative;
+    top: 25%;
+  }
+
+  #summary-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #severity-section {
+    overflow: hidden;
+  }
+
+  .severity-long {
+    text-align: center;
+    min-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .severity-long p {
+    font-size: 10pt;
+    padding: 5px 5px;
+    border-radius: 5px;
+    margin-right: 3px;
+  }
+
+  .critical {
+    background-color: #ad0300;
+  }
+
+  .high {
+    background-color: #ffa500;
+  }
+
+  .medium {
+    background-color: #ffd700;
+    color: #292929;
+  }
+
+  .low {
+    background-color: #53aa33;
+    color: #292929;
+  }
+
+  .unknown {
+    background-color: #80868b;
+  }
+
+  .severity-count-summary {
+    display: flex;
+  }
+
+  .severity-short {
+    width: 40px;
+  }
+
+  .severity-short p {
+    border-radius: 1px;
+    text-align: center;
+  }
+
+   
+  .search-box {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    border: 1px solid #fff;
+    background-color: transparent;
+    border-radius: 10px;
+    margin-top: 30px;
+  }
+
+  .search-box input[type="text"] {
+    padding: 10px 10px 10px 35px;
+    border: none;
+    background-color: transparent;
+    width: 90%;
+    margin-left: 10px;
+    color: #fff;
+    line-height: 2;
+    font-size: 12pt;
+  }
+
+  .search-box input[type="text"]:focus {
+    outline: none;
+  }
+
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+  }
+
+  .package-detail-title {
+    color: #9aa0a6;
+  }
+
+  .layer-command-container {
+    display: flex;
+  }
+
+  .inner-table {
+    width: 100%;
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    border-spacing: 0px;
+    border-radius: 5px;
+  }
+
+  .inner-table th {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .inner-table td {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .expand-icon i.rotated {
+    transform: rotate(90deg);
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 5px;
+    white-space: nowrap;
+    width: fit-content;
+    text-align: left;
+
+     
+    position: absolute;
+    z-index: 999;
+    top: 100%;
+    left: 50%;
+    margin-left: -60px;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .inner-table .tooltip .tooltiptext {
+    min-width: 300px;
+    white-space: normal;
+  }
+
+  .flex-box {
+    display: flex;
+  }
+</style>
+
+</head>
+
+<body>
+  <script>
+  function showPackageDetails(detailsId) {
+    var detailsElement = document.getElementById(
+      "table-tr-" + detailsId + "-details"
+    );
+    var rowElement = document.getElementById("table-tr-" + detailsId);
+    const rowCells = rowElement.querySelectorAll("td");
+    const icon = document.querySelector(
+      `#table-tr-${detailsId} .material-icons`
+    ); 
+    if (detailsElement.style.display !== "block") {
+      detailsElement.style.display = "block";
+      rowCells.forEach(cell => {
+        cell.style.borderBottom = "1px solid transparent";
+      });
+      icon.style.transform = "rotate(90deg)"; 
+      icon.style.transition = "transform 0.2s ease"; 
+    } else {
+      detailsElement.style.display = "none";
+      rowCells.forEach(cell => {
+        cell.style.borderBottom = "1px solid rgba(255, 255, 255, 0.12)";
+      });
+      icon.style.transform = "rotate(0deg)"; 
+      icon.style.transition = "transform 0.2s ease"; 
+    }
+  }
+
+  function openVulnInNewTab(inputString) {
+    const osvURL = `https://osv.dev/${inputString}`;
+    const tabs = document.getElementById("tabs");
+    const tabSwitches = document.getElementById("tab-switch");
+
+    const existingTab = document.getElementById(inputString);
+    if (existingTab) {
+      openTab(inputString);
+      return;
+    }
+
+    
+    const newTab = document.createElement("div");
+    newTab.id = inputString; 
+    newTab.className = "tab osv-tab"; 
+
+    
+    const iframe = document.createElement("iframe");
+    iframe.src = osvURL;
+
+    
+    const newTabButton = document.createElement("div");
+    newTabButton.id = inputString + "-button";
+    newTabButton.className = "tab-switch-button";
+    newTabButton.onclick = function () {
+      openTab(inputString);
+    };
+
+    
+    const newTabTextContainer = document.createElement("div");
+    newTabTextContainer.className = "tab-button-text-container";
+    const newTabText = document.createElement("p");
+    newTabText.textContent = inputString;
+    newTabTextContainer.appendChild(newTabText);
+
+    const newTabButtonBorder = document.createElement("div");
+    newTabButtonBorder.className = "tab-switch-button-border";
+    newTabTextContainer.appendChild(newTabButtonBorder);
+
+    newTabButton.appendChild(newTabTextContainer);
+
+    const closeIcon = document.createElement("span");
+    closeIcon.className = "material-icons";
+    closeIcon.textContent = "close";
+    
+    closeIcon.onclick = function (event) {
+      event.stopPropagation(); 
+      closeVulnTab(inputString);
+    };
+
+    newTabButton.appendChild(closeIcon);
+
+    
+    newTab.appendChild(iframe);
+    
+    tabs.appendChild(newTab);
+    tabSwitches.appendChild(newTabButton);
+
+    openTab(newTab.id);
+  }
+
+  function closeVulnTab(inputString) {
+    const tabToRemove = document.getElementById(inputString);
+    const buttonToRemove = document.getElementById(inputString + "-button");
+    const tabs = document.getElementById("tabs");
+    const tabSwitches = document.getElementById("tab-switch");
+
+    if (tabToRemove && buttonToRemove) {
+      const nextTabButton =
+        buttonToRemove.nextElementSibling ||
+        buttonToRemove.previousElementSibling;
+
+      tabs.removeChild(tabToRemove);
+      tabSwitches.removeChild(buttonToRemove);
+
+      if (nextTabButton) {
+        const nextTabId = nextTabButton.id.replace("-button", "");
+        openTab(nextTabId);
+      }
+    }
+  }
+
+  function openTab(activeTabId) {
+    const tabs = document.getElementsByClassName("tab");
+    const tabButtons = document.getElementsByClassName("tab-switch-button");
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].id === activeTabId) {
+        tabs[i].style.display = "block"; 
+        tabButtons[i].classList.add("tab-switch-button-selected");
+      } else {
+        tabs[i].style.display = "none"; 
+        tabButtons[i].classList.remove("tab-switch-button-selected");
+      }
+    }
+  }
+
+  function hideAllFilterOptions() {
+    const containers = document.getElementsByClassName(
+      "filter-option-container"
+    );
+    for (let i = 0; i < containers.length; i++) {
+      containers[i].style.display = "none";
+    }
+  }
+
+  function toggleFilter(input) {
+    targetID = input + "-filter-option-container";
+    var optionContainer = document.getElementById(targetID);
+    const containers = document.getElementsByClassName(
+      "filter-option-container"
+    );
+    for (let i = 0; i < containers.length; i++) {
+      if (containers[i].id === targetID) {
+        if (optionContainer.style.display !== "block") {
+          optionContainer.style.display = "block";
+        } else {
+          optionContainer.style.display = "none";
+        }
+      } else {
+        console.log("hide others");
+        containers[i].style.display = "none";
+      }
+    }
+  }
+
+  function showAndHideParentSections() {
+    const ecosystemContainers = document.querySelectorAll(
+      ".ecosystem-container"
+    );
+
+    ecosystemContainers.forEach(ecosystemContainer => {
+      const sourceContainers =
+        ecosystemContainer.querySelectorAll(".source-container");
+      let ecosystemHasVisibleSources = false;
+
+      sourceContainers.forEach(sourceContainer => {
+        const packageRows = sourceContainer.querySelectorAll(".package-tr");
+        let sourceHasVisibleRows = false;
+
+        packageRows.forEach(packageRow => {
+          packageDetails = document.getElementById(packageRow.id + "-details");
+          const vulnRows = packageDetails.querySelectorAll(".vuln-tr");
+          let packageHasVisibleRows = false;
+          vulnRows.forEach(vulnRow => {
+            if (window.getComputedStyle(vulnRow).display !== "none") {
+              packageHasVisibleRows = true;
+              return;
+            }
+          });
+          if (packageHasVisibleRows) {
+            sourceHasVisibleRows = true;
+            packageRow.style.display = "table-row";
+            return;
+          } else {
+            packageRow.style.display = "none";
+            packageDetails.style.display = "none";
+            const icon = document.querySelector(
+              `#${packageRow.id} .material-icons`
+            );
+            icon.style.transform = "rotate(0deg)"; 
+          }
+        });
+
+        if (!sourceHasVisibleRows) {
+          sourceContainer.style.display = "none";
+        } else {
+          ecosystemHasVisibleSources = true;
+          sourceContainer.style.display = "block";
+          return;
+        }
+      });
+
+      if (!ecosystemHasVisibleSources) {
+        ecosystemContainer.style.display = "none";
+      } else {
+        ecosystemContainer.style.display = "block";
+      }
+    });
+  }
+
+  function showAllVulns() {
+    const vulnRows = document.getElementsByClassName("vuln-tr");
+    for (let i = 0; i < vulnRows.length; i++) {
+      if (vulnRows[i].classList.contains("uncalled-tr")) {
+        vulnRows[i].style.display = "none";
+        continue;
+      }
+      vulnRows[i].style.display = "table-row";
+    }
+
+    showAndHideParentSections();
+  }
+
+  function applyFilters(selectedTypeFilterValue, selectedLayerFilterValue) {
+    
+    showAllVulns();
+    applyTypeFilter(selectedTypeFilterValue);
+    applyLayerFilter(selectedLayerFilterValue);
+    showAndHideParentSections();
+  }
+
+  function applyTypeFilter(selectedValue) {
+    selectedAll = selectedValue.has("all");
+    selectedProject = selectedValue.has("project");
+    selectedOS = selectedValue.has("os");
+    selectedUncalled = selectedValue.has("uncalled");
+    if (selectedAll) {
+      selectedProject = true;
+      selectedOS = true;
+    }
+
+    const ecosystemElements = document.querySelectorAll(".ecosystem-container");
+
+    ecosystemElements.forEach(ecosystemElement => {
+      const vulnElements = ecosystemElement.querySelectorAll(".vuln-tr");
+      vulnElements.forEach(vuln => {
+        if (vuln.classList.contains("uncalled-tr")) {
+          if (selectedUncalled) {
+            vuln.style.display = "table-row";
+          } else {
+            vuln.style.display = "none";
+          }
+        }
+        if (
+          (ecosystemElement.classList.contains("os-type") && !selectedOS) ||
+          (ecosystemElement.classList.contains("project-type") &&
+            !selectedProject)
+        ) {
+          vuln.style.display = "none";
+        }
+      });
+    });
+  }
+
+  function applyLayerFilter(selectedLayerID) {
+    const tableRows = document.querySelectorAll("tr.has-layer-info");
+    console.log("selected layerID: " + selectedLayerID);
+    tableRows.forEach(row => {
+      const rowLayerID = row.getAttribute("data-layer");
+      if (selectedLayerID !== "all" && rowLayerID !== selectedLayerID) {
+        const packageDetails = document.getElementById(row.id + "-details");
+        const vulnElements = packageDetails.querySelectorAll(".vuln-tr");
+        vulnElements.forEach(vuln => {
+          console.log("set vuln display to none");
+          vuln.style.display = "none";
+        });
+      }
+    });
+  }
+
+  function resetFilterText() {
+    const layerSelected = document.getElementById("layer-filter-selected");
+    const allLayerCheckedBox = document.getElementById("all-layer-checkbox");
+    if (layerSelected) {
+      layerSelected.textContent =
+        "All layers (" +
+        allLayerCheckedBox.getAttribute("data-layer-all-count") +
+        ")";
+    }
+
+    const typeSelected = document.getElementById("type-filter-selected");
+    const allTypeCheckedBox = document.getElementById("all-type-checkbox");
+    const uncalledTypeCheckBox = document.getElementById(
+      "uncalled-type-checkbox"
+    );
+    if (allTypeCheckedBox) {
+      typeSelected.textContent =
+        "All types (" +
+        allTypeCheckedBox.getAttribute("data-type-all-count") +
+        ")";
+      allLayerCheckedBox.checked = true;
+      uncalledTypeCheckBox.checked = false;
+    } else {
+      const projectTypeCheckedBox = document.getElementById(
+        "project-type-checkbox"
+      );
+      projectTypeCheckedBox.checked = true;
+      typeSelected.textContent =
+        "All types (" +
+        projectTypeCheckedBox.getAttribute("data-type-project-count") +
+        ")";
+      uncalledTypeCheckBox.checked = false;
+    }
+  }
+
+  function resetSearchText() {
+    const vulnSearchInput = document.getElementById("vuln-search");
+    if (vulnSearchInput.value != "") {
+      vulnSearchInput.value = "";
+      showAllVulns();
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    showAndHideParentSections();
+    let selectedTypeFilterValue = new Set();
+    selectedTypeFilterValue.add("all");
+    let selectedLayer = "all";
+
+    
+    const typeFilterOptions = document.getElementById(
+      "type-filter-option-container"
+    );
+
+    typeFilterOptions.addEventListener("change", function () {
+      resetSearchText();
+      const changedElement = event.target;
+      const allTypesCheckbox = document.getElementById("all-type-checkbox");
+      const projectCheckbox = document.getElementById("project-type-checkbox"); 
+      const osCheckbox = document.getElementById("os-type-checkbox"); 
+      const uncalledCheckbox = document.getElementById(
+        "uncalled-type-checkbox"
+      ); 
+      selectedTypeFilterValue.clear();
+
+      if (allTypesCheckbox != null) {
+        if (changedElement == allTypesCheckbox) {
+          osCheckbox.checked = allTypesCheckbox.checked;
+          projectCheckbox.checked = allTypesCheckbox.checked;
+          if (allTypesCheckbox.checked === true) {
+            selectedTypeFilterValue.add("all");
+          }
+        }
+        if (osCheckbox.checked === false || projectCheckbox.checked === false) {
+          allTypesCheckbox.checked = false;
+        }
+
+        if (osCheckbox.checked) {
+          selectedTypeFilterValue.add("os");
+        }
+      }
+
+      if (projectCheckbox.checked) {
+        selectedTypeFilterValue.add("project");
+      }
+
+      if (uncalledCheckbox.checked) {
+        selectedTypeFilterValue.add("uncalled");
+      }
+
+      selectedDisplay = document.getElementById("type-filter-selected");
+      if (allTypesCheckbox != null && allTypesCheckbox.checked) {
+        const allTypesLabel = document.querySelector(
+          `label[for="${allTypesCheckbox.id}"]`
+        );
+        selectedDisplay.textContent = allTypesLabel.textContent;
+      } else {
+        let typeArray = Array.from(selectedTypeFilterValue);
+        selectedToString = typeArray.join(", ");
+        selectedDisplay.textContent = selectedToString;
+      }
+
+      applyFilters(selectedTypeFilterValue, selectedLayer);
+    });
+
+    
+    const layerFilterOptionsContainer = document.getElementById(
+      "layer-filter-option-container"
+    );
+
+    if (layerFilterOptionsContainer) {
+      layerFilterOptionsContainer.addEventListener("click", event => {
+        const clickedOption = event.target.closest(".layer-filter-option");
+        if (clickedOption) {
+          resetSearchText();
+          selectedLayer = clickedOption.getAttribute("value");
+          selectedDisplay = document.getElementById("layer-filter-selected");
+          layerCommand = clickedOption.querySelector("p:first-child");
+          selectedDisplay.textContent = layerCommand.textContent;
+
+          hideAllFilterOptions();
+          applyFilters(selectedTypeFilterValue, selectedLayer);
+        }
+      });
+    }
+
+    
+    const filterSection = document.getElementById("filter-section");
+
+    document.addEventListener("click", event => {
+      if (!filterSection.contains(event.target)) {
+        hideAllFilterOptions();
+      }
+    });
+
+    
+    const vulnSearchInput = document.getElementById("vuln-search");
+    vulnSearchInput.addEventListener("keyup", event => {
+      resetFilterText();
+      const searchTerm = vulnSearchInput.value.trim().toLowerCase();
+
+      const vulnRows = document.querySelectorAll("[data-vuln-id]");
+
+      if (searchTerm === "") {
+        showAllVulns();
+        return;
+      }
+
+      vulnRows.forEach(row => {
+        const vulnID = row.getAttribute("data-vuln-id").toLowerCase();
+
+        if (vulnID.includes(searchTerm)) {
+          row.style.display = "table-row";
+        } else {
+          row.style.display = "none";
+        }
+      });
+      showAndHideParentSections();
+    });
+  });
+</script>
+
+  <div class="container">
+    <header>
+      <img src="https://osv.dev/static/img/logo.png" alt="OSV-Scanner Logo" class="logo" />
+      <div class="vl"></div>
+      <h1>Open Source Vulnerabilities</h1>
+    </header>
+
+    <div id="tab-switch">
+      <div id="summary-tab-button" class="tab-switch-button tab-switch-button-selected"
+        onclick="openTab('summary-tab')">
+        <div class="tab-button-text-container">
+          <p>Scanning summary</p>
+          <div class="tab-switch-button-border"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="tabs">
+      <div id="summary-tab" class="tab">
+        <div id="summary-section">
+  <div id="filter-section">
+    
+
+    <div class="filter-container">
+      <label for="type-filter">Vulnerability type<br></label>
+      <div id="type-filter" class="filter" onclick="toggleFilter('type')">
+        <p value="all" id="type-filter-selected" class="filter-selected">All types (22)</p>
+        <div class="filter-icon">
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </div>
+      <div id="type-filter-option-container" class="filter-option-container">
+        
+        <div class="filter-option">
+          <input type="checkbox" checked id="project-type-checkbox"
+            data-type-project-count="22">
+          <label for="project-type-checkbox"> Project Vulnerabilities (22)</label>
+        </div>
+        
+        <div class="filter-option">
+          <input type="checkbox" id="uncalled-type-checkbox">
+          <label for="uncalled-type-checkbox">Uncalled/Unimportant (30)</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="severity-section">
+    <label>Overall Severity</label>
+    <div class="flex-box">
+      <div id="critical-long" class="severity-long">
+        <p class="critical">2 Critical</p>
+      </div>
+      <div id="high-long" class="severity-long">
+        <p class="high">11 High</p>
+      </div>
+      <div id="medium-long" class="severity-long">
+        <p class="medium">6 Medium</p>
+      </div>
+      <div id="low-long" class="severity-long">
+        <p class="low">2 Low</p>
+      </div>
+      <div id="unknow-long" class="severity-long">
+        <p class="unknown">1 Unknown</p>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+        <div class="search-box">
+          <div class="search-icon">
+            <i class="material-icons">search</i>
+          </div>
+          <input type="text" id="vuln-search" placeholder="Search vulnerability ID...">
+        </div>
+
+        <div id="vuln-tab" class="view-tab">
+          
+<div class="ecosystem-container project-type">
+  <h2 class="ecosystem-heading">Go</h2>
+  <div class="ecosystem-sources-container">
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/go-basic/src/go.mod</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>Fixed available</th>
+    <th>Vulnerability Count</th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-1">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('1')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >github.com/gogo/protobuf</td>
+    <td class="uncalled-text" >1.3.1</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-1-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-2" data-vuln-id="GO-2021-0053">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2021-0053
+        <span class="tooltiptext">Group IDs: GHSA-c3h9-896r-86jm</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2021-3121...
+        <span class="tooltiptext">CVE-2021-3121, BIT-consul-2021-3121, BIT-protobuf-2021-3121, GHSA-c3h9-896r-86jm</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.3.2</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.6</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2021-0053')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-3">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('3')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >github.com/ipfs/go-bitfield</td>
+    <td >1.0.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">0</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">1</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-3-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-4" data-vuln-id="GO-2023-1558">
+    <td>
+      
+      <div class="tooltip">
+        GO-2023-1558
+        <span class="tooltiptext">Group IDs: GHSA-2h6c-j3gf-xp9r</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2023-23626, ...
+        <span class="tooltiptext">CVE-2023-23626, GHSA-2h6c-j3gf-xp9r</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.1.0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.9</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2023-1558')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-5">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('5')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >stdlib</td>
+    <td class="uncalled-text" >1.21</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-5-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-6" data-vuln-id="GO-2024-3105">
+    <td class="uncalled-text">
+      
+      GO-2024-3105
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34155...
+        <span class="tooltiptext">CVE-2024-34155, BIT-golang-2024-34155</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3105')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-7" data-vuln-id="GO-2024-3106">
+    <td class="uncalled-text">
+      
+      GO-2024-3106
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34156...
+        <span class="tooltiptext">CVE-2024-34156, BIT-golang-2024-34156</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3106')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-8" data-vuln-id="GO-2024-3107">
+    <td class="uncalled-text">
+      
+      GO-2024-3107
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34158...
+        <span class="tooltiptext">CVE-2024-34158, BIT-golang-2024-34158</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3107')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/go/lockfile/go.mod</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>Fixed available</th>
+    <th>Vulnerability Count</th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-9">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('9')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >github.com/aws/aws-sdk-go</td>
+    <td class="uncalled-text" >1.44.268</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-9-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-10" data-vuln-id="GO-2022-0646">
+    <td class="uncalled-text">
+      
+      GO-2022-0646
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2020-8911...
+        <span class="tooltiptext">CVE-2020-8911, CVE-2020-8912, GHSA-7f33-f4f5-xwgw, GHSA-f5pg-7wfw-84q9</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2022-0646')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-11">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('11')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >github.com/blevesearch/bleve</td>
+    <td class="uncalled-text" >1.0.14</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-11-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-12" data-vuln-id="GO-2022-0470">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2022-0470
+        <span class="tooltiptext">Group IDs: GHSA-9w9f-6mg8-jp7w</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2022-31022...
+        <span class="tooltiptext">CVE-2022-31022, GHSA-9w9f-6mg8-jp7w</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2022-0470')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-13">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('13')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >github.com/go-jose/go-jose/v3</td>
+    <td class="uncalled-text" >3.0.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-13-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-14" data-vuln-id="GO-2023-2334">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2023-2334
+        <span class="tooltiptext">Group IDs: GHSA-2c7c-3mj9-8fqh</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      GHSA-2c7c-3mj9-8fqh
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >3.0.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2023-2334')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-15" data-vuln-id="GO-2024-2631">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2024-2631
+        <span class="tooltiptext">Group IDs: GHSA-c5q2-7r4c-mv6g</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-28180...
+        <span class="tooltiptext">CVE-2024-28180, CGA-9vf9-m4f8-6392, CGA-9vg5-h493-cxr7, CGA-chh8-vhg4-2qj7, CGA-g5hx-8r47-pf39, CGA-hmfp-f3v3-528v, CGA-hrqx-74pg-5m88, CGA-m474-c57g-8945, CGA-r356-23m2-5p37, CGA-v3wf-pwmr-vcw5, CGA-w52c-j6q8-cf23, CGA-w7jq-8v28-882j, GHSA-c5q2-7r4c-mv6g</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >3.0.3</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">4.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2631')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-16">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('16')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >github.com/golang-jwt/jwt/v4</td>
+    <td >4.5.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">0</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">0</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">1</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-16-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-17" data-vuln-id="GHSA-29wx-vh33-7x7r">
+    <td>
+      
+      GHSA-29wx-vh33-7x7r
+      
+    </td>
+    <td>
+      
+      CVE-2024-51744
+      
+    </td>
+
+    <td>
+      <p >
+        4.5.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="low-short" class="severity-short">
+        <p class="low">3.1</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-29wx-vh33-7x7r')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-18">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('18')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >github.com/hashicorp/go-retryablehttp</td>
+    <td class="uncalled-text" >0.7.2</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-18-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-19" data-vuln-id="GO-2024-2947">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2024-2947
+        <span class="tooltiptext">Group IDs: GHSA-v6v8-xj6m-xwqh</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-6104...
+        <span class="tooltiptext">CVE-2024-6104, GHSA-v6v8-xj6m-xwqh</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >0.7.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">6.0</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2947')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-20">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('20')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >github.com/hashicorp/vault</td>
+    <td >1.14.1</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">6</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">2</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">1</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-20-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-21" data-vuln-id="GO-2023-2063">
+    <td>
+      
+      <div class="tooltip">
+        GO-2023-2063
+        <span class="tooltiptext">Group IDs: GHSA-v84f-6r39-cpfc</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2023-4680, ...
+        <span class="tooltiptext">CVE-2023-4680, BIT-vault-2023-4680, GHSA-v84f-6r39-cpfc</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.14.3</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">6.8</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2023-2063')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-22" data-vuln-id="GO-2023-2329">
+    <td>
+      
+      <div class="tooltip">
+        GO-2023-2329
+        <span class="tooltiptext">Group IDs: GHSA-4qhc-v8r6-8vwm</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2023-5954, ...
+        <span class="tooltiptext">CVE-2023-5954, BIT-vault-2023-5954, GHSA-4qhc-v8r6-8vwm</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.14.6</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2023-2329')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-23" data-vuln-id="GO-2024-2617">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-2617
+        <span class="tooltiptext">Group IDs: GHSA-r3w7-mfpm-c2vw</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2048, ...
+        <span class="tooltiptext">CVE-2024-2048, BIT-vault-2024-2048, GHSA-r3w7-mfpm-c2vw</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.14.10</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.1</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2617')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-24" data-vuln-id="GO-2024-2690">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-2690
+        <span class="tooltiptext">Group IDs: GHSA-j2rp-gmqv-frhv</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2660, ...
+        <span class="tooltiptext">CVE-2024-2660, BIT-vault-2024-2660, CGA-q87q-m7jv-rffq, GHSA-j2rp-gmqv-frhv</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.16.0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">6.4</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2690')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-25" data-vuln-id="GO-2024-2921">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-2921
+        <span class="tooltiptext">Group IDs: GHSA-32cj-5wx4-gq8p</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-5798, ...
+        <span class="tooltiptext">CVE-2024-5798, BIT-vault-2024-5798, GHSA-32cj-5wx4-gq8p</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.16.3</p>
+    </td>
+    <td class="severity-cell">
+      <div id="low-short" class="severity-short">
+        <p class="low">2.6</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2921')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-26" data-vuln-id="GO-2024-2982">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-2982
+        <span class="tooltiptext">Group IDs: GHSA-2qmw-pvf7-4mw6</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-6468, ...
+        <span class="tooltiptext">CVE-2024-6468, BIT-vault-2024-6468, GHSA-2qmw-pvf7-4mw6</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.16.3</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2982')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-27" data-vuln-id="GO-2024-3162">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-3162
+        <span class="tooltiptext">Group IDs: GHSA-jg74-mwgw-v6x3</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-7594, ...
+        <span class="tooltiptext">CVE-2024-7594, BIT-vault-2024-7594, GHSA-jg74-mwgw-v6x3</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.17.6</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.7</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3162')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-28" data-vuln-id="GO-2024-3191">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-3191
+        <span class="tooltiptext">Group IDs: GHSA-rr8j-7w34-xp5j</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-9180, ...
+        <span class="tooltiptext">CVE-2024-9180, BIT-vault-2024-9180, GHSA-rr8j-7w34-xp5j</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.18.0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.6</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3191')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-29" data-vuln-id="GO-2024-3246">
+    <td>
+      
+      <div class="tooltip">
+        GO-2024-3246
+        <span class="tooltiptext">Group IDs: GHSA-g233-2p4r-3q7v</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-8185, ...
+        <span class="tooltiptext">CVE-2024-8185, BIT-vault-2024-8185, GHSA-g233-2p4r-3q7v</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        1.18.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.7</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3246')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-30" data-vuln-id="GO-2023-2399">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2023-2399
+        <span class="tooltiptext">Group IDs: GHSA-6p62-6cg9-f5f5</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2023-6337...
+        <span class="tooltiptext">CVE-2023-6337, BIT-vault-2023-6337, GHSA-6p62-6cg9-f5f5</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.14.8</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2023-2399')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-31">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('31')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >golang.org/x/net</td>
+    <td class="uncalled-text" >0.20.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-31-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-32" data-vuln-id="GO-2024-2687">
+    <td class="uncalled-text">
+      
+      GO-2024-2687
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2023-45288...
+        <span class="tooltiptext">CVE-2023-45288, BIT-golang-2023-45288, CGA-8q47-wf6v-wqg5, CGA-c6f9-jh7g-69mj, CGA-grww-v9jg-rhw2, GHSA-4v7x-pqxf-cx7m</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >0.23.0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2687')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-33">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('33')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >google.golang.org/protobuf</td>
+    <td class="uncalled-text" >1.31.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-33-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-34" data-vuln-id="GO-2024-2611">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2024-2611
+        <span class="tooltiptext">Group IDs: GHSA-8r3f-844c-mc37</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24786...
+        <span class="tooltiptext">CVE-2024-24786, CGA-2vgr-6mqh-4r48, CGA-v9cm-f6x8-5vj7, GHSA-8r3f-844c-mc37</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.33.0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2611')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-35">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('35')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >gopkg.in/square/go-jose.v2</td>
+    <td class="uncalled-text" >2.6.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-35-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-36" data-vuln-id="GO-2024-2631">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2024-2631
+        <span class="tooltiptext">Group IDs: GHSA-c5q2-7r4c-mv6g</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-28180...
+        <span class="tooltiptext">CVE-2024-28180, CGA-9vf9-m4f8-6392, CGA-9vg5-h493-cxr7, CGA-chh8-vhg4-2qj7, CGA-g5hx-8r47-pf39, CGA-hmfp-f3v3-528v, CGA-hrqx-74pg-5m88, CGA-m474-c57g-8945, CGA-r356-23m2-5p37, CGA-v3wf-pwmr-vcw5, CGA-w52c-j6q8-cf23, CGA-w7jq-8v28-882j, GHSA-c5q2-7r4c-mv6g</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">4.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2631')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-37">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('37')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >stdlib</td>
+    <td class="uncalled-text" >1.22.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-37-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-38" data-vuln-id="GO-2024-2598">
+    <td class="uncalled-text">
+      
+      GO-2024-2598
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24783...
+        <span class="tooltiptext">CVE-2024-24783, BIT-golang-2024-24783, CGA-f95r-g332-q2hr, CGA-pp69-rc8m-x7cv, CGA-r3f2-xq4j-79w7, GHSA-3q2c-pvp5-3cqp</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2598')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-39" data-vuln-id="GO-2024-2599">
+    <td class="uncalled-text">
+      
+      GO-2024-2599
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2023-45290...
+        <span class="tooltiptext">CVE-2023-45290, BIT-golang-2023-45290, CGA-63g6-wrgr-m47w, CGA-g554-cg74-8rm4, CGA-xr68-h9cg-49cj, GHSA-rr6r-cfgf-gc6h</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2599')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-40" data-vuln-id="GO-2024-2600">
+    <td class="uncalled-text">
+      
+      GO-2024-2600
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2023-45289...
+        <span class="tooltiptext">CVE-2023-45289, BIT-golang-2023-45289, CGA-25gv-3qrh-8g5j, CGA-3fw9-g448-cq83, CGA-8rhm-9jx9-j3g6, GHSA-32ch-6x54-q4h9</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2600')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-41" data-vuln-id="GO-2024-2609">
+    <td class="uncalled-text">
+      
+      GO-2024-2609
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24784...
+        <span class="tooltiptext">CVE-2024-24784, BIT-golang-2024-24784, CGA-mxv9-jf2v-cw75, CGA-x96w-p6v4-99r6, CGA-x9h6-wjmw-83hr, GHSA-fgq5-q76c-gx78</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2609')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-42" data-vuln-id="GO-2024-2610">
+    <td class="uncalled-text">
+      
+      GO-2024-2610
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24785...
+        <span class="tooltiptext">CVE-2024-24785, BIT-golang-2024-24785, CGA-97f2-3j6h-f6fr, CGA-q7f3-cq9g-gr7f, CGA-wgjf-hp76-8hxw, GHSA-j6m3-gc37-6r6q</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2610')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-43" data-vuln-id="GO-2024-2687">
+    <td class="uncalled-text">
+      
+      GO-2024-2687
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2023-45288...
+        <span class="tooltiptext">CVE-2023-45288, BIT-golang-2023-45288, CGA-8q47-wf6v-wqg5, CGA-c6f9-jh7g-69mj, CGA-grww-v9jg-rhw2, GHSA-4v7x-pqxf-cx7m</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.2</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2687')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-44" data-vuln-id="GO-2024-2824">
+    <td class="uncalled-text">
+      
+      GO-2024-2824
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24788...
+        <span class="tooltiptext">CVE-2024-24788, BIT-golang-2024-24788</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.3</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2824')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-45" data-vuln-id="GO-2024-2887">
+    <td class="uncalled-text">
+      
+      GO-2024-2887
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24790...
+        <span class="tooltiptext">CVE-2024-24790, BIT-golang-2024-24790, CGA-2fq6-p83q-pm8x, GHSA-49gw-vxvf-fc2g</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.4</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2887')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-46" data-vuln-id="GO-2024-2888">
+    <td class="uncalled-text">
+      
+      GO-2024-2888
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24789...
+        <span class="tooltiptext">CVE-2024-24789, BIT-golang-2024-24789, CGA-4r7q-83hj-9rrp, GHSA-236w-p7wf-5ph8</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.4</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2888')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-47" data-vuln-id="GO-2024-2963">
+    <td class="uncalled-text">
+      
+      GO-2024-2963
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-24791...
+        <span class="tooltiptext">CVE-2024-24791, BIT-golang-2024-24791</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.5</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-2963')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-48" data-vuln-id="GO-2024-3105">
+    <td class="uncalled-text">
+      
+      GO-2024-3105
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34155...
+        <span class="tooltiptext">CVE-2024-34155, BIT-golang-2024-34155</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3105')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-49" data-vuln-id="GO-2024-3106">
+    <td class="uncalled-text">
+      
+      GO-2024-3106
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34156...
+        <span class="tooltiptext">CVE-2024-34156, BIT-golang-2024-34156</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3106')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-50" data-vuln-id="GO-2024-3107">
+    <td class="uncalled-text">
+      
+      GO-2024-3107
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34158...
+        <span class="tooltiptext">CVE-2024-34158, BIT-golang-2024-34158</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3107')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/go/src/go.mod</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>Fixed available</th>
+    <th>Vulnerability Count</th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-51">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('51')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >github.com/ipfs/go-bitfield</td>
+    <td class="uncalled-text" >1.0.0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-51-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-52" data-vuln-id="GO-2023-1558">
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        GO-2023-1558
+        <span class="tooltiptext">Group IDs: GHSA-2h6c-j3gf-xp9r</span>
+      </div>
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2023-23626...
+        <span class="tooltiptext">CVE-2023-23626, GHSA-2h6c-j3gf-xp9r</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.1.0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.9</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2023-1558')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-53">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('53')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td class="uncalled-text" >stdlib</td>
+    <td class="uncalled-text" >1.21</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-53-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-54" data-vuln-id="GO-2024-3105">
+    <td class="uncalled-text">
+      
+      GO-2024-3105
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34155...
+        <span class="tooltiptext">CVE-2024-34155, BIT-golang-2024-34155</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3105')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-55" data-vuln-id="GO-2024-3106">
+    <td class="uncalled-text">
+      
+      GO-2024-3106
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34156...
+        <span class="tooltiptext">CVE-2024-34156, BIT-golang-2024-34156</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3106')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-56" data-vuln-id="GO-2024-3107">
+    <td class="uncalled-text">
+      
+      GO-2024-3107
+      
+    </td>
+    <td class="uncalled-text">
+      
+      <div class="tooltip">
+        CVE-2024-34158...
+        <span class="tooltiptext">CVE-2024-34158, BIT-golang-2024-34158</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p 
+        class="uncalled-text" >1.22.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GO-2024-3107')">Open in tab</p>
+    </td>
+  </tr>
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+  </div>
+</div>
+
+<div class="ecosystem-container project-type">
+  <h2 class="ecosystem-heading">npm</h2>
+  <div class="ecosystem-sources-container">
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/npm/artifact/package-lock.json</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>Fixed available</th>
+    <th>Vulnerability Count</th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-57">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('57')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >hono</td>
+    <td >4.2.6</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">0</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">3</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-57-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-58" data-vuln-id="GHSA-3mpf-rcc7-5347">
+    <td>
+      
+      GHSA-3mpf-rcc7-5347
+      
+    </td>
+    <td>
+      
+      CVE-2024-32869
+      
+    </td>
+
+    <td>
+      <p >
+        4.2.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-3mpf-rcc7-5347')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-59" data-vuln-id="GHSA-rpfr-3m35-5vx5">
+    <td>
+      
+      GHSA-rpfr-3m35-5vx5
+      
+    </td>
+    <td>
+      
+      CVE-2024-43787
+      
+    </td>
+
+    <td>
+      <p >
+        4.5.8</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.0</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-rpfr-3m35-5vx5')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-60" data-vuln-id="GHSA-2234-fmw7-43wr">
+    <td>
+      
+      GHSA-2234-fmw7-43wr
+      
+    </td>
+    <td>
+      
+      CVE-2024-48913
+      
+    </td>
+
+    <td>
+      <p >
+        4.6.5</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.9</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-2234-fmw7-43wr')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-61">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('61')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >libxmljs</td>
+    <td >1.0.10</td>
+    <td>
+      
+      
+      <p class="fixable-tag no-fix">No fix available</p>
+      
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">1</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">1</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">0</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-61-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-62" data-vuln-id="GHSA-6433-x5p4-8jc7">
+    <td>
+      
+      GHSA-6433-x5p4-8jc7
+      
+    </td>
+    <td>
+      
+      CVE-2024-34391
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.1</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-6433-x5p4-8jc7')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-63" data-vuln-id="GHSA-mg49-jqgw-gcj6">
+    <td>
+      
+      GHSA-mg49-jqgw-gcj6
+      
+    </td>
+    <td>
+      
+      CVE-2024-34392
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="critical-short" class="severity-short">
+        <p class="critical">9.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-mg49-jqgw-gcj6')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/npm/lockfile/package-lock.json</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>Fixed available</th>
+    <th>Vulnerability Count</th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-64">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('64')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >ip</td>
+    <td >2.0.0</td>
+    <td>
+      
+      
+      <div class="tooltip">
+        <p class="fixable-tag has-fix">Partial fixes available</p>
+        <span class="tooltiptext">Upgrading the package will fix 1 out of 2 vulnerabilities</span>
+      </div>
+      
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">1</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">0</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">1</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-64-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-65" data-vuln-id="GHSA-78xj-cgh5-2h22">
+    <td>
+      
+      GHSA-78xj-cgh5-2h22
+      
+    </td>
+    <td>
+      
+      CVE-2023-42282
+      
+    </td>
+
+    <td>
+      <p >
+        2.0.1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-78xj-cgh5-2h22')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-66" data-vuln-id="GHSA-2p57-rm9w-gvfp">
+    <td>
+      
+      GHSA-2p57-rm9w-gvfp
+      
+    </td>
+    <td>
+      
+      CVE-2024-29415
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.1</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-2p57-rm9w-gvfp')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-67">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('67')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >mysql2</td>
+    <td >3.9.6</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">1</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">1</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">0</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-67-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-68" data-vuln-id="GHSA-4rch-2fh8-94vw">
+    <td>
+      
+      GHSA-4rch-2fh8-94vw
+      
+    </td>
+    <td>
+      
+      CVE-2024-21511
+      
+    </td>
+
+    <td>
+      <p >
+        3.9.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="critical-short" class="severity-short">
+        <p class="critical">9.8</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-4rch-2fh8-94vw')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-69" data-vuln-id="GHSA-pmh2-wpjm-fj45">
+    <td>
+      
+      GHSA-pmh2-wpjm-fj45
+      
+    </td>
+    <td>
+      
+      CVE-2024-21512
+      
+    </td>
+
+    <td>
+      <p >
+        3.9.8</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.2</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-pmh2-wpjm-fj45')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-70">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('70')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >node-fetch</td>
+    <td >1.7.3</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">1</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">0</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-70-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-71" data-vuln-id="GHSA-r683-j2x4-v87g">
+    <td>
+      
+      GHSA-r683-j2x4-v87g
+      
+    </td>
+    <td>
+      
+      CVE-2022-0235
+      
+    </td>
+
+    <td>
+      <p >
+        2.6.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">8.8</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-r683-j2x4-v87g')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/npm/src/package-lock.json</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>Fixed available</th>
+    <th>Vulnerability Count</th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="" id="table-tr-72">
+    <td class="icon-td">
+      <div class="expand-icon" onclick="showPackageDetails('72')">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >static-server</td>
+    <td >2.2.0</td>
+    <td>
+      
+      
+      <p class="fixable-tag no-fix">No fix available</p>
+      
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short">
+    <p class="critical">0</p>
+  </div>
+  <div id="high-short" class="severity-short">
+    <p class="high">1</p>
+  </div>
+  <div id="medium-short" class="severity-short">
+    <p class="medium">0</p>
+  </div>
+  <div id="low-short" class="severity-short">
+    <p class="low">0</p>
+  </div>
+  <div id="unknown-short" class="severity-short">
+    <p class="unknown">0</p>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-72-details" class="package-details">
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-73" data-vuln-id="GHSA-v834-rhv4-65m3">
+    <td>
+      
+      GHSA-v834-rhv4-65m3
+      
+    </td>
+    <td>
+      
+      CVE-2023-26152
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-v834-rhv4-65m3')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+  </div>
+</div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
