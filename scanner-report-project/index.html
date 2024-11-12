@@ -17,6 +17,7 @@
     font-family: "Overpass Mono", monospace;
     font-size: 12pt;
     font-weight: 100;
+    min-width: fit-content;
   }
 
   a {
@@ -26,7 +27,6 @@
   .container {
     max-width: 1400px;
     margin: 50px auto;
-     
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
@@ -75,8 +75,6 @@
 
   .logo {
     height: 20px;
-     
-     
   }
 
   header .vl {
@@ -92,6 +90,7 @@
 
   .material-icons {
     vertical-align: middle;
+    user-select: none;
   }
 
   .vuln-table {
@@ -136,7 +135,7 @@
     padding-bottom: 30px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
     max-height: 800px;
-    overflow: overlay;
+    overflow: auto;
   }
 
   .table-tr:hover .open-in-tab-tag {
@@ -147,7 +146,7 @@
     display: none;
     border: 1px solid rgba(255, 255, 255, 0.12);
     padding: 5px 5px;
-    border-radius: 4px;
+    border-radius: 2px;
     width: fit-content;
   }
 
@@ -158,19 +157,22 @@
 
   .severity-cell {
     width: 60px !important;
+    user-select: none;
   }
 
   .fixable-tag {
-    border-radius: 4px;
+    border-radius: 2px;
     max-width: 250px;
     width: fit-content;
     padding: 0 5px;
     white-space: nowrap;
     overflow: hidden;
     text-align: center;
+    user-select: none;
   }
 
   .has-fix {
+    white-space: break-spaces;
     background-color: #6a6a6a;
   }
 
@@ -258,13 +260,14 @@
     width: 100%;
     min-height: 1000px;
     border: none;
+    background-color: #fff;
   }
 
   #vuln-tab {
     display: block;
   }
 
-  .expand-icon {
+  .package-tr {
     cursor: pointer;
   }
 
@@ -287,7 +290,7 @@
     max-width: 600px;
     min-width: 250px;
     background-color: transparent;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     color: #fff;
     border: 1px solid #ddd;
@@ -325,6 +328,11 @@
     cursor: pointer;
   }
 
+  .filter-option input,
+  .filter-option label {
+    cursor: pointer;
+  }
+
   #layer-filter-option-container {
     width: 1400px;
   }
@@ -359,12 +367,13 @@
     min-width: 100px;
     overflow: hidden;
     white-space: nowrap;
+    user-select: none;
   }
 
   .severity-long p {
     font-size: 10pt;
     padding: 5px 5px;
-    border-radius: 5px;
+    border-radius: 4px;
     margin-right: 3px;
   }
 
@@ -396,11 +405,21 @@
 
   .severity-short {
     width: 40px;
+    user-select: none;
   }
 
   .severity-short p {
-    border-radius: 1px;
     text-align: center;
+  }
+
+  .severity-short-first p {
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  .severity-short-last p {
+    border-top-right-radius: 2px;
+    border-bottom-right-radius: 2px;
   }
 
    
@@ -410,7 +429,7 @@
     width: 100%;
     border: 1px solid #fff;
     background-color: transparent;
-    border-radius: 10px;
+    border-radius: 4px;
     margin-top: 30px;
   }
 
@@ -498,6 +517,16 @@
   .inner-table .tooltip .tooltiptext {
     min-width: 300px;
     white-space: normal;
+  }
+
+  th .tooltip .tooltiptext {
+    white-space: normal;
+    width: 240px;
+    padding: 10px;
+  }
+
+  .severity-count-summary .tooltip {
+    text-decoration: none;
   }
 
   .flex-box {
@@ -654,7 +683,6 @@
           optionContainer.style.display = "none";
         }
       } else {
-        console.log("hide others");
         containers[i].style.display = "none";
       }
     }
@@ -737,6 +765,7 @@
   }
 
   function applyTypeFilter(selectedValue) {
+    updateTypeFilterText(selectedValue);
     selectedAll = selectedValue.has("all");
     selectedProject = selectedValue.has("project");
     selectedOS = selectedValue.has("os");
@@ -771,18 +800,65 @@
 
   function applyLayerFilter(selectedLayerID) {
     const tableRows = document.querySelectorAll("tr.has-layer-info");
-    console.log("selected layerID: " + selectedLayerID);
     tableRows.forEach(row => {
       const rowLayerID = row.getAttribute("data-layer");
       if (selectedLayerID !== "all" && rowLayerID !== selectedLayerID) {
         const packageDetails = document.getElementById(row.id + "-details");
         const vulnElements = packageDetails.querySelectorAll(".vuln-tr");
         vulnElements.forEach(vuln => {
-          console.log("set vuln display to none");
           vuln.style.display = "none";
         });
       }
     });
+  }
+
+  function updateTypeFilterText(selectedValue) {
+    selectedAll = selectedValue.has("all");
+    selectedProject = selectedValue.has("project");
+    selectedOS = selectedValue.has("os");
+    selectedUncalled = selectedValue.has("uncalled");
+    if (selectedAll) {
+      selectedProject = true;
+      selectedOS = true;
+    }
+
+    const typeSelected = document.getElementById("type-filter-selected");
+    const selectedVulnCount = document.getElementById("selected-count");
+
+    const allTypeCheckbox = document.getElementById("all-type-checkbox");
+    const osTypeCheckbox = document.getElementById("os-type-checkbox");
+    const projectTypeCheckbox = document.getElementById(
+      "project-type-checkbox"
+    );
+    const uncalledTypeCheckbox = document.getElementById(
+      "uncalled-type-checkbox"
+    );
+
+    let selectedText = "";
+    let selectedCount = 0;
+
+    if (projectTypeCheckbox && projectTypeCheckbox.checked) {
+      selectedText += (selectedText ? ", " : "") + "Project";
+      const projectTypeVulnCount = projectTypeCheckbox.getAttribute(
+        "data-type-project-count"
+      );
+      selectedCount += parseInt(projectTypeVulnCount, 10);
+    }
+    if (osTypeCheckbox && osTypeCheckbox.checked) {
+      selectedText += (selectedText ? ", " : "") + "OS";
+      const osTypeVulnCount = osTypeCheckbox.getAttribute("data-type-os-count");
+      selectedCount += parseInt(osTypeVulnCount, 10);
+    }
+    if (uncalledTypeCheckbox && uncalledTypeCheckbox.checked) {
+      selectedText += (selectedText ? ", " : "") + "Unimportant";
+      const uncalledTypeVulnCount = uncalledTypeCheckbox.getAttribute(
+        "data-type-uncalled-count"
+      );
+      selectedCount += parseInt(uncalledTypeVulnCount, 10);
+    }
+
+    typeSelected.textContent = selectedText;
+    selectedVulnCount.textContent = selectedCount;
   }
 
   function resetFilterText() {
@@ -796,15 +872,16 @@
     }
 
     const typeSelected = document.getElementById("type-filter-selected");
+    const selectedVulnCount = document.getElementById("selected-count");
     const allTypeCheckedBox = document.getElementById("all-type-checkbox");
     const uncalledTypeCheckBox = document.getElementById(
       "uncalled-type-checkbox"
     );
     if (allTypeCheckedBox) {
-      typeSelected.textContent =
-        "All types (" +
-        allTypeCheckedBox.getAttribute("data-type-all-count") +
-        ")";
+      typeSelected.textContent = "Default";
+      selectedVulnCount.textContent = allTypeCheckedBox.getAttribute(
+        "data-type-all-count"
+      );
       allLayerCheckedBox.checked = true;
       uncalledTypeCheckBox.checked = false;
     } else {
@@ -812,10 +889,10 @@
         "project-type-checkbox"
       );
       projectTypeCheckedBox.checked = true;
-      typeSelected.textContent =
-        "All types (" +
-        projectTypeCheckedBox.getAttribute("data-type-project-count") +
-        ")";
+      typeSelected.textContent = "Default";
+      selectedVulnCount.textContent = projectTypeCheckedBox.getAttribute(
+        "data-type-project-count"
+      );
       uncalledTypeCheckBox.checked = false;
     }
   }
@@ -828,7 +905,28 @@
     }
   }
 
+  function resetTypeCheckbox() {
+    const allTypeCheckbox = document.getElementById("all-type-checkbox");
+    const osTypeCheckbox = document.getElementById("os-type-checkbox");
+    const projectTypeCheckbox = document.getElementById(
+      "project-type-checkbox"
+    );
+    const uncalledTypeCheckbox = document.getElementById(
+      "uncalled-type-checkbox"
+    );
+
+    if (allTypeCheckbox) {
+      allTypeCheckbox.checked = true;
+      projectTypeCheckbox.checked = true;
+      if (osTypeCheckbox) {
+        osTypeCheckbox.checked = true;
+      }
+      uncalledTypeCheckbox.checked = false;
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    resetFilterText();
     showAndHideParentSections();
     let selectedTypeFilterValue = new Set();
     selectedTypeFilterValue.add("all");
@@ -875,18 +973,6 @@
         selectedTypeFilterValue.add("uncalled");
       }
 
-      selectedDisplay = document.getElementById("type-filter-selected");
-      if (allTypesCheckbox != null && allTypesCheckbox.checked) {
-        const allTypesLabel = document.querySelector(
-          `label[for="${allTypesCheckbox.id}"]`
-        );
-        selectedDisplay.textContent = allTypesLabel.textContent;
-      } else {
-        let typeArray = Array.from(selectedTypeFilterValue);
-        selectedToString = typeArray.join(", ");
-        selectedDisplay.textContent = selectedToString;
-      }
-
       applyFilters(selectedTypeFilterValue, selectedLayer);
     });
 
@@ -900,7 +986,7 @@
         const clickedOption = event.target.closest(".layer-filter-option");
         if (clickedOption) {
           resetSearchText();
-          selectedLayer = clickedOption.getAttribute("value");
+          selectedLayer = clickedOption.getAttribute("title");
           selectedDisplay = document.getElementById("layer-filter-selected");
           layerCommand = clickedOption.querySelector("p:first-child");
           selectedDisplay.textContent = layerCommand.textContent;
@@ -924,6 +1010,11 @@
     const vulnSearchInput = document.getElementById("vuln-search");
     vulnSearchInput.addEventListener("keyup", event => {
       resetFilterText();
+      selectedTypeFilterValue.clear();
+      selectedTypeFilterValue.add("all");
+      selectedLayer = "all";
+      resetTypeCheckbox();
+
       const searchTerm = vulnSearchInput.value.trim().toLowerCase();
 
       const vulnRows = document.querySelectorAll("[data-vuln-id]");
@@ -972,9 +1063,12 @@
     
 
     <div class="filter-container">
-      <label for="type-filter">Vulnerability type<br></label>
+      <span>Filters<br></span>
       <div id="type-filter" class="filter" onclick="toggleFilter('type')">
-        <p value="all" id="type-filter-selected" class="filter-selected">All types (22)</p>
+        <p class="filter-selected">
+          <span id="type-filter-selected"></span>
+          <span>(<span id="selected-count"></span>/52)</span>
+        </p>
         <div class="filter-icon">
           <i class="material-icons">keyboard_arrow_down</i>
         </div>
@@ -988,7 +1082,7 @@
         </div>
         
         <div class="filter-option">
-          <input type="checkbox" id="uncalled-type-checkbox">
+          <input type="checkbox" id="uncalled-type-checkbox" data-type-uncalled-count="30">
           <label for="uncalled-type-checkbox">Uncalled/Unimportant (30)</label>
         </div>
       </div>
@@ -997,7 +1091,7 @@
 
 
   <div id="severity-section">
-    <label>Overall Severity</label>
+    <span>Overall Severity</span>
     <div class="flex-box">
       <div id="critical-long" class="severity-long">
         <p class="critical">2 Critical</p>
@@ -1035,21 +1129,33 @@
   <div class="ecosystem-sources-container">
     
     <div class="source-container">
-      <h3 class="source-heading">Source: lockfile:/tmp/scanner-comparison/docker/go-basic/src/go.mod</h3>
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/go-basic/src/go.mod</h3>
       <table class="vuln-table">
   <tr>
     <th></th>
     <th>Package</th>
     <th>Installed version</th>
-    <th>Fixed available</th>
-    <th>Vulnerability Count</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-1">
+    data-layer="" id="table-tr-1" onclick="showPackageDetails('1')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('1')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1061,6 +1167,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -1114,15 +1222,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-3">
+    data-layer="" id="table-tr-3" onclick="showPackageDetails('3')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('3')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1136,20 +1245,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">0</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">1</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -1206,15 +1320,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-5">
+    data-layer="" id="table-tr-5" onclick="showPackageDetails('5')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('5')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1226,6 +1341,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -1336,6 +1453,7 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
@@ -1345,21 +1463,33 @@
     </div>
     
     <div class="source-container">
-      <h3 class="source-heading">Source: lockfile:/tmp/scanner-comparison/docker/go/lockfile/go.mod</h3>
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/go/lockfile/go.mod</h3>
       <table class="vuln-table">
   <tr>
     <th></th>
     <th>Package</th>
     <th>Installed version</th>
-    <th>Fixed available</th>
-    <th>Vulnerability Count</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-9">
+    data-layer="" id="table-tr-9" onclick="showPackageDetails('9')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('9')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1371,6 +1501,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -1420,15 +1552,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-11">
+    data-layer="" id="table-tr-11" onclick="showPackageDetails('11')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('11')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1440,6 +1573,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -1492,15 +1627,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-13">
+    data-layer="" id="table-tr-13" onclick="showPackageDetails('13')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('13')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1512,6 +1648,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -1595,15 +1733,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-16">
+    data-layer="" id="table-tr-16" onclick="showPackageDetails('16')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('16')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1617,20 +1756,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">0</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">1</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -1681,15 +1825,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-18">
+    data-layer="" id="table-tr-18" onclick="showPackageDetails('18')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('18')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1701,6 +1846,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -1754,15 +1901,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-20">
+    data-layer="" id="table-tr-20" onclick="showPackageDetails('20')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('20')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -1776,20 +1924,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">6</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">2</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">1</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -2143,15 +2296,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-31">
+    data-layer="" id="table-tr-31" onclick="showPackageDetails('31')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('31')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -2163,6 +2317,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -2213,15 +2369,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-33">
+    data-layer="" id="table-tr-33" onclick="showPackageDetails('33')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('33')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -2233,6 +2390,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -2275,8 +2434,8 @@
         class="uncalled-text" >1.33.0</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -2286,15 +2445,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-35">
+    data-layer="" id="table-tr-35" onclick="showPackageDetails('35')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('35')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -2306,6 +2466,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -2358,15 +2520,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-37">
+    data-layer="" id="table-tr-37" onclick="showPackageDetails('37')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('37')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -2378,6 +2541,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -2788,6 +2953,7 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
@@ -2797,21 +2963,33 @@
     </div>
     
     <div class="source-container">
-      <h3 class="source-heading">Source: lockfile:/tmp/scanner-comparison/docker/go/src/go.mod</h3>
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/go/src/go.mod</h3>
       <table class="vuln-table">
   <tr>
     <th></th>
     <th>Package</th>
     <th>Installed version</th>
-    <th>Fixed available</th>
-    <th>Vulnerability Count</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-51">
+    data-layer="" id="table-tr-51" onclick="showPackageDetails('51')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('51')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -2823,6 +3001,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -2876,15 +3056,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-53">
+    data-layer="" id="table-tr-53" onclick="showPackageDetails('53')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('53')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -2896,6 +3077,8 @@
       
     </td>
     <td>
+      
+      <p class="uncalled-text">Uncalled/Unimportant</p>
       
     </td>
   </tr>
@@ -3006,6 +3189,7 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
@@ -3022,21 +3206,33 @@
   <div class="ecosystem-sources-container">
     
     <div class="source-container">
-      <h3 class="source-heading">Source: lockfile:/tmp/scanner-comparison/docker/npm/artifact/package-lock.json</h3>
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/npm/artifact/package-lock.json</h3>
       <table class="vuln-table">
   <tr>
     <th></th>
     <th>Package</th>
     <th>Installed version</th>
-    <th>Fixed available</th>
-    <th>Vulnerability Count</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-57">
+    data-layer="" id="table-tr-57" onclick="showPackageDetails('57')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('57')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -3050,20 +3246,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">0</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -3168,15 +3369,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-61">
+    data-layer="" id="table-tr-61" onclick="showPackageDetails('61')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('61')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -3192,20 +3394,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">1</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">1</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -3283,6 +3490,7 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
@@ -3292,21 +3500,33 @@
     </div>
     
     <div class="source-container">
-      <h3 class="source-heading">Source: lockfile:/tmp/scanner-comparison/docker/npm/lockfile/package-lock.json</h3>
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/npm/lockfile/package-lock.json</h3>
       <table class="vuln-table">
   <tr>
     <th></th>
     <th>Package</th>
     <th>Installed version</th>
-    <th>Fixed available</th>
-    <th>Vulnerability Count</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-64">
+    data-layer="" id="table-tr-64" onclick="showPackageDetails('64')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('64')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -3325,20 +3545,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">1</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">1</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -3416,15 +3641,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-67">
+    data-layer="" id="table-tr-67" onclick="showPackageDetails('67')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('67')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -3438,20 +3664,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">1</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">1</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -3529,15 +3760,16 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-70">
+    data-layer="" id="table-tr-70" onclick="showPackageDetails('70')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('70')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -3551,20 +3783,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">1</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -3615,6 +3852,7 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
@@ -3624,21 +3862,33 @@
     </div>
     
     <div class="source-container">
-      <h3 class="source-heading">Source: lockfile:/tmp/scanner-comparison/docker/npm/src/package-lock.json</h3>
+      <h3 class="source-heading">Source: lockfile:/usr/local/google/home/gongh/Desktop/code/hogo6002/scanner-comparison/docker/npm/src/package-lock.json</h3>
       <table class="vuln-table">
   <tr>
     <th></th>
     <th>Package</th>
     <th>Installed version</th>
-    <th>Fixed available</th>
-    <th>Vulnerability Count</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
   </tr>
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="" id="table-tr-72">
+    data-layer="" id="table-tr-72" onclick="showPackageDetails('72')">
     <td class="icon-td">
-      <div class="expand-icon" onclick="showPackageDetails('72')">
+      <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
       </div>
     </td>
@@ -3654,20 +3904,25 @@
     <td>
       
       <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
   </div>
-  <div id="high-short" class="severity-short">
+  <div id="high-short" class="severity-short tooltip">
     <p class="high">1</p>
+    <span class="tooltiptext">High</span>
   </div>
-  <div id="medium-short" class="severity-short">
+  <div id="medium-short" class="severity-short tooltip">
     <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
   </div>
-  <div id="low-short" class="severity-short">
+  <div id="low-short" class="severity-short tooltip">
     <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
   </div>
-  <div id="unknown-short" class="severity-short">
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
     <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
   </div>
 </div>
 
@@ -3718,6 +3973,7 @@
   
 </table>
 
+      </div>
 
     </td>
   </tr>
