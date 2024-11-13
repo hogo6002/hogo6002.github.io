@@ -28,7 +28,7 @@
     max-width: 1400px;
     margin: 50px auto;
     padding: 20px;
-    border-radius: 5px;
+    border-radius: 4px;
     box-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
     min-height: 90vh;
   }
@@ -52,11 +52,6 @@
 
   .ecosystem {
     margin-top: 20px;
-  }
-
-  .vulnerability {
-    padding: 5px;
-    border-radius: 3px;
   }
 
   details summary {
@@ -96,7 +91,6 @@
   .vuln-table {
     width: 100%;
     text-align: left;
-    border-radius: 5px;
     margin-bottom: 40px;
     margin-top: 10px;
     color: rgba(255, 255, 255, 0.87);
@@ -161,7 +155,7 @@
   }
 
   .fixable-tag {
-    border-radius: 2px;
+    border-radius: 4px;
     max-width: 250px;
     width: fit-content;
     padding: 0 5px;
@@ -310,7 +304,7 @@
 
   .filter-option-container {
     border: 1px solid #ddd;
-    border-radius: 10px;
+    border-radius: 8px;
     overflow: hidden;
     position: absolute;
     background-color: #292929;
@@ -413,13 +407,17 @@
   }
 
   .severity-short-first p {
-    border-top-left-radius: 2px;
-    border-bottom-left-radius: 2px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
   }
 
   .severity-short-last p {
-    border-top-right-radius: 2px;
-    border-bottom-right-radius: 2px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .severity-cell .severity-short p {
+    border-radius: 4px;
   }
 
    
@@ -467,7 +465,7 @@
     width: 100%;
     border: 0.5px solid rgba(255, 255, 255, 0.12);
     border-spacing: 0px;
-    border-radius: 5px;
+    border-radius: 4px;
   }
 
   .inner-table th {
@@ -496,7 +494,7 @@
     background-color: black;
     color: #fff;
     text-align: center;
-    border-radius: 6px;
+    border-radius: 4px;
     padding: 5px 5px;
     white-space: nowrap;
     width: fit-content;
@@ -834,10 +832,6 @@
       "uncalled-type-checkbox"
     );
 
-    const allTypeVulnCount = allTypeCheckbox.getAttribute(
-      "data-type-all-count"
-    );
-
     let selectedText = "";
     let selectedCount = 0;
 
@@ -894,8 +888,8 @@
       );
       projectTypeCheckedBox.checked = true;
       typeSelected.textContent = "Default";
-      selectedVulnCount.textContent = allTypeCheckedBox.getAttribute(
-        "ata-type-project-count"
+      selectedVulnCount.textContent = projectTypeCheckedBox.getAttribute(
+        "data-type-project-count"
       );
       uncalledTypeCheckBox.checked = false;
     }
@@ -1075,19 +1069,19 @@
       </div>
       <div id="layer-filter-option-container" class="filter-option-container">
         <div title="all" class="filter-option layer-filter-option" id="all-layer-checkbox"
-          data-layer-all-count="634">
-          <p>All layers (634)</p>
+          data-layer-all-count="635">
+          <p>All layers (635)</p>
           <div class="severity-count-summary">
   <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">23</p>
     <span class="tooltiptext">Critical</span>
   </div>
   <div id="high-short" class="severity-short tooltip">
-    <p class="high">123</p>
+    <p class="high">124</p>
     <span class="tooltiptext">High</span>
   </div>
   <div id="medium-short" class="severity-short tooltip">
-    <p class="medium">227</p>
+    <p class="medium">238</p>
     <span class="tooltiptext">Medium</span>
   </div>
   <div id="low-short" class="severity-short tooltip">
@@ -1095,7 +1089,61 @@
     <span class="tooltiptext">Low</span>
   </div>
   <div id="unknown-short" class="severity-short tooltip severity-short-last">
-    <p class="unknown">256</p>
+    <p class="unknown">245</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        <div title="bae9e546f2fcc37ffd9d41deba36ca6989cb859ed8d51c06a7afcdd8bb7f8784" class="filter-option layer-filter-option">
+          <p>0 /bin/sh -c apt-get update &amp;&amp; apt-get upgrade -y &amp;&amp;     apt-get install -y     golang     ca-certificates</p>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">22</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">118</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">223</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">3</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">199</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        <div title="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" class="filter-option layer-filter-option">
+          <p>1 /bin/sh -c #(nop) ADD file:UNKNOWN in / </p>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">1</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">5</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">14</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">2</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">1</p>
     <span class="tooltiptext">Unknown</span>
   </div>
 </div>
@@ -1103,7 +1151,7 @@
         </div>
         
         <div title="186ce548b4e3a0337dabdedd6528e16f2f855b540774856effe0a35c9e556286" class="filter-option layer-filter-option">
-          <p>0 /bin/sh -c #(nop) COPY dir:UNKNOWN in /artifact </p>
+          <p>2 /bin/sh -c #(nop) COPY dir:UNKNOWN in /artifact </p>
           <div class="severity-count-summary">
   <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
@@ -1130,7 +1178,7 @@
         </div>
         
         <div title="1bdfb67b6343df0500d369b5acb253003189c13b646159d6a1c69ab9a1af611b" class="filter-option layer-filter-option">
-          <p>1 /bin/sh -c cd /src &amp;&amp; go build -o main .</p>
+          <p>3 /bin/sh -c cd /src &amp;&amp; go build -o main .</p>
           <div class="severity-count-summary">
   <div id="critical-short" class="severity-short tooltip severity-short-first">
     <p class="critical">0</p>
@@ -1156,60 +1204,6 @@
 
         </div>
         
-        <div title="bae9e546f2fcc37ffd9d41deba36ca6989cb859ed8d51c06a7afcdd8bb7f8784" class="filter-option layer-filter-option">
-          <p>2 /bin/sh -c apt-get update &amp;&amp; apt-get upgrade -y &amp;&amp;     apt-get install -y     golang     ca-certificates</p>
-          <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short tooltip severity-short-first">
-    <p class="critical">22</p>
-    <span class="tooltiptext">Critical</span>
-  </div>
-  <div id="high-short" class="severity-short tooltip">
-    <p class="high">117</p>
-    <span class="tooltiptext">High</span>
-  </div>
-  <div id="medium-short" class="severity-short tooltip">
-    <p class="medium">212</p>
-    <span class="tooltiptext">Medium</span>
-  </div>
-  <div id="low-short" class="severity-short tooltip">
-    <p class="low">3</p>
-    <span class="tooltiptext">Low</span>
-  </div>
-  <div id="unknown-short" class="severity-short tooltip severity-short-last">
-    <p class="unknown">210</p>
-    <span class="tooltiptext">Unknown</span>
-  </div>
-</div>
-
-        </div>
-        
-        <div title="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" class="filter-option layer-filter-option">
-          <p>3 /bin/sh -c #(nop) ADD file:UNKNOWN in / </p>
-          <div class="severity-count-summary">
-  <div id="critical-short" class="severity-short tooltip severity-short-first">
-    <p class="critical">1</p>
-    <span class="tooltiptext">Critical</span>
-  </div>
-  <div id="high-short" class="severity-short tooltip">
-    <p class="high">5</p>
-    <span class="tooltiptext">High</span>
-  </div>
-  <div id="medium-short" class="severity-short tooltip">
-    <p class="medium">14</p>
-    <span class="tooltiptext">Medium</span>
-  </div>
-  <div id="low-short" class="severity-short tooltip">
-    <p class="low">2</p>
-    <span class="tooltiptext">Low</span>
-  </div>
-  <div id="unknown-short" class="severity-short tooltip severity-short-last">
-    <p class="unknown">1</p>
-    <span class="tooltiptext">Unknown</span>
-  </div>
-</div>
-
-        </div>
-        
       </div>
     </div>
     
@@ -1219,7 +1213,7 @@
       <div id="type-filter" class="filter" onclick="toggleFilter('type')">
         <p class="filter-selected">
           <span id="type-filter-selected"></span>
-          <span>(<span id="selected-count"></span>/753)</span>
+          <span>(<span id="selected-count"></span>/754)</span>
         </p>
         <div class="filter-icon">
           <i class="material-icons">keyboard_arrow_down</i>
@@ -1228,8 +1222,8 @@
       <div id="type-filter-option-container" class="filter-option-container">
         
         <div class="filter-option">
-          <input type="checkbox" checked id="all-type-checkbox" data-type-all-count="634">
-          <label for="all-type-checkbox">Default (634)</label>
+          <input type="checkbox" checked id="all-type-checkbox" data-type-all-count="635">
+          <label for="all-type-checkbox">Default (635)</label>
         </div>
         
         <div class="filter-option">
@@ -1239,8 +1233,8 @@
         </div>
         
         <div class="filter-option">
-          <input type="checkbox" checked id="os-type-checkbox" data-type-os-count="587">
-          <label for="os-type-checkbox"> Operating system vulnerabilities (587)</label>
+          <input type="checkbox" checked id="os-type-checkbox" data-type-os-count="588">
+          <label for="os-type-checkbox"> Operating system vulnerabilities (588)</label>
         </div>
         
         <div class="filter-option">
@@ -1259,16 +1253,16 @@
         <p class="critical">23 Critical</p>
       </div>
       <div id="high-long" class="severity-long">
-        <p class="high">123 High</p>
+        <p class="high">124 High</p>
       </div>
       <div id="medium-long" class="severity-long">
-        <p class="medium">227 Medium</p>
+        <p class="medium">238 Medium</p>
       </div>
       <div id="low-long" class="severity-long">
         <p class="low">5 Low</p>
       </div>
       <div id="unknow-long" class="severity-long">
-        <p class="unknown">256 Unknown</p>
+        <p class="unknown">245 Unknown</p>
       </div>
     </div>
   </div>
@@ -10504,7 +10498,7 @@
       
       <div class="tooltip">
         <p class="fixable-tag has-fix">Partial fixes available</p>
-        <span class="tooltiptext">Upgrading the package will fix 236 out of 421 vulnerabilities</span>
+        <span class="tooltiptext">Upgrading the package will fix 236 out of 422 vulnerabilities</span>
       </div>
       
       
@@ -10517,11 +10511,11 @@
     <span class="tooltiptext">Critical</span>
   </div>
   <div id="high-short" class="severity-short tooltip">
-    <p class="high">83</p>
+    <p class="high">84</p>
     <span class="tooltiptext">High</span>
   </div>
   <div id="medium-short" class="severity-short tooltip">
-    <p class="medium">181</p>
+    <p class="medium">192</p>
     <span class="tooltiptext">Medium</span>
   </div>
   <div id="low-short" class="severity-short tooltip">
@@ -10529,7 +10523,7 @@
     <span class="tooltiptext">Low</span>
   </div>
   <div id="unknown-short" class="severity-short tooltip severity-short-last">
-    <p class="unknown">153</p>
+    <p class="unknown">142</p>
     <span class="tooltiptext">Unknown</span>
   </div>
 </div>
@@ -11260,7 +11254,32 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-328" data-vuln-id="CVE-2024-35904">
+  <tr class='table-tr vuln-tr' id="table-tr-328" data-vuln-id="CVE-2024-35878">
+    <td>
+      
+      CVE-2024-35878
+      
+    </td>
+    <td>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-35878')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-329" data-vuln-id="CVE-2024-35904">
     <td>
       
       CVE-2024-35904
@@ -11285,7 +11304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-329" data-vuln-id="CVE-2024-35949">
+  <tr class='table-tr vuln-tr' id="table-tr-330" data-vuln-id="CVE-2024-35949">
     <td>
       
       CVE-2024-35949
@@ -11310,7 +11329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-330" data-vuln-id="CVE-2024-35951">
+  <tr class='table-tr vuln-tr' id="table-tr-331" data-vuln-id="CVE-2024-35951">
     <td>
       
       CVE-2024-35951
@@ -11335,7 +11354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-331" data-vuln-id="CVE-2024-35963">
+  <tr class='table-tr vuln-tr' id="table-tr-332" data-vuln-id="CVE-2024-35963">
     <td>
       
       CVE-2024-35963
@@ -11360,7 +11379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-332" data-vuln-id="CVE-2024-35964">
+  <tr class='table-tr vuln-tr' id="table-tr-333" data-vuln-id="CVE-2024-35964">
     <td>
       
       CVE-2024-35964
@@ -11385,7 +11404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-333" data-vuln-id="CVE-2024-36013">
+  <tr class='table-tr vuln-tr' id="table-tr-334" data-vuln-id="CVE-2024-36013">
     <td>
       
       CVE-2024-36013
@@ -11410,7 +11429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-334" data-vuln-id="CVE-2024-36478">
+  <tr class='table-tr vuln-tr' id="table-tr-335" data-vuln-id="CVE-2024-36478">
     <td>
       
       CVE-2024-36478
@@ -11435,7 +11454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-335" data-vuln-id="CVE-2024-36881">
+  <tr class='table-tr vuln-tr' id="table-tr-336" data-vuln-id="CVE-2024-36881">
     <td>
       
       CVE-2024-36881
@@ -11460,7 +11479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-336" data-vuln-id="CVE-2024-36908">
+  <tr class='table-tr vuln-tr' id="table-tr-337" data-vuln-id="CVE-2024-36908">
     <td>
       
       CVE-2024-36908
@@ -11485,7 +11504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-337" data-vuln-id="CVE-2024-36914">
+  <tr class='table-tr vuln-tr' id="table-tr-338" data-vuln-id="CVE-2024-36914">
     <td>
       
       CVE-2024-36914
@@ -11510,7 +11529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-338" data-vuln-id="CVE-2024-38540">
+  <tr class='table-tr vuln-tr' id="table-tr-339" data-vuln-id="CVE-2024-38540">
     <td>
       
       CVE-2024-38540
@@ -11535,7 +11554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-339" data-vuln-id="CVE-2024-38594">
+  <tr class='table-tr vuln-tr' id="table-tr-340" data-vuln-id="CVE-2024-38594">
     <td>
       
       CVE-2024-38594
@@ -11560,7 +11579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-340" data-vuln-id="CVE-2024-38632">
+  <tr class='table-tr vuln-tr' id="table-tr-341" data-vuln-id="CVE-2024-38632">
     <td>
       
       CVE-2024-38632
@@ -11585,7 +11604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-341" data-vuln-id="CVE-2024-39497">
+  <tr class='table-tr vuln-tr' id="table-tr-342" data-vuln-id="CVE-2024-39497">
     <td>
       
       CVE-2024-39497
@@ -11610,7 +11629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-342" data-vuln-id="CVE-2024-41013">
+  <tr class='table-tr vuln-tr' id="table-tr-343" data-vuln-id="CVE-2024-41013">
     <td>
       
       CVE-2024-41013
@@ -11635,7 +11654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-343" data-vuln-id="CVE-2024-41014">
+  <tr class='table-tr vuln-tr' id="table-tr-344" data-vuln-id="CVE-2024-41014">
     <td>
       
       CVE-2024-41014
@@ -11660,7 +11679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-344" data-vuln-id="CVE-2024-41071">
+  <tr class='table-tr vuln-tr' id="table-tr-345" data-vuln-id="CVE-2024-41071">
     <td>
       
       CVE-2024-41071
@@ -11685,7 +11704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-345" data-vuln-id="CVE-2024-43840">
+  <tr class='table-tr vuln-tr' id="table-tr-346" data-vuln-id="CVE-2024-43840">
     <td>
       
       CVE-2024-43840
@@ -11710,7 +11729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-346" data-vuln-id="CVE-2024-43866">
+  <tr class='table-tr vuln-tr' id="table-tr-347" data-vuln-id="CVE-2024-43866">
     <td>
       
       CVE-2024-43866
@@ -11735,7 +11754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-347" data-vuln-id="CVE-2024-43904">
+  <tr class='table-tr vuln-tr' id="table-tr-348" data-vuln-id="CVE-2024-43904">
     <td>
       
       CVE-2024-43904
@@ -11760,7 +11779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-348" data-vuln-id="CVE-2024-43911">
+  <tr class='table-tr vuln-tr' id="table-tr-349" data-vuln-id="CVE-2024-43911">
     <td>
       
       CVE-2024-43911
@@ -11785,7 +11804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-349" data-vuln-id="CVE-2024-44949">
+  <tr class='table-tr vuln-tr' id="table-tr-350" data-vuln-id="CVE-2024-44949">
     <td>
       
       CVE-2024-44949
@@ -11810,7 +11829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-350" data-vuln-id="CVE-2024-44950">
+  <tr class='table-tr vuln-tr' id="table-tr-351" data-vuln-id="CVE-2024-44950">
     <td>
       
       CVE-2024-44950
@@ -11835,7 +11854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-351" data-vuln-id="CVE-2024-44951">
+  <tr class='table-tr vuln-tr' id="table-tr-352" data-vuln-id="CVE-2024-44951">
     <td>
       
       CVE-2024-44951
@@ -11860,7 +11879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-352" data-vuln-id="CVE-2024-44955">
+  <tr class='table-tr vuln-tr' id="table-tr-353" data-vuln-id="CVE-2024-44955">
     <td>
       
       CVE-2024-44955
@@ -11885,7 +11904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-353" data-vuln-id="CVE-2024-44961">
+  <tr class='table-tr vuln-tr' id="table-tr-354" data-vuln-id="CVE-2024-44961">
     <td>
       
       CVE-2024-44961
@@ -11910,7 +11929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-354" data-vuln-id="CVE-2024-44962">
+  <tr class='table-tr vuln-tr' id="table-tr-355" data-vuln-id="CVE-2024-44962">
     <td>
       
       CVE-2024-44962
@@ -11935,7 +11954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-355" data-vuln-id="CVE-2024-44963">
+  <tr class='table-tr vuln-tr' id="table-tr-356" data-vuln-id="CVE-2024-44963">
     <td>
       
       CVE-2024-44963
@@ -11960,7 +11979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-356" data-vuln-id="CVE-2024-46695">
+  <tr class='table-tr vuln-tr' id="table-tr-357" data-vuln-id="CVE-2024-46695">
     <td>
       
       CVE-2024-46695
@@ -11985,7 +12004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-357" data-vuln-id="CVE-2024-46710">
+  <tr class='table-tr vuln-tr' id="table-tr-358" data-vuln-id="CVE-2024-46710">
     <td>
       
       CVE-2024-46710
@@ -12010,7 +12029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-358" data-vuln-id="CVE-2024-46803">
+  <tr class='table-tr vuln-tr' id="table-tr-359" data-vuln-id="CVE-2024-46803">
     <td>
       
       CVE-2024-46803
@@ -12035,7 +12054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-359" data-vuln-id="CVE-2024-46809">
+  <tr class='table-tr vuln-tr' id="table-tr-360" data-vuln-id="CVE-2024-46809">
     <td>
       
       CVE-2024-46809
@@ -12060,7 +12079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-360" data-vuln-id="CVE-2024-46811">
+  <tr class='table-tr vuln-tr' id="table-tr-361" data-vuln-id="CVE-2024-46811">
     <td>
       
       CVE-2024-46811
@@ -12085,7 +12104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-361" data-vuln-id="CVE-2024-46813">
+  <tr class='table-tr vuln-tr' id="table-tr-362" data-vuln-id="CVE-2024-46813">
     <td>
       
       CVE-2024-46813
@@ -12110,7 +12129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-362" data-vuln-id="CVE-2024-46833">
+  <tr class='table-tr vuln-tr' id="table-tr-363" data-vuln-id="CVE-2024-46833">
     <td>
       
       CVE-2024-46833
@@ -12135,7 +12154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-363" data-vuln-id="CVE-2024-46834">
+  <tr class='table-tr vuln-tr' id="table-tr-364" data-vuln-id="CVE-2024-46834">
     <td>
       
       CVE-2024-46834
@@ -12160,7 +12179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-364" data-vuln-id="CVE-2024-46841">
+  <tr class='table-tr vuln-tr' id="table-tr-365" data-vuln-id="CVE-2024-46841">
     <td>
       
       CVE-2024-46841
@@ -12185,7 +12204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-365" data-vuln-id="CVE-2024-46842">
+  <tr class='table-tr vuln-tr' id="table-tr-366" data-vuln-id="CVE-2024-46842">
     <td>
       
       CVE-2024-46842
@@ -12210,7 +12229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-366" data-vuln-id="CVE-2024-46843">
+  <tr class='table-tr vuln-tr' id="table-tr-367" data-vuln-id="CVE-2024-46843">
     <td>
       
       CVE-2024-46843
@@ -12235,7 +12254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-367" data-vuln-id="CVE-2024-46870">
+  <tr class='table-tr vuln-tr' id="table-tr-368" data-vuln-id="CVE-2024-46870">
     <td>
       
       CVE-2024-46870
@@ -12260,7 +12279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-368" data-vuln-id="CVE-2024-47658">
+  <tr class='table-tr vuln-tr' id="table-tr-369" data-vuln-id="CVE-2024-47658">
     <td>
       
       CVE-2024-47658
@@ -12285,7 +12304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-369" data-vuln-id="CVE-2024-47661">
+  <tr class='table-tr vuln-tr' id="table-tr-370" data-vuln-id="CVE-2024-47661">
     <td>
       
       CVE-2024-47661
@@ -12310,7 +12329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-370" data-vuln-id="CVE-2024-47662">
+  <tr class='table-tr vuln-tr' id="table-tr-371" data-vuln-id="CVE-2024-47662">
     <td>
       
       CVE-2024-47662
@@ -12335,7 +12354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-371" data-vuln-id="CVE-2024-47664">
+  <tr class='table-tr vuln-tr' id="table-tr-372" data-vuln-id="CVE-2024-47664">
     <td>
       
       CVE-2024-47664
@@ -12360,7 +12379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-372" data-vuln-id="CVE-2024-47666">
+  <tr class='table-tr vuln-tr' id="table-tr-373" data-vuln-id="CVE-2024-47666">
     <td>
       
       CVE-2024-47666
@@ -12385,7 +12404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-373" data-vuln-id="CVE-2024-47678">
+  <tr class='table-tr vuln-tr' id="table-tr-374" data-vuln-id="CVE-2024-47678">
     <td>
       
       CVE-2024-47678
@@ -12410,7 +12429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-374" data-vuln-id="CVE-2024-47679">
+  <tr class='table-tr vuln-tr' id="table-tr-375" data-vuln-id="CVE-2024-47679">
     <td>
       
       CVE-2024-47679
@@ -12435,7 +12454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-375" data-vuln-id="CVE-2024-47682">
+  <tr class='table-tr vuln-tr' id="table-tr-376" data-vuln-id="CVE-2024-47682">
     <td>
       
       CVE-2024-47682
@@ -12460,7 +12479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-376" data-vuln-id="CVE-2024-47683">
+  <tr class='table-tr vuln-tr' id="table-tr-377" data-vuln-id="CVE-2024-47683">
     <td>
       
       CVE-2024-47683
@@ -12485,7 +12504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-377" data-vuln-id="CVE-2024-47684">
+  <tr class='table-tr vuln-tr' id="table-tr-378" data-vuln-id="CVE-2024-47684">
     <td>
       
       CVE-2024-47684
@@ -12510,7 +12529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-378" data-vuln-id="CVE-2024-47685">
+  <tr class='table-tr vuln-tr' id="table-tr-379" data-vuln-id="CVE-2024-47685">
     <td>
       
       CVE-2024-47685
@@ -12535,7 +12554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-379" data-vuln-id="CVE-2024-47686">
+  <tr class='table-tr vuln-tr' id="table-tr-380" data-vuln-id="CVE-2024-47686">
     <td>
       
       CVE-2024-47686
@@ -12560,7 +12579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-380" data-vuln-id="CVE-2024-47690">
+  <tr class='table-tr vuln-tr' id="table-tr-381" data-vuln-id="CVE-2024-47690">
     <td>
       
       CVE-2024-47690
@@ -12585,7 +12604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-381" data-vuln-id="CVE-2024-47691">
+  <tr class='table-tr vuln-tr' id="table-tr-382" data-vuln-id="CVE-2024-47691">
     <td>
       
       CVE-2024-47691
@@ -12610,7 +12629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-382" data-vuln-id="CVE-2024-47692">
+  <tr class='table-tr vuln-tr' id="table-tr-383" data-vuln-id="CVE-2024-47692">
     <td>
       
       CVE-2024-47692
@@ -12635,7 +12654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-383" data-vuln-id="CVE-2024-47693">
+  <tr class='table-tr vuln-tr' id="table-tr-384" data-vuln-id="CVE-2024-47693">
     <td>
       
       CVE-2024-47693
@@ -12660,7 +12679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-384" data-vuln-id="CVE-2024-47695">
+  <tr class='table-tr vuln-tr' id="table-tr-385" data-vuln-id="CVE-2024-47695">
     <td>
       
       CVE-2024-47695
@@ -12685,7 +12704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-385" data-vuln-id="CVE-2024-47696">
+  <tr class='table-tr vuln-tr' id="table-tr-386" data-vuln-id="CVE-2024-47696">
     <td>
       
       CVE-2024-47696
@@ -12710,7 +12729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-386" data-vuln-id="CVE-2024-47697">
+  <tr class='table-tr vuln-tr' id="table-tr-387" data-vuln-id="CVE-2024-47697">
     <td>
       
       CVE-2024-47697
@@ -12735,7 +12754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-387" data-vuln-id="CVE-2024-47698">
+  <tr class='table-tr vuln-tr' id="table-tr-388" data-vuln-id="CVE-2024-47698">
     <td>
       
       CVE-2024-47698
@@ -12760,7 +12779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-388" data-vuln-id="CVE-2024-47699">
+  <tr class='table-tr vuln-tr' id="table-tr-389" data-vuln-id="CVE-2024-47699">
     <td>
       
       CVE-2024-47699
@@ -12785,7 +12804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-389" data-vuln-id="CVE-2024-47701">
+  <tr class='table-tr vuln-tr' id="table-tr-390" data-vuln-id="CVE-2024-47701">
     <td>
       
       CVE-2024-47701
@@ -12810,7 +12829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-390" data-vuln-id="CVE-2024-47703">
+  <tr class='table-tr vuln-tr' id="table-tr-391" data-vuln-id="CVE-2024-47703">
     <td>
       
       CVE-2024-47703
@@ -12835,7 +12854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-391" data-vuln-id="CVE-2024-47704">
+  <tr class='table-tr vuln-tr' id="table-tr-392" data-vuln-id="CVE-2024-47704">
     <td>
       
       CVE-2024-47704
@@ -12860,7 +12879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-392" data-vuln-id="CVE-2024-47705">
+  <tr class='table-tr vuln-tr' id="table-tr-393" data-vuln-id="CVE-2024-47705">
     <td>
       
       CVE-2024-47705
@@ -12885,7 +12904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-393" data-vuln-id="CVE-2024-47706">
+  <tr class='table-tr vuln-tr' id="table-tr-394" data-vuln-id="CVE-2024-47706">
     <td>
       
       CVE-2024-47706
@@ -12910,7 +12929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-394" data-vuln-id="CVE-2024-47707">
+  <tr class='table-tr vuln-tr' id="table-tr-395" data-vuln-id="CVE-2024-47707">
     <td>
       
       CVE-2024-47707
@@ -12935,7 +12954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-395" data-vuln-id="CVE-2024-47709">
+  <tr class='table-tr vuln-tr' id="table-tr-396" data-vuln-id="CVE-2024-47709">
     <td>
       
       CVE-2024-47709
@@ -12960,7 +12979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-396" data-vuln-id="CVE-2024-47710">
+  <tr class='table-tr vuln-tr' id="table-tr-397" data-vuln-id="CVE-2024-47710">
     <td>
       
       CVE-2024-47710
@@ -12985,7 +13004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-397" data-vuln-id="CVE-2024-47712">
+  <tr class='table-tr vuln-tr' id="table-tr-398" data-vuln-id="CVE-2024-47712">
     <td>
       
       CVE-2024-47712
@@ -13010,7 +13029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-398" data-vuln-id="CVE-2024-47713">
+  <tr class='table-tr vuln-tr' id="table-tr-399" data-vuln-id="CVE-2024-47713">
     <td>
       
       CVE-2024-47713
@@ -13035,7 +13054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-399" data-vuln-id="CVE-2024-47718">
+  <tr class='table-tr vuln-tr' id="table-tr-400" data-vuln-id="CVE-2024-47718">
     <td>
       
       CVE-2024-47718
@@ -13060,7 +13079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-400" data-vuln-id="CVE-2024-47720">
+  <tr class='table-tr vuln-tr' id="table-tr-401" data-vuln-id="CVE-2024-47720">
     <td>
       
       CVE-2024-47720
@@ -13085,7 +13104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-401" data-vuln-id="CVE-2024-47723">
+  <tr class='table-tr vuln-tr' id="table-tr-402" data-vuln-id="CVE-2024-47723">
     <td>
       
       CVE-2024-47723
@@ -13110,7 +13129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-402" data-vuln-id="CVE-2024-47726">
+  <tr class='table-tr vuln-tr' id="table-tr-403" data-vuln-id="CVE-2024-47726">
     <td>
       
       CVE-2024-47726
@@ -13135,7 +13154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-403" data-vuln-id="CVE-2024-47727">
+  <tr class='table-tr vuln-tr' id="table-tr-404" data-vuln-id="CVE-2024-47727">
     <td>
       
       CVE-2024-47727
@@ -13160,7 +13179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-404" data-vuln-id="CVE-2024-47728">
+  <tr class='table-tr vuln-tr' id="table-tr-405" data-vuln-id="CVE-2024-47728">
     <td>
       
       CVE-2024-47728
@@ -13185,7 +13204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-405" data-vuln-id="CVE-2024-47730">
+  <tr class='table-tr vuln-tr' id="table-tr-406" data-vuln-id="CVE-2024-47730">
     <td>
       
       CVE-2024-47730
@@ -13210,7 +13229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-406" data-vuln-id="CVE-2024-47731">
+  <tr class='table-tr vuln-tr' id="table-tr-407" data-vuln-id="CVE-2024-47731">
     <td>
       
       CVE-2024-47731
@@ -13235,7 +13254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-407" data-vuln-id="CVE-2024-47734">
+  <tr class='table-tr vuln-tr' id="table-tr-408" data-vuln-id="CVE-2024-47734">
     <td>
       
       CVE-2024-47734
@@ -13260,7 +13279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-408" data-vuln-id="CVE-2024-47735">
+  <tr class='table-tr vuln-tr' id="table-tr-409" data-vuln-id="CVE-2024-47735">
     <td>
       
       CVE-2024-47735
@@ -13285,7 +13304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-409" data-vuln-id="CVE-2024-47736">
+  <tr class='table-tr vuln-tr' id="table-tr-410" data-vuln-id="CVE-2024-47736">
     <td>
       
       CVE-2024-47736
@@ -13310,7 +13329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-410" data-vuln-id="CVE-2024-47737">
+  <tr class='table-tr vuln-tr' id="table-tr-411" data-vuln-id="CVE-2024-47737">
     <td>
       
       CVE-2024-47737
@@ -13335,7 +13354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-411" data-vuln-id="CVE-2024-47738">
+  <tr class='table-tr vuln-tr' id="table-tr-412" data-vuln-id="CVE-2024-47738">
     <td>
       
       CVE-2024-47738
@@ -13360,7 +13379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-412" data-vuln-id="CVE-2024-47739">
+  <tr class='table-tr vuln-tr' id="table-tr-413" data-vuln-id="CVE-2024-47739">
     <td>
       
       CVE-2024-47739
@@ -13385,7 +13404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-413" data-vuln-id="CVE-2024-47740">
+  <tr class='table-tr vuln-tr' id="table-tr-414" data-vuln-id="CVE-2024-47740">
     <td>
       
       CVE-2024-47740
@@ -13410,7 +13429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-414" data-vuln-id="CVE-2024-47742">
+  <tr class='table-tr vuln-tr' id="table-tr-415" data-vuln-id="CVE-2024-47742">
     <td>
       
       CVE-2024-47742
@@ -13435,7 +13454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-415" data-vuln-id="CVE-2024-47743">
+  <tr class='table-tr vuln-tr' id="table-tr-416" data-vuln-id="CVE-2024-47743">
     <td>
       
       CVE-2024-47743
@@ -13460,7 +13479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-416" data-vuln-id="CVE-2024-47745">
+  <tr class='table-tr vuln-tr' id="table-tr-417" data-vuln-id="CVE-2024-47745">
     <td>
       
       CVE-2024-47745
@@ -13485,7 +13504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-417" data-vuln-id="CVE-2024-47747">
+  <tr class='table-tr vuln-tr' id="table-tr-418" data-vuln-id="CVE-2024-47747">
     <td>
       
       CVE-2024-47747
@@ -13510,7 +13529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-418" data-vuln-id="CVE-2024-47748">
+  <tr class='table-tr vuln-tr' id="table-tr-419" data-vuln-id="CVE-2024-47748">
     <td>
       
       CVE-2024-47748
@@ -13535,7 +13554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-419" data-vuln-id="CVE-2024-47749">
+  <tr class='table-tr vuln-tr' id="table-tr-420" data-vuln-id="CVE-2024-47749">
     <td>
       
       CVE-2024-47749
@@ -13560,7 +13579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-420" data-vuln-id="CVE-2024-47750">
+  <tr class='table-tr vuln-tr' id="table-tr-421" data-vuln-id="CVE-2024-47750">
     <td>
       
       CVE-2024-47750
@@ -13585,7 +13604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-421" data-vuln-id="CVE-2024-47751">
+  <tr class='table-tr vuln-tr' id="table-tr-422" data-vuln-id="CVE-2024-47751">
     <td>
       
       CVE-2024-47751
@@ -13610,7 +13629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-422" data-vuln-id="CVE-2024-47752">
+  <tr class='table-tr vuln-tr' id="table-tr-423" data-vuln-id="CVE-2024-47752">
     <td>
       
       CVE-2024-47752
@@ -13635,7 +13654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-423" data-vuln-id="CVE-2024-47753">
+  <tr class='table-tr vuln-tr' id="table-tr-424" data-vuln-id="CVE-2024-47753">
     <td>
       
       CVE-2024-47753
@@ -13660,7 +13679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-424" data-vuln-id="CVE-2024-47754">
+  <tr class='table-tr vuln-tr' id="table-tr-425" data-vuln-id="CVE-2024-47754">
     <td>
       
       CVE-2024-47754
@@ -13685,7 +13704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-425" data-vuln-id="CVE-2024-47756">
+  <tr class='table-tr vuln-tr' id="table-tr-426" data-vuln-id="CVE-2024-47756">
     <td>
       
       CVE-2024-47756
@@ -13710,7 +13729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-426" data-vuln-id="CVE-2024-47757">
+  <tr class='table-tr vuln-tr' id="table-tr-427" data-vuln-id="CVE-2024-47757">
     <td>
       
       CVE-2024-47757
@@ -13735,7 +13754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-427" data-vuln-id="CVE-2024-49850">
+  <tr class='table-tr vuln-tr' id="table-tr-428" data-vuln-id="CVE-2024-49850">
     <td>
       
       CVE-2024-49850
@@ -13760,7 +13779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-428" data-vuln-id="CVE-2024-49851">
+  <tr class='table-tr vuln-tr' id="table-tr-429" data-vuln-id="CVE-2024-49851">
     <td>
       
       CVE-2024-49851
@@ -13785,7 +13804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-429" data-vuln-id="CVE-2024-49852">
+  <tr class='table-tr vuln-tr' id="table-tr-430" data-vuln-id="CVE-2024-49852">
     <td>
       
       CVE-2024-49852
@@ -13810,7 +13829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-430" data-vuln-id="CVE-2024-49853">
+  <tr class='table-tr vuln-tr' id="table-tr-431" data-vuln-id="CVE-2024-49853">
     <td>
       
       CVE-2024-49853
@@ -13835,7 +13854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-431" data-vuln-id="CVE-2024-49854">
+  <tr class='table-tr vuln-tr' id="table-tr-432" data-vuln-id="CVE-2024-49854">
     <td>
       
       CVE-2024-49854
@@ -13860,7 +13879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-432" data-vuln-id="CVE-2024-49855">
+  <tr class='table-tr vuln-tr' id="table-tr-433" data-vuln-id="CVE-2024-49855">
     <td>
       
       CVE-2024-49855
@@ -13885,7 +13904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-433" data-vuln-id="CVE-2024-49856">
+  <tr class='table-tr vuln-tr' id="table-tr-434" data-vuln-id="CVE-2024-49856">
     <td>
       
       CVE-2024-49856
@@ -13910,7 +13929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-434" data-vuln-id="CVE-2024-49858">
+  <tr class='table-tr vuln-tr' id="table-tr-435" data-vuln-id="CVE-2024-49858">
     <td>
       
       CVE-2024-49858
@@ -13935,7 +13954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-435" data-vuln-id="CVE-2024-49859">
+  <tr class='table-tr vuln-tr' id="table-tr-436" data-vuln-id="CVE-2024-49859">
     <td>
       
       CVE-2024-49859
@@ -13960,7 +13979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-436" data-vuln-id="CVE-2024-49860">
+  <tr class='table-tr vuln-tr' id="table-tr-437" data-vuln-id="CVE-2024-49860">
     <td>
       
       CVE-2024-49860
@@ -13985,7 +14004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-437" data-vuln-id="CVE-2024-49861">
+  <tr class='table-tr vuln-tr' id="table-tr-438" data-vuln-id="CVE-2024-49861">
     <td>
       
       CVE-2024-49861
@@ -14010,7 +14029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-438" data-vuln-id="CVE-2024-49863">
+  <tr class='table-tr vuln-tr' id="table-tr-439" data-vuln-id="CVE-2024-49863">
     <td>
       
       CVE-2024-49863
@@ -14035,7 +14054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-439" data-vuln-id="CVE-2024-49866">
+  <tr class='table-tr vuln-tr' id="table-tr-440" data-vuln-id="CVE-2024-49866">
     <td>
       
       CVE-2024-49866
@@ -14060,7 +14079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-440" data-vuln-id="CVE-2024-49867">
+  <tr class='table-tr vuln-tr' id="table-tr-441" data-vuln-id="CVE-2024-49867">
     <td>
       
       CVE-2024-49867
@@ -14085,7 +14104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-441" data-vuln-id="CVE-2024-49868">
+  <tr class='table-tr vuln-tr' id="table-tr-442" data-vuln-id="CVE-2024-49868">
     <td>
       
       CVE-2024-49868
@@ -14110,7 +14129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-442" data-vuln-id="CVE-2024-49870">
+  <tr class='table-tr vuln-tr' id="table-tr-443" data-vuln-id="CVE-2024-49870">
     <td>
       
       CVE-2024-49870
@@ -14135,7 +14154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-443" data-vuln-id="CVE-2024-49871">
+  <tr class='table-tr vuln-tr' id="table-tr-444" data-vuln-id="CVE-2024-49871">
     <td>
       
       CVE-2024-49871
@@ -14160,7 +14179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-444" data-vuln-id="CVE-2024-49875">
+  <tr class='table-tr vuln-tr' id="table-tr-445" data-vuln-id="CVE-2024-49875">
     <td>
       
       CVE-2024-49875
@@ -14185,7 +14204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-445" data-vuln-id="CVE-2024-49877">
+  <tr class='table-tr vuln-tr' id="table-tr-446" data-vuln-id="CVE-2024-49877">
     <td>
       
       CVE-2024-49877
@@ -14210,7 +14229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-446" data-vuln-id="CVE-2024-49878">
+  <tr class='table-tr vuln-tr' id="table-tr-447" data-vuln-id="CVE-2024-49878">
     <td>
       
       CVE-2024-49878
@@ -14235,7 +14254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-447" data-vuln-id="CVE-2024-49879">
+  <tr class='table-tr vuln-tr' id="table-tr-448" data-vuln-id="CVE-2024-49879">
     <td>
       
       CVE-2024-49879
@@ -14260,7 +14279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-448" data-vuln-id="CVE-2024-49881">
+  <tr class='table-tr vuln-tr' id="table-tr-449" data-vuln-id="CVE-2024-49881">
     <td>
       
       CVE-2024-49881
@@ -14285,7 +14304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-449" data-vuln-id="CVE-2024-49882">
+  <tr class='table-tr vuln-tr' id="table-tr-450" data-vuln-id="CVE-2024-49882">
     <td>
       
       CVE-2024-49882
@@ -14310,7 +14329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-450" data-vuln-id="CVE-2024-49883">
+  <tr class='table-tr vuln-tr' id="table-tr-451" data-vuln-id="CVE-2024-49883">
     <td>
       
       CVE-2024-49883
@@ -14335,7 +14354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-451" data-vuln-id="CVE-2024-49884">
+  <tr class='table-tr vuln-tr' id="table-tr-452" data-vuln-id="CVE-2024-49884">
     <td>
       
       CVE-2024-49884
@@ -14360,7 +14379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-452" data-vuln-id="CVE-2024-49886">
+  <tr class='table-tr vuln-tr' id="table-tr-453" data-vuln-id="CVE-2024-49886">
     <td>
       
       CVE-2024-49886
@@ -14385,7 +14404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-453" data-vuln-id="CVE-2024-49889">
+  <tr class='table-tr vuln-tr' id="table-tr-454" data-vuln-id="CVE-2024-49889">
     <td>
       
       CVE-2024-49889
@@ -14410,7 +14429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-454" data-vuln-id="CVE-2024-49890">
+  <tr class='table-tr vuln-tr' id="table-tr-455" data-vuln-id="CVE-2024-49890">
     <td>
       
       CVE-2024-49890
@@ -14435,7 +14454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-455" data-vuln-id="CVE-2024-49891">
+  <tr class='table-tr vuln-tr' id="table-tr-456" data-vuln-id="CVE-2024-49891">
     <td>
       
       CVE-2024-49891
@@ -14460,7 +14479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-456" data-vuln-id="CVE-2024-49892">
+  <tr class='table-tr vuln-tr' id="table-tr-457" data-vuln-id="CVE-2024-49892">
     <td>
       
       CVE-2024-49892
@@ -14485,7 +14504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-457" data-vuln-id="CVE-2024-49893">
+  <tr class='table-tr vuln-tr' id="table-tr-458" data-vuln-id="CVE-2024-49893">
     <td>
       
       CVE-2024-49893
@@ -14510,7 +14529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-458" data-vuln-id="CVE-2024-49894">
+  <tr class='table-tr vuln-tr' id="table-tr-459" data-vuln-id="CVE-2024-49894">
     <td>
       
       CVE-2024-49894
@@ -14535,7 +14554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-459" data-vuln-id="CVE-2024-49895">
+  <tr class='table-tr vuln-tr' id="table-tr-460" data-vuln-id="CVE-2024-49895">
     <td>
       
       CVE-2024-49895
@@ -14560,7 +14579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-460" data-vuln-id="CVE-2024-49896">
+  <tr class='table-tr vuln-tr' id="table-tr-461" data-vuln-id="CVE-2024-49896">
     <td>
       
       CVE-2024-49896
@@ -14585,7 +14604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-461" data-vuln-id="CVE-2024-49897">
+  <tr class='table-tr vuln-tr' id="table-tr-462" data-vuln-id="CVE-2024-49897">
     <td>
       
       CVE-2024-49897
@@ -14610,7 +14629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-462" data-vuln-id="CVE-2024-49898">
+  <tr class='table-tr vuln-tr' id="table-tr-463" data-vuln-id="CVE-2024-49898">
     <td>
       
       CVE-2024-49898
@@ -14635,7 +14654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-463" data-vuln-id="CVE-2024-49899">
+  <tr class='table-tr vuln-tr' id="table-tr-464" data-vuln-id="CVE-2024-49899">
     <td>
       
       CVE-2024-49899
@@ -14660,7 +14679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-464" data-vuln-id="CVE-2024-49900">
+  <tr class='table-tr vuln-tr' id="table-tr-465" data-vuln-id="CVE-2024-49900">
     <td>
       
       CVE-2024-49900
@@ -14685,7 +14704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-465" data-vuln-id="CVE-2024-49901">
+  <tr class='table-tr vuln-tr' id="table-tr-466" data-vuln-id="CVE-2024-49901">
     <td>
       
       CVE-2024-49901
@@ -14710,7 +14729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-466" data-vuln-id="CVE-2024-49902">
+  <tr class='table-tr vuln-tr' id="table-tr-467" data-vuln-id="CVE-2024-49902">
     <td>
       
       CVE-2024-49902
@@ -14735,7 +14754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-467" data-vuln-id="CVE-2024-49903">
+  <tr class='table-tr vuln-tr' id="table-tr-468" data-vuln-id="CVE-2024-49903">
     <td>
       
       CVE-2024-49903
@@ -14760,7 +14779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-468" data-vuln-id="CVE-2024-49904">
+  <tr class='table-tr vuln-tr' id="table-tr-469" data-vuln-id="CVE-2024-49904">
     <td>
       
       CVE-2024-49904
@@ -14785,7 +14804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-469" data-vuln-id="CVE-2024-49905">
+  <tr class='table-tr vuln-tr' id="table-tr-470" data-vuln-id="CVE-2024-49905">
     <td>
       
       CVE-2024-49905
@@ -14810,7 +14829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-470" data-vuln-id="CVE-2024-49906">
+  <tr class='table-tr vuln-tr' id="table-tr-471" data-vuln-id="CVE-2024-49906">
     <td>
       
       CVE-2024-49906
@@ -14835,7 +14854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-471" data-vuln-id="CVE-2024-49907">
+  <tr class='table-tr vuln-tr' id="table-tr-472" data-vuln-id="CVE-2024-49907">
     <td>
       
       CVE-2024-49907
@@ -14860,7 +14879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-472" data-vuln-id="CVE-2024-49908">
+  <tr class='table-tr vuln-tr' id="table-tr-473" data-vuln-id="CVE-2024-49908">
     <td>
       
       CVE-2024-49908
@@ -14885,7 +14904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-473" data-vuln-id="CVE-2024-49909">
+  <tr class='table-tr vuln-tr' id="table-tr-474" data-vuln-id="CVE-2024-49909">
     <td>
       
       CVE-2024-49909
@@ -14910,7 +14929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-474" data-vuln-id="CVE-2024-49910">
+  <tr class='table-tr vuln-tr' id="table-tr-475" data-vuln-id="CVE-2024-49910">
     <td>
       
       CVE-2024-49910
@@ -14935,7 +14954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-475" data-vuln-id="CVE-2024-49911">
+  <tr class='table-tr vuln-tr' id="table-tr-476" data-vuln-id="CVE-2024-49911">
     <td>
       
       CVE-2024-49911
@@ -14960,7 +14979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-476" data-vuln-id="CVE-2024-49912">
+  <tr class='table-tr vuln-tr' id="table-tr-477" data-vuln-id="CVE-2024-49912">
     <td>
       
       CVE-2024-49912
@@ -14985,7 +15004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-477" data-vuln-id="CVE-2024-49913">
+  <tr class='table-tr vuln-tr' id="table-tr-478" data-vuln-id="CVE-2024-49913">
     <td>
       
       CVE-2024-49913
@@ -15010,7 +15029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-478" data-vuln-id="CVE-2024-49914">
+  <tr class='table-tr vuln-tr' id="table-tr-479" data-vuln-id="CVE-2024-49914">
     <td>
       
       CVE-2024-49914
@@ -15035,7 +15054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-479" data-vuln-id="CVE-2024-49915">
+  <tr class='table-tr vuln-tr' id="table-tr-480" data-vuln-id="CVE-2024-49915">
     <td>
       
       CVE-2024-49915
@@ -15060,7 +15079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-480" data-vuln-id="CVE-2024-49916">
+  <tr class='table-tr vuln-tr' id="table-tr-481" data-vuln-id="CVE-2024-49916">
     <td>
       
       CVE-2024-49916
@@ -15085,7 +15104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-481" data-vuln-id="CVE-2024-49917">
+  <tr class='table-tr vuln-tr' id="table-tr-482" data-vuln-id="CVE-2024-49917">
     <td>
       
       CVE-2024-49917
@@ -15110,7 +15129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-482" data-vuln-id="CVE-2024-49918">
+  <tr class='table-tr vuln-tr' id="table-tr-483" data-vuln-id="CVE-2024-49918">
     <td>
       
       CVE-2024-49918
@@ -15135,7 +15154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-483" data-vuln-id="CVE-2024-49919">
+  <tr class='table-tr vuln-tr' id="table-tr-484" data-vuln-id="CVE-2024-49919">
     <td>
       
       CVE-2024-49919
@@ -15160,7 +15179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-484" data-vuln-id="CVE-2024-49920">
+  <tr class='table-tr vuln-tr' id="table-tr-485" data-vuln-id="CVE-2024-49920">
     <td>
       
       CVE-2024-49920
@@ -15185,7 +15204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-485" data-vuln-id="CVE-2024-49921">
+  <tr class='table-tr vuln-tr' id="table-tr-486" data-vuln-id="CVE-2024-49921">
     <td>
       
       CVE-2024-49921
@@ -15210,7 +15229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-486" data-vuln-id="CVE-2024-49922">
+  <tr class='table-tr vuln-tr' id="table-tr-487" data-vuln-id="CVE-2024-49922">
     <td>
       
       CVE-2024-49922
@@ -15235,7 +15254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-487" data-vuln-id="CVE-2024-49923">
+  <tr class='table-tr vuln-tr' id="table-tr-488" data-vuln-id="CVE-2024-49923">
     <td>
       
       CVE-2024-49923
@@ -15260,7 +15279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-488" data-vuln-id="CVE-2024-49924">
+  <tr class='table-tr vuln-tr' id="table-tr-489" data-vuln-id="CVE-2024-49924">
     <td>
       
       CVE-2024-49924
@@ -15285,7 +15304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-489" data-vuln-id="CVE-2024-49925">
+  <tr class='table-tr vuln-tr' id="table-tr-490" data-vuln-id="CVE-2024-49925">
     <td>
       
       CVE-2024-49925
@@ -15310,7 +15329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-490" data-vuln-id="CVE-2024-49926">
+  <tr class='table-tr vuln-tr' id="table-tr-491" data-vuln-id="CVE-2024-49926">
     <td>
       
       CVE-2024-49926
@@ -15335,7 +15354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-491" data-vuln-id="CVE-2024-49927">
+  <tr class='table-tr vuln-tr' id="table-tr-492" data-vuln-id="CVE-2024-49927">
     <td>
       
       CVE-2024-49927
@@ -15360,7 +15379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-492" data-vuln-id="CVE-2024-49928">
+  <tr class='table-tr vuln-tr' id="table-tr-493" data-vuln-id="CVE-2024-49928">
     <td>
       
       CVE-2024-49928
@@ -15385,7 +15404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-493" data-vuln-id="CVE-2024-49929">
+  <tr class='table-tr vuln-tr' id="table-tr-494" data-vuln-id="CVE-2024-49929">
     <td>
       
       CVE-2024-49929
@@ -15410,7 +15429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-494" data-vuln-id="CVE-2024-49930">
+  <tr class='table-tr vuln-tr' id="table-tr-495" data-vuln-id="CVE-2024-49930">
     <td>
       
       CVE-2024-49930
@@ -15435,7 +15454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-495" data-vuln-id="CVE-2024-49931">
+  <tr class='table-tr vuln-tr' id="table-tr-496" data-vuln-id="CVE-2024-49931">
     <td>
       
       CVE-2024-49931
@@ -15460,7 +15479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-496" data-vuln-id="CVE-2024-49932">
+  <tr class='table-tr vuln-tr' id="table-tr-497" data-vuln-id="CVE-2024-49932">
     <td>
       
       CVE-2024-49932
@@ -15485,7 +15504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-497" data-vuln-id="CVE-2024-49933">
+  <tr class='table-tr vuln-tr' id="table-tr-498" data-vuln-id="CVE-2024-49933">
     <td>
       
       CVE-2024-49933
@@ -15510,7 +15529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-498" data-vuln-id="CVE-2024-49934">
+  <tr class='table-tr vuln-tr' id="table-tr-499" data-vuln-id="CVE-2024-49934">
     <td>
       
       CVE-2024-49934
@@ -15535,7 +15554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-499" data-vuln-id="CVE-2024-49935">
+  <tr class='table-tr vuln-tr' id="table-tr-500" data-vuln-id="CVE-2024-49935">
     <td>
       
       CVE-2024-49935
@@ -15560,7 +15579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-500" data-vuln-id="CVE-2024-49936">
+  <tr class='table-tr vuln-tr' id="table-tr-501" data-vuln-id="CVE-2024-49936">
     <td>
       
       CVE-2024-49936
@@ -15585,7 +15604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-501" data-vuln-id="CVE-2024-49937">
+  <tr class='table-tr vuln-tr' id="table-tr-502" data-vuln-id="CVE-2024-49937">
     <td>
       
       CVE-2024-49937
@@ -15610,7 +15629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-502" data-vuln-id="CVE-2024-49938">
+  <tr class='table-tr vuln-tr' id="table-tr-503" data-vuln-id="CVE-2024-49938">
     <td>
       
       CVE-2024-49938
@@ -15635,7 +15654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-503" data-vuln-id="CVE-2024-49939">
+  <tr class='table-tr vuln-tr' id="table-tr-504" data-vuln-id="CVE-2024-49939">
     <td>
       
       CVE-2024-49939
@@ -15660,7 +15679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-504" data-vuln-id="CVE-2024-49940">
+  <tr class='table-tr vuln-tr' id="table-tr-505" data-vuln-id="CVE-2024-49940">
     <td>
       
       CVE-2024-49940
@@ -15685,7 +15704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-505" data-vuln-id="CVE-2024-49944">
+  <tr class='table-tr vuln-tr' id="table-tr-506" data-vuln-id="CVE-2024-49944">
     <td>
       
       CVE-2024-49944
@@ -15710,7 +15729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-506" data-vuln-id="CVE-2024-49945">
+  <tr class='table-tr vuln-tr' id="table-tr-507" data-vuln-id="CVE-2024-49945">
     <td>
       
       CVE-2024-49945
@@ -15735,7 +15754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-507" data-vuln-id="CVE-2024-49946">
+  <tr class='table-tr vuln-tr' id="table-tr-508" data-vuln-id="CVE-2024-49946">
     <td>
       
       CVE-2024-49946
@@ -15750,8 +15769,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -15760,7 +15779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-508" data-vuln-id="CVE-2024-49948">
+  <tr class='table-tr vuln-tr' id="table-tr-509" data-vuln-id="CVE-2024-49948">
     <td>
       
       CVE-2024-49948
@@ -15775,8 +15794,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -15785,7 +15804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-509" data-vuln-id="CVE-2024-49949">
+  <tr class='table-tr vuln-tr' id="table-tr-510" data-vuln-id="CVE-2024-49949">
     <td>
       
       CVE-2024-49949
@@ -15800,8 +15819,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -15810,7 +15829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-510" data-vuln-id="CVE-2024-49950">
+  <tr class='table-tr vuln-tr' id="table-tr-511" data-vuln-id="CVE-2024-49950">
     <td>
       
       CVE-2024-49950
@@ -15835,7 +15854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-511" data-vuln-id="CVE-2024-49951">
+  <tr class='table-tr vuln-tr' id="table-tr-512" data-vuln-id="CVE-2024-49951">
     <td>
       
       CVE-2024-49951
@@ -15850,8 +15869,8 @@
         No fix available</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -15860,7 +15879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-512" data-vuln-id="CVE-2024-49952">
+  <tr class='table-tr vuln-tr' id="table-tr-513" data-vuln-id="CVE-2024-49952">
     <td>
       
       CVE-2024-49952
@@ -15875,8 +15894,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -15885,7 +15904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-513" data-vuln-id="CVE-2024-49954">
+  <tr class='table-tr vuln-tr' id="table-tr-514" data-vuln-id="CVE-2024-49954">
     <td>
       
       CVE-2024-49954
@@ -15910,7 +15929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-514" data-vuln-id="CVE-2024-49955">
+  <tr class='table-tr vuln-tr' id="table-tr-515" data-vuln-id="CVE-2024-49955">
     <td>
       
       CVE-2024-49955
@@ -15935,7 +15954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-515" data-vuln-id="CVE-2024-49957">
+  <tr class='table-tr vuln-tr' id="table-tr-516" data-vuln-id="CVE-2024-49957">
     <td>
       
       CVE-2024-49957
@@ -15960,7 +15979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-516" data-vuln-id="CVE-2024-49958">
+  <tr class='table-tr vuln-tr' id="table-tr-517" data-vuln-id="CVE-2024-49958">
     <td>
       
       CVE-2024-49958
@@ -15985,7 +16004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-517" data-vuln-id="CVE-2024-49959">
+  <tr class='table-tr vuln-tr' id="table-tr-518" data-vuln-id="CVE-2024-49959">
     <td>
       
       CVE-2024-49959
@@ -16010,7 +16029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-518" data-vuln-id="CVE-2024-49960">
+  <tr class='table-tr vuln-tr' id="table-tr-519" data-vuln-id="CVE-2024-49960">
     <td>
       
       CVE-2024-49960
@@ -16035,7 +16054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-519" data-vuln-id="CVE-2024-49961">
+  <tr class='table-tr vuln-tr' id="table-tr-520" data-vuln-id="CVE-2024-49961">
     <td>
       
       CVE-2024-49961
@@ -16060,7 +16079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-520" data-vuln-id="CVE-2024-49962">
+  <tr class='table-tr vuln-tr' id="table-tr-521" data-vuln-id="CVE-2024-49962">
     <td>
       
       CVE-2024-49962
@@ -16085,7 +16104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-521" data-vuln-id="CVE-2024-49963">
+  <tr class='table-tr vuln-tr' id="table-tr-522" data-vuln-id="CVE-2024-49963">
     <td>
       
       CVE-2024-49963
@@ -16110,7 +16129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-522" data-vuln-id="CVE-2024-49965">
+  <tr class='table-tr vuln-tr' id="table-tr-523" data-vuln-id="CVE-2024-49965">
     <td>
       
       CVE-2024-49965
@@ -16135,7 +16154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-523" data-vuln-id="CVE-2024-49966">
+  <tr class='table-tr vuln-tr' id="table-tr-524" data-vuln-id="CVE-2024-49966">
     <td>
       
       CVE-2024-49966
@@ -16160,7 +16179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-524" data-vuln-id="CVE-2024-49967">
+  <tr class='table-tr vuln-tr' id="table-tr-525" data-vuln-id="CVE-2024-49967">
     <td>
       
       CVE-2024-49967
@@ -16185,7 +16204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-525" data-vuln-id="CVE-2024-49968">
+  <tr class='table-tr vuln-tr' id="table-tr-526" data-vuln-id="CVE-2024-49968">
     <td>
       
       CVE-2024-49968
@@ -16210,7 +16229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-526" data-vuln-id="CVE-2024-49969">
+  <tr class='table-tr vuln-tr' id="table-tr-527" data-vuln-id="CVE-2024-49969">
     <td>
       
       CVE-2024-49969
@@ -16235,7 +16254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-527" data-vuln-id="CVE-2024-49970">
+  <tr class='table-tr vuln-tr' id="table-tr-528" data-vuln-id="CVE-2024-49970">
     <td>
       
       CVE-2024-49970
@@ -16260,7 +16279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-528" data-vuln-id="CVE-2024-49971">
+  <tr class='table-tr vuln-tr' id="table-tr-529" data-vuln-id="CVE-2024-49971">
     <td>
       
       CVE-2024-49971
@@ -16285,7 +16304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-529" data-vuln-id="CVE-2024-49972">
+  <tr class='table-tr vuln-tr' id="table-tr-530" data-vuln-id="CVE-2024-49972">
     <td>
       
       CVE-2024-49972
@@ -16310,7 +16329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-530" data-vuln-id="CVE-2024-49973">
+  <tr class='table-tr vuln-tr' id="table-tr-531" data-vuln-id="CVE-2024-49973">
     <td>
       
       CVE-2024-49973
@@ -16335,7 +16354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-531" data-vuln-id="CVE-2024-49974">
+  <tr class='table-tr vuln-tr' id="table-tr-532" data-vuln-id="CVE-2024-49974">
     <td>
       
       CVE-2024-49974
@@ -16360,7 +16379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-532" data-vuln-id="CVE-2024-49975">
+  <tr class='table-tr vuln-tr' id="table-tr-533" data-vuln-id="CVE-2024-49975">
     <td>
       
       CVE-2024-49975
@@ -16385,7 +16404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-533" data-vuln-id="CVE-2024-49977">
+  <tr class='table-tr vuln-tr' id="table-tr-534" data-vuln-id="CVE-2024-49977">
     <td>
       
       CVE-2024-49977
@@ -16410,7 +16429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-534" data-vuln-id="CVE-2024-49978">
+  <tr class='table-tr vuln-tr' id="table-tr-535" data-vuln-id="CVE-2024-49978">
     <td>
       
       CVE-2024-49978
@@ -16435,7 +16454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-535" data-vuln-id="CVE-2024-49981">
+  <tr class='table-tr vuln-tr' id="table-tr-536" data-vuln-id="CVE-2024-49981">
     <td>
       
       CVE-2024-49981
@@ -16460,7 +16479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-536" data-vuln-id="CVE-2024-49982">
+  <tr class='table-tr vuln-tr' id="table-tr-537" data-vuln-id="CVE-2024-49982">
     <td>
       
       CVE-2024-49982
@@ -16485,7 +16504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-537" data-vuln-id="CVE-2024-49983">
+  <tr class='table-tr vuln-tr' id="table-tr-538" data-vuln-id="CVE-2024-49983">
     <td>
       
       CVE-2024-49983
@@ -16510,7 +16529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-538" data-vuln-id="CVE-2024-49985">
+  <tr class='table-tr vuln-tr' id="table-tr-539" data-vuln-id="CVE-2024-49985">
     <td>
       
       CVE-2024-49985
@@ -16535,7 +16554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-539" data-vuln-id="CVE-2024-49986">
+  <tr class='table-tr vuln-tr' id="table-tr-540" data-vuln-id="CVE-2024-49986">
     <td>
       
       CVE-2024-49986
@@ -16560,7 +16579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-540" data-vuln-id="CVE-2024-49987">
+  <tr class='table-tr vuln-tr' id="table-tr-541" data-vuln-id="CVE-2024-49987">
     <td>
       
       CVE-2024-49987
@@ -16585,7 +16604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-541" data-vuln-id="CVE-2024-49988">
+  <tr class='table-tr vuln-tr' id="table-tr-542" data-vuln-id="CVE-2024-49988">
     <td>
       
       CVE-2024-49988
@@ -16610,7 +16629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-542" data-vuln-id="CVE-2024-49989">
+  <tr class='table-tr vuln-tr' id="table-tr-543" data-vuln-id="CVE-2024-49989">
     <td>
       
       CVE-2024-49989
@@ -16635,7 +16654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-543" data-vuln-id="CVE-2024-49991">
+  <tr class='table-tr vuln-tr' id="table-tr-544" data-vuln-id="CVE-2024-49991">
     <td>
       
       CVE-2024-49991
@@ -16660,7 +16679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-544" data-vuln-id="CVE-2024-49992">
+  <tr class='table-tr vuln-tr' id="table-tr-545" data-vuln-id="CVE-2024-49992">
     <td>
       
       CVE-2024-49992
@@ -16685,7 +16704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-545" data-vuln-id="CVE-2024-49994">
+  <tr class='table-tr vuln-tr' id="table-tr-546" data-vuln-id="CVE-2024-49994">
     <td>
       
       CVE-2024-49994
@@ -16710,7 +16729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-546" data-vuln-id="CVE-2024-49995">
+  <tr class='table-tr vuln-tr' id="table-tr-547" data-vuln-id="CVE-2024-49995">
     <td>
       
       CVE-2024-49995
@@ -16735,7 +16754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-547" data-vuln-id="CVE-2024-49996">
+  <tr class='table-tr vuln-tr' id="table-tr-548" data-vuln-id="CVE-2024-49996">
     <td>
       
       CVE-2024-49996
@@ -16760,7 +16779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-548" data-vuln-id="CVE-2024-49997">
+  <tr class='table-tr vuln-tr' id="table-tr-549" data-vuln-id="CVE-2024-49997">
     <td>
       
       CVE-2024-49997
@@ -16785,7 +16804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-549" data-vuln-id="CVE-2024-49998">
+  <tr class='table-tr vuln-tr' id="table-tr-550" data-vuln-id="CVE-2024-49998">
     <td>
       
       CVE-2024-49998
@@ -16810,7 +16829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-550" data-vuln-id="CVE-2024-50000">
+  <tr class='table-tr vuln-tr' id="table-tr-551" data-vuln-id="CVE-2024-50000">
     <td>
       
       CVE-2024-50000
@@ -16835,7 +16854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-551" data-vuln-id="CVE-2024-50001">
+  <tr class='table-tr vuln-tr' id="table-tr-552" data-vuln-id="CVE-2024-50001">
     <td>
       
       CVE-2024-50001
@@ -16860,7 +16879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-552" data-vuln-id="CVE-2024-50002">
+  <tr class='table-tr vuln-tr' id="table-tr-553" data-vuln-id="CVE-2024-50002">
     <td>
       
       CVE-2024-50002
@@ -16885,7 +16904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-553" data-vuln-id="CVE-2024-50003">
+  <tr class='table-tr vuln-tr' id="table-tr-554" data-vuln-id="CVE-2024-50003">
     <td>
       
       CVE-2024-50003
@@ -16910,7 +16929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-554" data-vuln-id="CVE-2024-50004">
+  <tr class='table-tr vuln-tr' id="table-tr-555" data-vuln-id="CVE-2024-50004">
     <td>
       
       CVE-2024-50004
@@ -16935,7 +16954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-555" data-vuln-id="CVE-2024-50006">
+  <tr class='table-tr vuln-tr' id="table-tr-556" data-vuln-id="CVE-2024-50006">
     <td>
       
       CVE-2024-50006
@@ -16960,7 +16979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-556" data-vuln-id="CVE-2024-50007">
+  <tr class='table-tr vuln-tr' id="table-tr-557" data-vuln-id="CVE-2024-50007">
     <td>
       
       CVE-2024-50007
@@ -16985,7 +17004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-557" data-vuln-id="CVE-2024-50008">
+  <tr class='table-tr vuln-tr' id="table-tr-558" data-vuln-id="CVE-2024-50008">
     <td>
       
       CVE-2024-50008
@@ -17010,7 +17029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-558" data-vuln-id="CVE-2024-50009">
+  <tr class='table-tr vuln-tr' id="table-tr-559" data-vuln-id="CVE-2024-50009">
     <td>
       
       CVE-2024-50009
@@ -17035,7 +17054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-559" data-vuln-id="CVE-2024-50010">
+  <tr class='table-tr vuln-tr' id="table-tr-560" data-vuln-id="CVE-2024-50010">
     <td>
       
       CVE-2024-50010
@@ -17060,7 +17079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-560" data-vuln-id="CVE-2024-50012">
+  <tr class='table-tr vuln-tr' id="table-tr-561" data-vuln-id="CVE-2024-50012">
     <td>
       
       CVE-2024-50012
@@ -17085,7 +17104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-561" data-vuln-id="CVE-2024-50013">
+  <tr class='table-tr vuln-tr' id="table-tr-562" data-vuln-id="CVE-2024-50013">
     <td>
       
       CVE-2024-50013
@@ -17110,7 +17129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-562" data-vuln-id="CVE-2024-50014">
+  <tr class='table-tr vuln-tr' id="table-tr-563" data-vuln-id="CVE-2024-50014">
     <td>
       
       CVE-2024-50014
@@ -17135,7 +17154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-563" data-vuln-id="CVE-2024-50015">
+  <tr class='table-tr vuln-tr' id="table-tr-564" data-vuln-id="CVE-2024-50015">
     <td>
       
       CVE-2024-50015
@@ -17160,7 +17179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-564" data-vuln-id="CVE-2024-50016">
+  <tr class='table-tr vuln-tr' id="table-tr-565" data-vuln-id="CVE-2024-50016">
     <td>
       
       CVE-2024-50016
@@ -17185,7 +17204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-565" data-vuln-id="CVE-2024-50017">
+  <tr class='table-tr vuln-tr' id="table-tr-566" data-vuln-id="CVE-2024-50017">
     <td>
       
       CVE-2024-50017
@@ -17210,7 +17229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-566" data-vuln-id="CVE-2024-50018">
+  <tr class='table-tr vuln-tr' id="table-tr-567" data-vuln-id="CVE-2024-50018">
     <td>
       
       CVE-2024-50018
@@ -17235,7 +17254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-567" data-vuln-id="CVE-2024-50019">
+  <tr class='table-tr vuln-tr' id="table-tr-568" data-vuln-id="CVE-2024-50019">
     <td>
       
       CVE-2024-50019
@@ -17260,7 +17279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-568" data-vuln-id="CVE-2024-50022">
+  <tr class='table-tr vuln-tr' id="table-tr-569" data-vuln-id="CVE-2024-50022">
     <td>
       
       CVE-2024-50022
@@ -17285,7 +17304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-569" data-vuln-id="CVE-2024-50024">
+  <tr class='table-tr vuln-tr' id="table-tr-570" data-vuln-id="CVE-2024-50024">
     <td>
       
       CVE-2024-50024
@@ -17310,7 +17329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-570" data-vuln-id="CVE-2024-50026">
+  <tr class='table-tr vuln-tr' id="table-tr-571" data-vuln-id="CVE-2024-50026">
     <td>
       
       CVE-2024-50026
@@ -17335,7 +17354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-571" data-vuln-id="CVE-2024-50028">
+  <tr class='table-tr vuln-tr' id="table-tr-572" data-vuln-id="CVE-2024-50028">
     <td>
       
       CVE-2024-50028
@@ -17360,7 +17379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-572" data-vuln-id="CVE-2024-50029">
+  <tr class='table-tr vuln-tr' id="table-tr-573" data-vuln-id="CVE-2024-50029">
     <td>
       
       CVE-2024-50029
@@ -17385,7 +17404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-573" data-vuln-id="CVE-2024-50031">
+  <tr class='table-tr vuln-tr' id="table-tr-574" data-vuln-id="CVE-2024-50031">
     <td>
       
       CVE-2024-50031
@@ -17410,7 +17429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-574" data-vuln-id="CVE-2024-50032">
+  <tr class='table-tr vuln-tr' id="table-tr-575" data-vuln-id="CVE-2024-50032">
     <td>
       
       CVE-2024-50032
@@ -17435,7 +17454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-575" data-vuln-id="CVE-2024-50033">
+  <tr class='table-tr vuln-tr' id="table-tr-576" data-vuln-id="CVE-2024-50033">
     <td>
       
       CVE-2024-50033
@@ -17460,7 +17479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-576" data-vuln-id="CVE-2024-50035">
+  <tr class='table-tr vuln-tr' id="table-tr-577" data-vuln-id="CVE-2024-50035">
     <td>
       
       CVE-2024-50035
@@ -17485,7 +17504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-577" data-vuln-id="CVE-2024-50036">
+  <tr class='table-tr vuln-tr' id="table-tr-578" data-vuln-id="CVE-2024-50036">
     <td>
       
       CVE-2024-50036
@@ -17510,7 +17529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-578" data-vuln-id="CVE-2024-50038">
+  <tr class='table-tr vuln-tr' id="table-tr-579" data-vuln-id="CVE-2024-50038">
     <td>
       
       CVE-2024-50038
@@ -17535,7 +17554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-579" data-vuln-id="CVE-2024-50039">
+  <tr class='table-tr vuln-tr' id="table-tr-580" data-vuln-id="CVE-2024-50039">
     <td>
       
       CVE-2024-50039
@@ -17560,7 +17579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-580" data-vuln-id="CVE-2024-50040">
+  <tr class='table-tr vuln-tr' id="table-tr-581" data-vuln-id="CVE-2024-50040">
     <td>
       
       CVE-2024-50040
@@ -17585,7 +17604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-581" data-vuln-id="CVE-2024-50041">
+  <tr class='table-tr vuln-tr' id="table-tr-582" data-vuln-id="CVE-2024-50041">
     <td>
       
       CVE-2024-50041
@@ -17610,7 +17629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-582" data-vuln-id="CVE-2024-50044">
+  <tr class='table-tr vuln-tr' id="table-tr-583" data-vuln-id="CVE-2024-50044">
     <td>
       
       CVE-2024-50044
@@ -17635,7 +17654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-583" data-vuln-id="CVE-2024-50045">
+  <tr class='table-tr vuln-tr' id="table-tr-584" data-vuln-id="CVE-2024-50045">
     <td>
       
       CVE-2024-50045
@@ -17660,7 +17679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-584" data-vuln-id="CVE-2024-50046">
+  <tr class='table-tr vuln-tr' id="table-tr-585" data-vuln-id="CVE-2024-50046">
     <td>
       
       CVE-2024-50046
@@ -17685,7 +17704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-585" data-vuln-id="CVE-2024-50047">
+  <tr class='table-tr vuln-tr' id="table-tr-586" data-vuln-id="CVE-2024-50047">
     <td>
       
       CVE-2024-50047
@@ -17710,7 +17729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-586" data-vuln-id="CVE-2024-50048">
+  <tr class='table-tr vuln-tr' id="table-tr-587" data-vuln-id="CVE-2024-50048">
     <td>
       
       CVE-2024-50048
@@ -17735,7 +17754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-587" data-vuln-id="CVE-2024-50049">
+  <tr class='table-tr vuln-tr' id="table-tr-588" data-vuln-id="CVE-2024-50049">
     <td>
       
       CVE-2024-50049
@@ -17760,7 +17779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-588" data-vuln-id="CVE-2024-50055">
+  <tr class='table-tr vuln-tr' id="table-tr-589" data-vuln-id="CVE-2024-50055">
     <td>
       
       CVE-2024-50055
@@ -17785,7 +17804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-589" data-vuln-id="CVE-2024-50056">
+  <tr class='table-tr vuln-tr' id="table-tr-590" data-vuln-id="CVE-2024-50056">
     <td>
       
       CVE-2024-50056
@@ -17810,7 +17829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-590" data-vuln-id="CVE-2024-50057">
+  <tr class='table-tr vuln-tr' id="table-tr-591" data-vuln-id="CVE-2024-50057">
     <td>
       
       CVE-2024-50057
@@ -17835,7 +17854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-591" data-vuln-id="CVE-2024-50058">
+  <tr class='table-tr vuln-tr' id="table-tr-592" data-vuln-id="CVE-2024-50058">
     <td>
       
       CVE-2024-50058
@@ -17860,7 +17879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-592" data-vuln-id="CVE-2024-50059">
+  <tr class='table-tr vuln-tr' id="table-tr-593" data-vuln-id="CVE-2024-50059">
     <td>
       
       CVE-2024-50059
@@ -17885,7 +17904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-593" data-vuln-id="CVE-2024-50060">
+  <tr class='table-tr vuln-tr' id="table-tr-594" data-vuln-id="CVE-2024-50060">
     <td>
       
       CVE-2024-50060
@@ -17910,7 +17929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-594" data-vuln-id="CVE-2024-50061">
+  <tr class='table-tr vuln-tr' id="table-tr-595" data-vuln-id="CVE-2024-50061">
     <td>
       
       CVE-2024-50061
@@ -17935,7 +17954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-595" data-vuln-id="CVE-2024-50062">
+  <tr class='table-tr vuln-tr' id="table-tr-596" data-vuln-id="CVE-2024-50062">
     <td>
       
       CVE-2024-50062
@@ -17960,7 +17979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-596" data-vuln-id="CVE-2024-50063">
+  <tr class='table-tr vuln-tr' id="table-tr-597" data-vuln-id="CVE-2024-50063">
     <td>
       
       CVE-2024-50063
@@ -17985,7 +18004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-597" data-vuln-id="CVE-2024-50067">
+  <tr class='table-tr vuln-tr' id="table-tr-598" data-vuln-id="CVE-2024-50067">
     <td>
       
       CVE-2024-50067
@@ -18010,7 +18029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-598" data-vuln-id="CVE-2024-50069">
+  <tr class='table-tr vuln-tr' id="table-tr-599" data-vuln-id="CVE-2024-50069">
     <td>
       
       CVE-2024-50069
@@ -18035,7 +18054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-599" data-vuln-id="CVE-2024-50072">
+  <tr class='table-tr vuln-tr' id="table-tr-600" data-vuln-id="CVE-2024-50072">
     <td>
       
       CVE-2024-50072
@@ -18060,7 +18079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-600" data-vuln-id="CVE-2024-50073">
+  <tr class='table-tr vuln-tr' id="table-tr-601" data-vuln-id="CVE-2024-50073">
     <td>
       
       CVE-2024-50073
@@ -18085,7 +18104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-601" data-vuln-id="CVE-2024-50074">
+  <tr class='table-tr vuln-tr' id="table-tr-602" data-vuln-id="CVE-2024-50074">
     <td>
       
       CVE-2024-50074
@@ -18110,7 +18129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-602" data-vuln-id="CVE-2024-50077">
+  <tr class='table-tr vuln-tr' id="table-tr-603" data-vuln-id="CVE-2024-50077">
     <td>
       
       CVE-2024-50077
@@ -18135,7 +18154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-603" data-vuln-id="CVE-2024-50078">
+  <tr class='table-tr vuln-tr' id="table-tr-604" data-vuln-id="CVE-2024-50078">
     <td>
       
       CVE-2024-50078
@@ -18160,7 +18179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-604" data-vuln-id="CVE-2024-50082">
+  <tr class='table-tr vuln-tr' id="table-tr-605" data-vuln-id="CVE-2024-50082">
     <td>
       
       CVE-2024-50082
@@ -18185,7 +18204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-605" data-vuln-id="CVE-2024-50083">
+  <tr class='table-tr vuln-tr' id="table-tr-606" data-vuln-id="CVE-2024-50083">
     <td>
       
       CVE-2024-50083
@@ -18210,7 +18229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-606" data-vuln-id="CVE-2024-50085">
+  <tr class='table-tr vuln-tr' id="table-tr-607" data-vuln-id="CVE-2024-50085">
     <td>
       
       CVE-2024-50085
@@ -18235,7 +18254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-607" data-vuln-id="CVE-2024-50086">
+  <tr class='table-tr vuln-tr' id="table-tr-608" data-vuln-id="CVE-2024-50086">
     <td>
       
       CVE-2024-50086
@@ -18260,7 +18279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-608" data-vuln-id="CVE-2024-50087">
+  <tr class='table-tr vuln-tr' id="table-tr-609" data-vuln-id="CVE-2024-50087">
     <td>
       
       CVE-2024-50087
@@ -18285,7 +18304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-609" data-vuln-id="CVE-2024-50088">
+  <tr class='table-tr vuln-tr' id="table-tr-610" data-vuln-id="CVE-2024-50088">
     <td>
       
       CVE-2024-50088
@@ -18310,7 +18329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-610" data-vuln-id="CVE-2024-50089">
+  <tr class='table-tr vuln-tr' id="table-tr-611" data-vuln-id="CVE-2024-50089">
     <td>
       
       CVE-2024-50089
@@ -18335,7 +18354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-611" data-vuln-id="CVE-2024-50091">
+  <tr class='table-tr vuln-tr' id="table-tr-612" data-vuln-id="CVE-2024-50091">
     <td>
       
       CVE-2024-50091
@@ -18350,8 +18369,8 @@
         No fix available</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18360,7 +18379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-612" data-vuln-id="CVE-2024-50093">
+  <tr class='table-tr vuln-tr' id="table-tr-613" data-vuln-id="CVE-2024-50093">
     <td>
       
       CVE-2024-50093
@@ -18385,7 +18404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-613" data-vuln-id="CVE-2024-50095">
+  <tr class='table-tr vuln-tr' id="table-tr-614" data-vuln-id="CVE-2024-50095">
     <td>
       
       CVE-2024-50095
@@ -18400,8 +18419,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18410,7 +18429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-614" data-vuln-id="CVE-2024-50096">
+  <tr class='table-tr vuln-tr' id="table-tr-615" data-vuln-id="CVE-2024-50096">
     <td>
       
       CVE-2024-50096
@@ -18425,8 +18444,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18435,7 +18454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-615" data-vuln-id="CVE-2024-50098">
+  <tr class='table-tr vuln-tr' id="table-tr-616" data-vuln-id="CVE-2024-50098">
     <td>
       
       CVE-2024-50098
@@ -18450,8 +18469,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18460,7 +18479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-616" data-vuln-id="CVE-2024-50099">
+  <tr class='table-tr vuln-tr' id="table-tr-617" data-vuln-id="CVE-2024-50099">
     <td>
       
       CVE-2024-50099
@@ -18475,8 +18494,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18485,7 +18504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-617" data-vuln-id="CVE-2024-50101">
+  <tr class='table-tr vuln-tr' id="table-tr-618" data-vuln-id="CVE-2024-50101">
     <td>
       
       CVE-2024-50101
@@ -18500,8 +18519,8 @@
         6.1.115-1</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18510,7 +18529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-618" data-vuln-id="CVE-2024-50103">
+  <tr class='table-tr vuln-tr' id="table-tr-619" data-vuln-id="CVE-2024-50103">
     <td>
       
       CVE-2024-50103
@@ -18535,7 +18554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-619" data-vuln-id="CVE-2024-50106">
+  <tr class='table-tr vuln-tr' id="table-tr-620" data-vuln-id="CVE-2024-50106">
     <td>
       
       CVE-2024-50106
@@ -18550,8 +18569,8 @@
         No fix available</p>
     </td>
     <td class="severity-cell">
-      <div id="unknown-short" class="severity-short">
-        <p class="unknown">N/A</p>
+      <div id="high-short" class="severity-short">
+        <p class="high">7.0</p>
       </div>
     </td>
     <td class="open-in-tab-cell">
@@ -18560,7 +18579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-620" data-vuln-id="CVE-2024-50108">
+  <tr class='table-tr vuln-tr' id="table-tr-621" data-vuln-id="CVE-2024-50108">
     <td>
       
       CVE-2024-50108
@@ -18585,7 +18604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-621" data-vuln-id="CVE-2024-50110">
+  <tr class='table-tr vuln-tr' id="table-tr-622" data-vuln-id="CVE-2024-50110">
     <td>
       
       CVE-2024-50110
@@ -18610,7 +18629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-622" data-vuln-id="CVE-2024-50111">
+  <tr class='table-tr vuln-tr' id="table-tr-623" data-vuln-id="CVE-2024-50111">
     <td>
       
       CVE-2024-50111
@@ -18635,7 +18654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-623" data-vuln-id="CVE-2024-50112">
+  <tr class='table-tr vuln-tr' id="table-tr-624" data-vuln-id="CVE-2024-50112">
     <td>
       
       CVE-2024-50112
@@ -18660,7 +18679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-624" data-vuln-id="CVE-2024-50115">
+  <tr class='table-tr vuln-tr' id="table-tr-625" data-vuln-id="CVE-2024-50115">
     <td>
       
       CVE-2024-50115
@@ -18685,7 +18704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-625" data-vuln-id="CVE-2024-50116">
+  <tr class='table-tr vuln-tr' id="table-tr-626" data-vuln-id="CVE-2024-50116">
     <td>
       
       CVE-2024-50116
@@ -18710,7 +18729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-626" data-vuln-id="CVE-2024-50117">
+  <tr class='table-tr vuln-tr' id="table-tr-627" data-vuln-id="CVE-2024-50117">
     <td>
       
       CVE-2024-50117
@@ -18735,7 +18754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-627" data-vuln-id="CVE-2024-50121">
+  <tr class='table-tr vuln-tr' id="table-tr-628" data-vuln-id="CVE-2024-50121">
     <td>
       
       CVE-2024-50121
@@ -18760,7 +18779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-628" data-vuln-id="CVE-2024-50124">
+  <tr class='table-tr vuln-tr' id="table-tr-629" data-vuln-id="CVE-2024-50124">
     <td>
       
       CVE-2024-50124
@@ -18785,7 +18804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-629" data-vuln-id="CVE-2024-50125">
+  <tr class='table-tr vuln-tr' id="table-tr-630" data-vuln-id="CVE-2024-50125">
     <td>
       
       CVE-2024-50125
@@ -18810,7 +18829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-630" data-vuln-id="CVE-2024-50126">
+  <tr class='table-tr vuln-tr' id="table-tr-631" data-vuln-id="CVE-2024-50126">
     <td>
       
       CVE-2024-50126
@@ -18835,7 +18854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-631" data-vuln-id="CVE-2024-50127">
+  <tr class='table-tr vuln-tr' id="table-tr-632" data-vuln-id="CVE-2024-50127">
     <td>
       
       CVE-2024-50127
@@ -18860,7 +18879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-632" data-vuln-id="CVE-2024-50128">
+  <tr class='table-tr vuln-tr' id="table-tr-633" data-vuln-id="CVE-2024-50128">
     <td>
       
       CVE-2024-50128
@@ -18885,7 +18904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-633" data-vuln-id="CVE-2024-50131">
+  <tr class='table-tr vuln-tr' id="table-tr-634" data-vuln-id="CVE-2024-50131">
     <td>
       
       CVE-2024-50131
@@ -18910,7 +18929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-634" data-vuln-id="CVE-2024-50133">
+  <tr class='table-tr vuln-tr' id="table-tr-635" data-vuln-id="CVE-2024-50133">
     <td>
       
       CVE-2024-50133
@@ -18935,7 +18954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-635" data-vuln-id="CVE-2024-50134">
+  <tr class='table-tr vuln-tr' id="table-tr-636" data-vuln-id="CVE-2024-50134">
     <td>
       
       CVE-2024-50134
@@ -18960,7 +18979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-636" data-vuln-id="CVE-2024-50135">
+  <tr class='table-tr vuln-tr' id="table-tr-637" data-vuln-id="CVE-2024-50135">
     <td>
       
       CVE-2024-50135
@@ -18985,7 +19004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-637" data-vuln-id="CVE-2024-50136">
+  <tr class='table-tr vuln-tr' id="table-tr-638" data-vuln-id="CVE-2024-50136">
     <td>
       
       CVE-2024-50136
@@ -19010,7 +19029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-638" data-vuln-id="CVE-2024-50138">
+  <tr class='table-tr vuln-tr' id="table-tr-639" data-vuln-id="CVE-2024-50138">
     <td>
       
       CVE-2024-50138
@@ -19035,7 +19054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-639" data-vuln-id="CVE-2024-50141">
+  <tr class='table-tr vuln-tr' id="table-tr-640" data-vuln-id="CVE-2024-50141">
     <td>
       
       CVE-2024-50141
@@ -19060,7 +19079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-640" data-vuln-id="CVE-2024-50142">
+  <tr class='table-tr vuln-tr' id="table-tr-641" data-vuln-id="CVE-2024-50142">
     <td>
       
       CVE-2024-50142
@@ -19085,7 +19104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-641" data-vuln-id="CVE-2024-50143">
+  <tr class='table-tr vuln-tr' id="table-tr-642" data-vuln-id="CVE-2024-50143">
     <td>
       
       CVE-2024-50143
@@ -19110,7 +19129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-642" data-vuln-id="CVE-2024-50145">
+  <tr class='table-tr vuln-tr' id="table-tr-643" data-vuln-id="CVE-2024-50145">
     <td>
       
       CVE-2024-50145
@@ -19135,7 +19154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-643" data-vuln-id="CVE-2024-50146">
+  <tr class='table-tr vuln-tr' id="table-tr-644" data-vuln-id="CVE-2024-50146">
     <td>
       
       CVE-2024-50146
@@ -19160,7 +19179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-644" data-vuln-id="CVE-2024-50147">
+  <tr class='table-tr vuln-tr' id="table-tr-645" data-vuln-id="CVE-2024-50147">
     <td>
       
       CVE-2024-50147
@@ -19185,7 +19204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-645" data-vuln-id="CVE-2024-50148">
+  <tr class='table-tr vuln-tr' id="table-tr-646" data-vuln-id="CVE-2024-50148">
     <td>
       
       CVE-2024-50148
@@ -19210,7 +19229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-646" data-vuln-id="CVE-2024-50150">
+  <tr class='table-tr vuln-tr' id="table-tr-647" data-vuln-id="CVE-2024-50150">
     <td>
       
       CVE-2024-50150
@@ -19235,7 +19254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-647" data-vuln-id="CVE-2024-50151">
+  <tr class='table-tr vuln-tr' id="table-tr-648" data-vuln-id="CVE-2024-50151">
     <td>
       
       CVE-2024-50151
@@ -19260,7 +19279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-648" data-vuln-id="CVE-2024-50153">
+  <tr class='table-tr vuln-tr' id="table-tr-649" data-vuln-id="CVE-2024-50153">
     <td>
       
       CVE-2024-50153
@@ -19285,7 +19304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-649" data-vuln-id="CVE-2024-50154">
+  <tr class='table-tr vuln-tr' id="table-tr-650" data-vuln-id="CVE-2024-50154">
     <td>
       
       CVE-2024-50154
@@ -19310,7 +19329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-650" data-vuln-id="CVE-2024-50155">
+  <tr class='table-tr vuln-tr' id="table-tr-651" data-vuln-id="CVE-2024-50155">
     <td>
       
       CVE-2024-50155
@@ -19335,7 +19354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-651" data-vuln-id="CVE-2024-50156">
+  <tr class='table-tr vuln-tr' id="table-tr-652" data-vuln-id="CVE-2024-50156">
     <td>
       
       CVE-2024-50156
@@ -19360,7 +19379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-652" data-vuln-id="CVE-2024-50160">
+  <tr class='table-tr vuln-tr' id="table-tr-653" data-vuln-id="CVE-2024-50160">
     <td>
       
       CVE-2024-50160
@@ -19385,7 +19404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-653" data-vuln-id="CVE-2024-50162">
+  <tr class='table-tr vuln-tr' id="table-tr-654" data-vuln-id="CVE-2024-50162">
     <td>
       
       CVE-2024-50162
@@ -19410,7 +19429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-654" data-vuln-id="CVE-2024-50163">
+  <tr class='table-tr vuln-tr' id="table-tr-655" data-vuln-id="CVE-2024-50163">
     <td>
       
       CVE-2024-50163
@@ -19435,7 +19454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-655" data-vuln-id="CVE-2024-50164">
+  <tr class='table-tr vuln-tr' id="table-tr-656" data-vuln-id="CVE-2024-50164">
     <td>
       
       CVE-2024-50164
@@ -19460,7 +19479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-656" data-vuln-id="CVE-2024-50166">
+  <tr class='table-tr vuln-tr' id="table-tr-657" data-vuln-id="CVE-2024-50166">
     <td>
       
       CVE-2024-50166
@@ -19485,7 +19504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-657" data-vuln-id="CVE-2024-50167">
+  <tr class='table-tr vuln-tr' id="table-tr-658" data-vuln-id="CVE-2024-50167">
     <td>
       
       CVE-2024-50167
@@ -19510,7 +19529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-658" data-vuln-id="CVE-2024-50168">
+  <tr class='table-tr vuln-tr' id="table-tr-659" data-vuln-id="CVE-2024-50168">
     <td>
       
       CVE-2024-50168
@@ -19535,7 +19554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-659" data-vuln-id="CVE-2024-50171">
+  <tr class='table-tr vuln-tr' id="table-tr-660" data-vuln-id="CVE-2024-50171">
     <td>
       
       CVE-2024-50171
@@ -19560,7 +19579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-660" data-vuln-id="CVE-2024-50176">
+  <tr class='table-tr vuln-tr' id="table-tr-661" data-vuln-id="CVE-2024-50176">
     <td>
       
       CVE-2024-50176
@@ -19585,7 +19604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-661" data-vuln-id="CVE-2024-50177">
+  <tr class='table-tr vuln-tr' id="table-tr-662" data-vuln-id="CVE-2024-50177">
     <td>
       
       CVE-2024-50177
@@ -19610,7 +19629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-662" data-vuln-id="CVE-2024-50178">
+  <tr class='table-tr vuln-tr' id="table-tr-663" data-vuln-id="CVE-2024-50178">
     <td>
       
       CVE-2024-50178
@@ -19635,7 +19654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-663" data-vuln-id="CVE-2024-50179">
+  <tr class='table-tr vuln-tr' id="table-tr-664" data-vuln-id="CVE-2024-50179">
     <td>
       
       CVE-2024-50179
@@ -19660,7 +19679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-664" data-vuln-id="CVE-2024-50180">
+  <tr class='table-tr vuln-tr' id="table-tr-665" data-vuln-id="CVE-2024-50180">
     <td>
       
       CVE-2024-50180
@@ -19685,7 +19704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-665" data-vuln-id="CVE-2024-50181">
+  <tr class='table-tr vuln-tr' id="table-tr-666" data-vuln-id="CVE-2024-50181">
     <td>
       
       CVE-2024-50181
@@ -19710,7 +19729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-666" data-vuln-id="CVE-2024-50182">
+  <tr class='table-tr vuln-tr' id="table-tr-667" data-vuln-id="CVE-2024-50182">
     <td>
       
       CVE-2024-50182
@@ -19735,7 +19754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-667" data-vuln-id="CVE-2024-50183">
+  <tr class='table-tr vuln-tr' id="table-tr-668" data-vuln-id="CVE-2024-50183">
     <td>
       
       CVE-2024-50183
@@ -19760,7 +19779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-668" data-vuln-id="CVE-2024-50184">
+  <tr class='table-tr vuln-tr' id="table-tr-669" data-vuln-id="CVE-2024-50184">
     <td>
       
       CVE-2024-50184
@@ -19785,7 +19804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-669" data-vuln-id="CVE-2024-50185">
+  <tr class='table-tr vuln-tr' id="table-tr-670" data-vuln-id="CVE-2024-50185">
     <td>
       
       CVE-2024-50185
@@ -19810,7 +19829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-670" data-vuln-id="CVE-2024-50186">
+  <tr class='table-tr vuln-tr' id="table-tr-671" data-vuln-id="CVE-2024-50186">
     <td>
       
       CVE-2024-50186
@@ -19835,7 +19854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-671" data-vuln-id="CVE-2024-50187">
+  <tr class='table-tr vuln-tr' id="table-tr-672" data-vuln-id="CVE-2024-50187">
     <td>
       
       CVE-2024-50187
@@ -19860,7 +19879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-672" data-vuln-id="CVE-2024-50188">
+  <tr class='table-tr vuln-tr' id="table-tr-673" data-vuln-id="CVE-2024-50188">
     <td>
       
       CVE-2024-50188
@@ -19885,7 +19904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-673" data-vuln-id="CVE-2024-50189">
+  <tr class='table-tr vuln-tr' id="table-tr-674" data-vuln-id="CVE-2024-50189">
     <td>
       
       CVE-2024-50189
@@ -19910,7 +19929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-674" data-vuln-id="CVE-2024-50191">
+  <tr class='table-tr vuln-tr' id="table-tr-675" data-vuln-id="CVE-2024-50191">
     <td>
       
       CVE-2024-50191
@@ -19935,7 +19954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-675" data-vuln-id="CVE-2024-50192">
+  <tr class='table-tr vuln-tr' id="table-tr-676" data-vuln-id="CVE-2024-50192">
     <td>
       
       CVE-2024-50192
@@ -19960,7 +19979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-676" data-vuln-id="CVE-2024-50193">
+  <tr class='table-tr vuln-tr' id="table-tr-677" data-vuln-id="CVE-2024-50193">
     <td>
       
       CVE-2024-50193
@@ -19985,7 +20004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-677" data-vuln-id="CVE-2024-50194">
+  <tr class='table-tr vuln-tr' id="table-tr-678" data-vuln-id="CVE-2024-50194">
     <td>
       
       CVE-2024-50194
@@ -20010,7 +20029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-678" data-vuln-id="CVE-2024-50195">
+  <tr class='table-tr vuln-tr' id="table-tr-679" data-vuln-id="CVE-2024-50195">
     <td>
       
       CVE-2024-50195
@@ -20035,7 +20054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-679" data-vuln-id="CVE-2024-50196">
+  <tr class='table-tr vuln-tr' id="table-tr-680" data-vuln-id="CVE-2024-50196">
     <td>
       
       CVE-2024-50196
@@ -20060,7 +20079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-680" data-vuln-id="CVE-2024-50198">
+  <tr class='table-tr vuln-tr' id="table-tr-681" data-vuln-id="CVE-2024-50198">
     <td>
       
       CVE-2024-50198
@@ -20085,7 +20104,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-681" data-vuln-id="CVE-2024-50199">
+  <tr class='table-tr vuln-tr' id="table-tr-682" data-vuln-id="CVE-2024-50199">
     <td>
       
       CVE-2024-50199
@@ -20110,7 +20129,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-682" data-vuln-id="CVE-2024-50200">
+  <tr class='table-tr vuln-tr' id="table-tr-683" data-vuln-id="CVE-2024-50200">
     <td>
       
       CVE-2024-50200
@@ -20135,7 +20154,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-683" data-vuln-id="CVE-2024-50201">
+  <tr class='table-tr vuln-tr' id="table-tr-684" data-vuln-id="CVE-2024-50201">
     <td>
       
       CVE-2024-50201
@@ -20160,7 +20179,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-684" data-vuln-id="CVE-2024-50202">
+  <tr class='table-tr vuln-tr' id="table-tr-685" data-vuln-id="CVE-2024-50202">
     <td>
       
       CVE-2024-50202
@@ -20185,7 +20204,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-685" data-vuln-id="CVE-2024-50205">
+  <tr class='table-tr vuln-tr' id="table-tr-686" data-vuln-id="CVE-2024-50205">
     <td>
       
       CVE-2024-50205
@@ -20210,7 +20229,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-686" data-vuln-id="CVE-2024-50208">
+  <tr class='table-tr vuln-tr' id="table-tr-687" data-vuln-id="CVE-2024-50208">
     <td>
       
       CVE-2024-50208
@@ -20235,7 +20254,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-687" data-vuln-id="CVE-2024-50209">
+  <tr class='table-tr vuln-tr' id="table-tr-688" data-vuln-id="CVE-2024-50209">
     <td>
       
       CVE-2024-50209
@@ -20260,7 +20279,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-688" data-vuln-id="CVE-2024-50210">
+  <tr class='table-tr vuln-tr' id="table-tr-689" data-vuln-id="CVE-2024-50210">
     <td>
       
       CVE-2024-50210
@@ -20285,7 +20304,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-689" data-vuln-id="CVE-2024-50211">
+  <tr class='table-tr vuln-tr' id="table-tr-690" data-vuln-id="CVE-2024-50211">
     <td>
       
       CVE-2024-50211
@@ -20310,7 +20329,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-690" data-vuln-id="CVE-2024-50215">
+  <tr class='table-tr vuln-tr' id="table-tr-691" data-vuln-id="CVE-2024-50215">
     <td>
       
       CVE-2024-50215
@@ -20335,7 +20354,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-691" data-vuln-id="CVE-2024-50217">
+  <tr class='table-tr vuln-tr' id="table-tr-692" data-vuln-id="CVE-2024-50217">
     <td>
       
       CVE-2024-50217
@@ -20360,7 +20379,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-692" data-vuln-id="CVE-2024-50218">
+  <tr class='table-tr vuln-tr' id="table-tr-693" data-vuln-id="CVE-2024-50218">
     <td>
       
       CVE-2024-50218
@@ -20385,7 +20404,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-693" data-vuln-id="CVE-2024-50226">
+  <tr class='table-tr vuln-tr' id="table-tr-694" data-vuln-id="CVE-2024-50226">
     <td>
       
       CVE-2024-50226
@@ -20410,7 +20429,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-694" data-vuln-id="CVE-2024-50228">
+  <tr class='table-tr vuln-tr' id="table-tr-695" data-vuln-id="CVE-2024-50228">
     <td>
       
       CVE-2024-50228
@@ -20435,7 +20454,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-695" data-vuln-id="CVE-2024-50229">
+  <tr class='table-tr vuln-tr' id="table-tr-696" data-vuln-id="CVE-2024-50229">
     <td>
       
       CVE-2024-50229
@@ -20460,7 +20479,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-696" data-vuln-id="CVE-2024-50230">
+  <tr class='table-tr vuln-tr' id="table-tr-697" data-vuln-id="CVE-2024-50230">
     <td>
       
       CVE-2024-50230
@@ -20485,7 +20504,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-697" data-vuln-id="CVE-2024-50232">
+  <tr class='table-tr vuln-tr' id="table-tr-698" data-vuln-id="CVE-2024-50232">
     <td>
       
       CVE-2024-50232
@@ -20510,7 +20529,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-698" data-vuln-id="CVE-2024-50233">
+  <tr class='table-tr vuln-tr' id="table-tr-699" data-vuln-id="CVE-2024-50233">
     <td>
       
       CVE-2024-50233
@@ -20535,7 +20554,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-699" data-vuln-id="CVE-2024-50234">
+  <tr class='table-tr vuln-tr' id="table-tr-700" data-vuln-id="CVE-2024-50234">
     <td>
       
       CVE-2024-50234
@@ -20560,7 +20579,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-700" data-vuln-id="CVE-2024-50235">
+  <tr class='table-tr vuln-tr' id="table-tr-701" data-vuln-id="CVE-2024-50235">
     <td>
       
       CVE-2024-50235
@@ -20585,7 +20604,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-701" data-vuln-id="CVE-2024-50236">
+  <tr class='table-tr vuln-tr' id="table-tr-702" data-vuln-id="CVE-2024-50236">
     <td>
       
       CVE-2024-50236
@@ -20610,7 +20629,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-702" data-vuln-id="CVE-2024-50237">
+  <tr class='table-tr vuln-tr' id="table-tr-703" data-vuln-id="CVE-2024-50237">
     <td>
       
       CVE-2024-50237
@@ -20635,7 +20654,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-703" data-vuln-id="CVE-2024-50242">
+  <tr class='table-tr vuln-tr' id="table-tr-704" data-vuln-id="CVE-2024-50242">
     <td>
       
       CVE-2024-50242
@@ -20660,7 +20679,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-704" data-vuln-id="CVE-2024-50243">
+  <tr class='table-tr vuln-tr' id="table-tr-705" data-vuln-id="CVE-2024-50243">
     <td>
       
       CVE-2024-50243
@@ -20685,7 +20704,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-705" data-vuln-id="CVE-2024-50244">
+  <tr class='table-tr vuln-tr' id="table-tr-706" data-vuln-id="CVE-2024-50244">
     <td>
       
       CVE-2024-50244
@@ -20710,7 +20729,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-706" data-vuln-id="CVE-2024-50245">
+  <tr class='table-tr vuln-tr' id="table-tr-707" data-vuln-id="CVE-2024-50245">
     <td>
       
       CVE-2024-50245
@@ -20735,7 +20754,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-707" data-vuln-id="CVE-2024-50246">
+  <tr class='table-tr vuln-tr' id="table-tr-708" data-vuln-id="CVE-2024-50246">
     <td>
       
       CVE-2024-50246
@@ -20760,7 +20779,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-708" data-vuln-id="CVE-2024-50247">
+  <tr class='table-tr vuln-tr' id="table-tr-709" data-vuln-id="CVE-2024-50247">
     <td>
       
       CVE-2024-50247
@@ -20785,7 +20804,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-709" data-vuln-id="CVE-2024-50248">
+  <tr class='table-tr vuln-tr' id="table-tr-710" data-vuln-id="CVE-2024-50248">
     <td>
       
       CVE-2024-50248
@@ -20810,7 +20829,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-710" data-vuln-id="CVE-2024-50249">
+  <tr class='table-tr vuln-tr' id="table-tr-711" data-vuln-id="CVE-2024-50249">
     <td>
       
       CVE-2024-50249
@@ -20835,7 +20854,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-711" data-vuln-id="CVE-2024-50250">
+  <tr class='table-tr vuln-tr' id="table-tr-712" data-vuln-id="CVE-2024-50250">
     <td>
       
       CVE-2024-50250
@@ -20860,7 +20879,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-712" data-vuln-id="CVE-2024-50251">
+  <tr class='table-tr vuln-tr' id="table-tr-713" data-vuln-id="CVE-2024-50251">
     <td>
       
       CVE-2024-50251
@@ -20885,7 +20904,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-713" data-vuln-id="CVE-2024-50252">
+  <tr class='table-tr vuln-tr' id="table-tr-714" data-vuln-id="CVE-2024-50252">
     <td>
       
       CVE-2024-50252
@@ -20910,7 +20929,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-714" data-vuln-id="CVE-2024-50255">
+  <tr class='table-tr vuln-tr' id="table-tr-715" data-vuln-id="CVE-2024-50255">
     <td>
       
       CVE-2024-50255
@@ -20935,7 +20954,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-715" data-vuln-id="CVE-2024-50256">
+  <tr class='table-tr vuln-tr' id="table-tr-716" data-vuln-id="CVE-2024-50256">
     <td>
       
       CVE-2024-50256
@@ -20960,7 +20979,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-716" data-vuln-id="CVE-2024-50257">
+  <tr class='table-tr vuln-tr' id="table-tr-717" data-vuln-id="CVE-2024-50257">
     <td>
       
       CVE-2024-50257
@@ -20985,7 +21004,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-717" data-vuln-id="CVE-2024-50258">
+  <tr class='table-tr vuln-tr' id="table-tr-718" data-vuln-id="CVE-2024-50258">
     <td>
       
       CVE-2024-50258
@@ -21010,7 +21029,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-718" data-vuln-id="CVE-2024-50259">
+  <tr class='table-tr vuln-tr' id="table-tr-719" data-vuln-id="CVE-2024-50259">
     <td>
       
       CVE-2024-50259
@@ -21035,7 +21054,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-719" data-vuln-id="CVE-2024-50261">
+  <tr class='table-tr vuln-tr' id="table-tr-720" data-vuln-id="CVE-2024-50261">
     <td>
       
       CVE-2024-50261
@@ -21060,7 +21079,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-720" data-vuln-id="CVE-2024-50262">
+  <tr class='table-tr vuln-tr' id="table-tr-721" data-vuln-id="CVE-2024-50262">
     <td>
       
       CVE-2024-50262
@@ -21087,7 +21106,7 @@
 
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-721" data-vuln-id="CVE-2023-45896">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-722" data-vuln-id="CVE-2023-45896">
     <td class="uncalled-text">
       
       CVE-2023-45896
@@ -21120,7 +21139,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-722" onclick="showPackageDetails('722')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-723" onclick="showPackageDetails('723')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -21165,7 +21184,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-722-details" class="package-details">
+      <div id="table-tr-723-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -21185,31 +21204,6 @@
     <th>Fixed version</th>
     <th class="severity-cell">Severity</th>
     <th class="open-in-tab-cell"></th>
-  </tr>
-  
-  
-  <tr class='table-tr vuln-tr' id="table-tr-723" data-vuln-id="CVE-2023-50495">
-    <td>
-      
-      CVE-2023-50495
-      
-    </td>
-    <td>
-      
-    </td>
-
-    <td>
-      <p  class="fixable-tag no-fix" >
-        No fix available</p>
-    </td>
-    <td class="severity-cell">
-      <div id="medium-short" class="severity-short">
-        <p class="medium">6.5</p>
-      </div>
-    </td>
-    <td class="open-in-tab-cell">
-      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2023-50495')">Open in tab</p>
-    </td>
   </tr>
   
   
@@ -21262,6 +21256,31 @@
     </td>
   </tr>
   
+  
+  <tr class='table-tr vuln-tr' id="table-tr-726" data-vuln-id="CVE-2023-50495">
+    <td>
+      
+      CVE-2023-50495
+      
+    </td>
+    <td>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">6.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2023-50495')">Open in tab</p>
+    </td>
+  </tr>
+  
 
   
 </table>
@@ -21273,7 +21292,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="bae9e546f2fcc37ffd9d41deba36ca6989cb859ed8d51c06a7afcdd8bb7f8784" id="table-tr-726" onclick="showPackageDetails('726')">
+    data-layer="bae9e546f2fcc37ffd9d41deba36ca6989cb859ed8d51c06a7afcdd8bb7f8784" id="table-tr-727" onclick="showPackageDetails('727')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -21316,7 +21335,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-726-details" class="package-details">
+      <div id="table-tr-727-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -21337,7 +21356,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-727" data-vuln-id="CVE-2024-5535">
+  <tr class='table-tr vuln-tr' id="table-tr-728" data-vuln-id="CVE-2024-5535">
     <td>
       
       CVE-2024-5535
@@ -21362,7 +21381,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-728" data-vuln-id="CVE-2024-9143">
+  <tr class='table-tr vuln-tr' id="table-tr-729" data-vuln-id="CVE-2024-9143">
     <td>
       
       CVE-2024-9143
@@ -21387,7 +21406,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-729" data-vuln-id="CVE-2024-5535">
+  <tr class='table-tr vuln-tr' id="table-tr-730" data-vuln-id="CVE-2024-5535">
     <td>
       
       CVE-2024-5535
@@ -21412,7 +21431,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-730" data-vuln-id="CVE-2024-9143">
+  <tr class='table-tr vuln-tr' id="table-tr-731" data-vuln-id="CVE-2024-9143">
     <td>
       
       CVE-2024-9143
@@ -21447,7 +21466,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-731" onclick="showPackageDetails('731')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-732" onclick="showPackageDetails('732')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -21492,7 +21511,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-731-details" class="package-details">
+      <div id="table-tr-732-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -21515,7 +21534,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-732" data-vuln-id="CVE-2024-10041">
+  <tr class='table-tr vuln-tr' id="table-tr-733" data-vuln-id="CVE-2024-10041">
     <td>
       
       CVE-2024-10041
@@ -21540,7 +21559,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-733" data-vuln-id="CVE-2024-10963">
+  <tr class='table-tr vuln-tr' id="table-tr-734" data-vuln-id="CVE-2024-10963">
     <td>
       
       CVE-2024-10963
@@ -21565,7 +21584,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-734" data-vuln-id="CVE-2024-22365">
+  <tr class='table-tr vuln-tr' id="table-tr-735" data-vuln-id="CVE-2024-22365">
     <td>
       
       CVE-2024-22365
@@ -21590,7 +21609,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-735" data-vuln-id="CVE-2024-10041">
+  <tr class='table-tr vuln-tr' id="table-tr-736" data-vuln-id="CVE-2024-10041">
     <td>
       
       CVE-2024-10041
@@ -21615,7 +21634,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-736" data-vuln-id="CVE-2024-10963">
+  <tr class='table-tr vuln-tr' id="table-tr-737" data-vuln-id="CVE-2024-10963">
     <td>
       
       CVE-2024-10963
@@ -21640,7 +21659,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-737" data-vuln-id="CVE-2024-22365">
+  <tr class='table-tr vuln-tr' id="table-tr-738" data-vuln-id="CVE-2024-22365">
     <td>
       
       CVE-2024-22365
@@ -21665,7 +21684,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-738" data-vuln-id="CVE-2024-10041">
+  <tr class='table-tr vuln-tr' id="table-tr-739" data-vuln-id="CVE-2024-10041">
     <td>
       
       CVE-2024-10041
@@ -21690,7 +21709,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-739" data-vuln-id="CVE-2024-10963">
+  <tr class='table-tr vuln-tr' id="table-tr-740" data-vuln-id="CVE-2024-10963">
     <td>
       
       CVE-2024-10963
@@ -21715,7 +21734,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-740" data-vuln-id="CVE-2024-22365">
+  <tr class='table-tr vuln-tr' id="table-tr-741" data-vuln-id="CVE-2024-22365">
     <td>
       
       CVE-2024-22365
@@ -21740,7 +21759,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-741" data-vuln-id="CVE-2024-10041">
+  <tr class='table-tr vuln-tr' id="table-tr-742" data-vuln-id="CVE-2024-10041">
     <td>
       
       CVE-2024-10041
@@ -21765,7 +21784,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-742" data-vuln-id="CVE-2024-10963">
+  <tr class='table-tr vuln-tr' id="table-tr-743" data-vuln-id="CVE-2024-10963">
     <td>
       
       CVE-2024-10963
@@ -21790,7 +21809,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-743" data-vuln-id="CVE-2024-22365">
+  <tr class='table-tr vuln-tr' id="table-tr-744" data-vuln-id="CVE-2024-22365">
     <td>
       
       CVE-2024-22365
@@ -21825,7 +21844,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-744" onclick="showPackageDetails('744')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-745" onclick="showPackageDetails('745')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -21870,7 +21889,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-744-details" class="package-details">
+      <div id="table-tr-745-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -21893,7 +21912,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-745" data-vuln-id="CVE-2023-31484">
+  <tr class='table-tr vuln-tr' id="table-tr-746" data-vuln-id="CVE-2023-31484">
     <td>
       
       CVE-2023-31484
@@ -21920,7 +21939,7 @@
 
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-746" data-vuln-id="CVE-2011-4116">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-747" data-vuln-id="CVE-2011-4116">
     <td class="uncalled-text">
       
       CVE-2011-4116
@@ -21944,7 +21963,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-747" data-vuln-id="CVE-2023-31486">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-748" data-vuln-id="CVE-2023-31486">
     <td class="uncalled-text">
       
       CVE-2023-31486
@@ -21976,7 +21995,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-748" onclick="showPackageDetails('748')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-749" onclick="showPackageDetails('749')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -22021,7 +22040,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-748-details" class="package-details">
+      <div id="table-tr-749-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -22044,7 +22063,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-749" data-vuln-id="CVE-2023-29383">
+  <tr class='table-tr vuln-tr' id="table-tr-750" data-vuln-id="CVE-2023-29383">
     <td>
       
       CVE-2023-29383
@@ -22069,7 +22088,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-750" data-vuln-id="CVE-2023-4641">
+  <tr class='table-tr vuln-tr' id="table-tr-751" data-vuln-id="CVE-2023-4641">
     <td>
       
       CVE-2023-4641
@@ -22094,7 +22113,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-751" data-vuln-id="CVE-2023-29383">
+  <tr class='table-tr vuln-tr' id="table-tr-752" data-vuln-id="CVE-2023-29383">
     <td>
       
       CVE-2023-29383
@@ -22119,7 +22138,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-752" data-vuln-id="CVE-2023-4641">
+  <tr class='table-tr vuln-tr' id="table-tr-753" data-vuln-id="CVE-2023-4641">
     <td>
       
       CVE-2023-4641
@@ -22146,7 +22165,7 @@
 
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-753" data-vuln-id="CVE-2007-5686">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-754" data-vuln-id="CVE-2007-5686">
     <td class="uncalled-text">
       
       CVE-2007-5686
@@ -22170,7 +22189,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-754" data-vuln-id="CVE-2007-5686">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-755" data-vuln-id="CVE-2007-5686">
     <td class="uncalled-text">
       
       CVE-2007-5686
@@ -22202,7 +22221,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-755" onclick="showPackageDetails('755')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-756" onclick="showPackageDetails('756')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -22223,7 +22242,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-755-details" class="package-details">
+      <div id="table-tr-756-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -22248,7 +22267,7 @@
 
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-756" data-vuln-id="CVE-2005-2541">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-757" data-vuln-id="CVE-2005-2541">
     <td class="uncalled-text">
       
       CVE-2005-2541
@@ -22280,7 +22299,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="bae9e546f2fcc37ffd9d41deba36ca6989cb859ed8d51c06a7afcdd8bb7f8784" id="table-tr-757" onclick="showPackageDetails('757')">
+    data-layer="bae9e546f2fcc37ffd9d41deba36ca6989cb859ed8d51c06a7afcdd8bb7f8784" id="table-tr-758" onclick="showPackageDetails('758')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -22325,7 +22344,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-757-details" class="package-details">
+      <div id="table-tr-758-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -22346,7 +22365,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-758" data-vuln-id="CVE-2023-25433">
+  <tr class='table-tr vuln-tr' id="table-tr-759" data-vuln-id="CVE-2023-25433">
     <td>
       
       CVE-2023-25433
@@ -22371,7 +22390,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-759" data-vuln-id="CVE-2023-26965">
+  <tr class='table-tr vuln-tr' id="table-tr-760" data-vuln-id="CVE-2023-26965">
     <td>
       
       CVE-2023-26965
@@ -22396,7 +22415,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-760" data-vuln-id="CVE-2023-26966">
+  <tr class='table-tr vuln-tr' id="table-tr-761" data-vuln-id="CVE-2023-26966">
     <td>
       
       CVE-2023-26966
@@ -22421,7 +22440,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-761" data-vuln-id="CVE-2023-2908">
+  <tr class='table-tr vuln-tr' id="table-tr-762" data-vuln-id="CVE-2023-2908">
     <td>
       
       CVE-2023-2908
@@ -22446,7 +22465,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-762" data-vuln-id="CVE-2023-3618">
+  <tr class='table-tr vuln-tr' id="table-tr-763" data-vuln-id="CVE-2023-3618">
     <td>
       
       CVE-2023-3618
@@ -22471,7 +22490,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-763" data-vuln-id="CVE-2023-52355">
+  <tr class='table-tr vuln-tr' id="table-tr-764" data-vuln-id="CVE-2023-52355">
     <td>
       
       CVE-2023-52355
@@ -22496,7 +22515,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-764" data-vuln-id="CVE-2023-52356">
+  <tr class='table-tr vuln-tr' id="table-tr-765" data-vuln-id="CVE-2023-52356">
     <td>
       
       CVE-2023-52356
@@ -22521,7 +22540,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-765" data-vuln-id="CVE-2023-6277">
+  <tr class='table-tr vuln-tr' id="table-tr-766" data-vuln-id="CVE-2023-6277">
     <td>
       
       CVE-2023-6277
@@ -22546,7 +22565,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-766" data-vuln-id="CVE-2024-7006">
+  <tr class='table-tr vuln-tr' id="table-tr-767" data-vuln-id="CVE-2024-7006">
     <td>
       
       CVE-2024-7006
@@ -22573,7 +22592,7 @@
 
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-767" data-vuln-id="CVE-2017-5563">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-768" data-vuln-id="CVE-2017-5563">
     <td class="uncalled-text">
       
       CVE-2017-5563
@@ -22597,7 +22616,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-768" data-vuln-id="CVE-2017-9117">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-769" data-vuln-id="CVE-2017-9117">
     <td class="uncalled-text">
       
       CVE-2017-9117
@@ -22621,7 +22640,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-769" data-vuln-id="CVE-2018-10126">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-770" data-vuln-id="CVE-2018-10126">
     <td class="uncalled-text">
       
       CVE-2018-10126
@@ -22645,7 +22664,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-770" data-vuln-id="CVE-2022-1210">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-771" data-vuln-id="CVE-2022-1210">
     <td class="uncalled-text">
       
       CVE-2022-1210
@@ -22669,7 +22688,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-771" data-vuln-id="CVE-2023-1916">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-772" data-vuln-id="CVE-2023-1916">
     <td class="uncalled-text">
       
       CVE-2023-1916
@@ -22693,7 +22712,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-772" data-vuln-id="CVE-2023-3164">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-773" data-vuln-id="CVE-2023-3164">
     <td class="uncalled-text">
       
       CVE-2023-3164
@@ -22717,7 +22736,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-773" data-vuln-id="CVE-2023-6228">
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-774" data-vuln-id="CVE-2023-6228">
     <td class="uncalled-text">
       
       CVE-2023-6228
@@ -22749,7 +22768,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-774" onclick="showPackageDetails('774')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-775" onclick="showPackageDetails('775')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -22770,7 +22789,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-774-details" class="package-details">
+      <div id="table-tr-775-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -22793,30 +22812,6 @@
   </tr>
   
 
-  
-  
-  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-775" data-vuln-id="CVE-2022-0563">
-    <td class="uncalled-text">
-      
-      CVE-2022-0563
-      
-    </td>
-    <td class="uncalled-text">
-      
-    </td>
-
-    <td>
-      <p  class="fixable-tag no-fix" >No fix available</p>
-    </td>
-    <td class="severity-cell">
-      <div id="medium-short" class="severity-short">
-        <p class="medium">5.5</p>
-      </div>
-    </td>
-    <td class="open-in-tab-cell">
-      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2022-0563')">Open in tab</p>
-    </td>
-  </tr>
   
   
   <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-776" data-vuln-id="CVE-2022-0563">
@@ -22986,6 +22981,30 @@
     </td>
   </tr>
   
+  
+  <tr class='table-tr vuln-tr uncalled-tr' id="table-tr-783" data-vuln-id="CVE-2022-0563">
+    <td class="uncalled-text">
+      
+      CVE-2022-0563
+      
+    </td>
+    <td class="uncalled-text">
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2022-0563')">Open in tab</p>
+    </td>
+  </tr>
+  
 </table>
 
       </div>
@@ -22995,7 +23014,7 @@
   
   
   <tr class="table-tr package-tr has-layer-info"
-    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-783" onclick="showPackageDetails('783')">
+    data-layer="652a96b2fa1f099fbc540850f6b2205330caec4ffdfa504daa77d98517e5dc6d" id="table-tr-784" onclick="showPackageDetails('784')">
     <td class="icon-td">
       <div class="expand-icon">
         <i class="material-icons">play_arrow</i>
@@ -23040,7 +23059,7 @@
   </tr>
   <tr>
     <td colspan="100%">
-      <div id="table-tr-783-details" class="package-details">
+      <div id="table-tr-784-details" class="package-details">
         
         <div class="layer-command-container">
           <span class="package-detail-title">Layer introduced in:</span>
@@ -23063,7 +23082,7 @@
   </tr>
   
   
-  <tr class='table-tr vuln-tr' id="table-tr-784" data-vuln-id="CVE-2023-45853">
+  <tr class='table-tr vuln-tr' id="table-tr-785" data-vuln-id="CVE-2023-45853">
     <td>
       
       CVE-2023-45853
