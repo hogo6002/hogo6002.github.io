@@ -1,0 +1,3195 @@
+<!doctype html>
+<html>
+
+<head>
+  <title>Vulnerability Scan Report</title>
+  <link rel="icon" href="https://google.github.io/osv.dev/assets/icon.png" type="image/x-icon" />
+  <link href='https://fonts.googleapis.com/css?family=Overpass' rel='stylesheet'>
+  <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+  <style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: #292929;
+    color: #fff;
+    overflow-y: scroll;
+    font-family: "Overpass Mono", monospace;
+    font-size: 12pt;
+    font-weight: 100;
+    min-width: fit-content;
+  }
+
+  a {
+    color: inherit;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 50px auto;
+    padding: 20px;
+    border-radius: 4px;
+    box-shadow: 0 0 5px rgba(255, 255, 255, 0.15);
+    min-height: 90vh;
+  }
+
+  h2 {
+    margin-top: 50px;
+    font-size: 15pt;
+  }
+
+  h3 {
+    font-size: 12pt;
+    margin-top: 30px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: "Overpass Mono", monospace;
+    font-weight: normal;
+  }
+
+  .ecosystem {
+    margin-top: 20px;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 50px;
+  }
+
+  .logo {
+    height: 20px;
+  }
+
+  header .vl {
+    border-left: 2px solid #fff;
+    height: 25px;
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  header h1 {
+    font-size: 23px;
+  }
+
+  .material-icons {
+    vertical-align: middle;
+    user-select: none;
+  }
+
+  .vuln-table {
+    width: 100%;
+    text-align: left;
+    margin-bottom: 40px;
+    margin-top: 10px;
+    color: rgba(255, 255, 255, 0.87);
+    border-spacing: 0;
+  }
+
+  .vuln-table th {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 16px;
+  }
+
+  .table-tr {
+    line-height: 30px;
+  }
+
+  .table-tr td {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    word-break: break-word;
+    width: 200px;
+    padding: 16px;
+  }
+
+  .table-tr:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .vuln-id {
+    color: #d9534f;
+  }
+
+  .package-details {
+    text-align: left;
+    padding: 0 50px;
+    display: none;
+    padding-top: 20px;
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    max-height: 800px;
+    overflow: auto;
+  }
+
+  .table-tr:hover .open-in-tab-tag {
+    display: inline;
+  }
+
+  .open-in-tab-tag {
+    display: none;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 5px 5px;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  .open-in-tab-cell {
+    width: 90px !important;
+    cursor: pointer;
+  }
+
+  .severity-cell {
+    width: 60px !important;
+    user-select: none;
+  }
+
+  .fixable-tag {
+    border-radius: 4px;
+    max-width: 250px;
+    width: fit-content;
+    padding: 0 5px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-align: center;
+    user-select: none;
+  }
+
+  .has-fix {
+    white-space: break-spaces;
+    background-color: #6a6a6a;
+  }
+
+  .no-fix {
+    background-color: #252525;
+    border: 1px solid #3c4043;
+  }
+
+  .uncalled-tr {
+    display: none;
+  }
+
+  .uncalled-text {
+    color: #808080;
+  }
+
+  #vuln-tab {
+    display: none;
+    margin-top: 40px;
+  }
+
+  #tab-switch {
+    text-align: left;
+    border-bottom: 1px solid #6c6c6c;
+    padding-left: 20px;
+    display: flex;
+    margin-bottom: 50px;
+  }
+
+  .tab-switch-button {
+    width: 180px;
+    outline: 0;
+    cursor: pointer;
+    background-color: transparent;
+    text-align: center;
+    display: flex;
+  }
+
+  .tab-button-text-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .tab-button-text-container p {
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    border-bottom: 2px solid transparent;
+    color: #5f6368;
+  }
+
+  .tab-switch-button span {
+    cursor: pointer;
+    font-size: 16px;
+    display: none;
+  }
+
+  .tab-switch-button-border {
+    width: 85%;
+    height: 3px;
+    background-color: transparent;
+    margin: auto;
+  }
+
+  .tab-button-text-container:hover p {
+    color: #fff;
+  }
+
+  .tab-switch-button-selected:hover span {
+    display: block;
+  }
+
+  .tab-switch-button-selected .tab-switch-button-border {
+    background-color: #eee;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+  }
+
+  .tab-switch-button-selected p {
+    color: #fff;
+  }
+
+  .osv-tab iframe {
+    width: 100%;
+    min-height: 1000px;
+    border: none;
+    background-color: #fff;
+  }
+
+  #vuln-tab {
+    display: block;
+  }
+
+  .package-tr {
+    cursor: pointer;
+  }
+
+  .icon-td {
+    width: 10px !important;
+  }
+
+  #filter-section {
+    display: flex;
+    width: 60%;
+  }
+
+  .filter-container {
+    margin-right: 20px;
+    max-width: 600px;
+  }
+
+  .filter {
+    margin-top: 10px;
+    max-width: 600px;
+    min-width: 250px;
+    background-color: transparent;
+    border-radius: 8px;
+    overflow: hidden;
+    color: #fff;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
+
+  #layer-filter {
+    width: 400px !important;
+  }
+
+  .filter-selected {
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .filter-option-container {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    position: absolute;
+    background-color: #292929;
+    min-width: 200px;
+    max-width: 1400px;
+    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    display: none;
+  }
+
+  .filter-option {
+    border-bottom: 1px dotted #ddd;
+    padding: 15px 20px;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  .filter-option input,
+  .filter-option label {
+    cursor: pointer;
+  }
+
+  #layer-filter-option-container {
+    width: 1400px;
+  }
+
+  .layer-filter-option {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .filter-option:hover {
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+
+  .filter-icon i {
+    position: relative;
+    top: 25%;
+  }
+
+  #summary-section {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  #severity-section {
+    overflow: hidden;
+  }
+
+  .severity-long {
+    text-align: center;
+    min-width: 100px;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  .severity-long p {
+    font-size: 10pt;
+    padding: 5px 5px;
+    border-radius: 4px;
+    margin-right: 3px;
+  }
+
+  .critical {
+    background-color: #ad0300;
+  }
+
+  .high {
+    background-color: #ffa500;
+  }
+
+  .medium {
+    background-color: #ffd700;
+    color: #292929;
+  }
+
+  .low {
+    background-color: #53aa33;
+    color: #292929;
+  }
+
+  .unknown {
+    background-color: #80868b;
+  }
+
+  .severity-count-summary {
+    display: flex;
+  }
+
+  .severity-short {
+    width: 40px;
+    user-select: none;
+  }
+
+  .severity-short p {
+    text-align: center;
+  }
+
+  .severity-short-first p {
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+  }
+
+  .severity-short-last p {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+  }
+
+  .severity-cell .severity-short p {
+    border-radius: 4px;
+  }
+
+   
+  .search-box {
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    border: 1px solid #fff;
+    background-color: transparent;
+    border-radius: 4px;
+    margin-top: 30px;
+  }
+
+  .search-box input[type="text"] {
+    padding: 10px 10px 10px 35px;
+    border: none;
+    background-color: transparent;
+    width: 90%;
+    margin-left: 10px;
+    color: #fff;
+    line-height: 2;
+    font-size: 12pt;
+  }
+
+  .search-box input[type="text"]:focus {
+    outline: none;
+  }
+
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+  }
+
+  .package-detail-title {
+    color: #9aa0a6;
+  }
+
+  .layer-command-container {
+    display: flex;
+  }
+
+  .inner-table {
+    width: 100%;
+    border: 0.5px solid rgba(255, 255, 255, 0.12);
+    border-spacing: 0px;
+    border-radius: 4px;
+  }
+
+  .inner-table th {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .inner-table td {
+    border-bottom: 0.5px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .expand-icon i.rotated {
+    transform: rotate(90deg);
+  }
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+    text-underline-offset: 3px;
+  }
+
+  .tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 4px;
+    padding: 5px 5px;
+    white-space: nowrap;
+    width: fit-content;
+    text-align: left;
+     
+    position: absolute;
+    z-index: 999;
+    top: 100%;
+    
+  }
+
+  .layer-tooltiptext {
+    white-space: normal !important;
+    margin-left: 0 !important;
+    width: 1000px !important;
+    max-height: 200px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+  }
+
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+  }
+
+  .inner-table .tooltip .tooltiptext {
+    min-width: 300px;
+    white-space: normal;
+  }
+
+  th .tooltip .tooltiptext {
+    white-space: normal;
+    width: 240px;
+    padding: 10px;
+  }
+
+  .severity-count-summary .tooltip {
+    text-decoration: none;
+  }
+
+  .flex-box {
+    display: flex;
+  }
+
+   
+  .base-icon .tooltiptext {
+    margin-left: 0px;
+    background-color: #292929;
+  }
+
+  div.title {
+    visibility: hidden;
+  }
+
+  #base-image-section {
+    margin-top: 30px;
+    border: 1px solid #fff;
+    border-radius: 8px;
+    padding: 10px 20px;
+    max-height: 400px;
+    overflow-y: visible;
+    overflow-x: hidden;
+  }
+
+  #base-image-table {
+    width: 100%;
+  }
+
+  #base-image-table th {
+    text-align: left;
+    height: 30px;
+  }
+
+  .layer-entry {
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10px;
+    border-bottom: 1px dotted #666666;
+  }
+
+  .base-image-summary {
+    cursor: pointer;
+  }
+
+  .base-image-details {
+    display: none;
+    margin-bottom: 20px;
+  }
+
+  .base-image-title {
+    width: 150px;
+    color: #9aa0a6;
+    height: 20px;
+  }
+
+  .layer-command {
+    max-width: 1000px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+
+</head>
+
+<body>
+  <script>
+  function showBaseImageLayer(imageID) {
+    var detailElementID = "base-image-details-" + imageID
+    var detailsElement = document.getElementById(detailElementID);
+
+    const icon = document.querySelector(
+      `#base-image-summary-${imageID} .material-icons`
+    ); 
+    if (detailsElement.style.display !== "block") {
+      detailsElement.style.display = "block";
+      icon.style.transform = "rotate(90deg)"; 
+      icon.style.transition = "transform 0.2s ease"; 
+    } else {
+      detailsElement.style.display = "none";
+      icon.style.transform = "rotate(0deg)"; 
+      icon.style.transition = "transform 0.2s ease"; 
+    }
+  }
+
+  function showPackageDetails(detailsId) {
+    var detailsElement = document.getElementById(
+      "table-tr-" + detailsId + "-details"
+    );
+    var rowElement = document.getElementById("table-tr-" + detailsId);
+    const rowCells = rowElement.querySelectorAll("td");
+    const icon = document.querySelector(
+      `#table-tr-${detailsId} .material-icons`
+    ); 
+    if (detailsElement.style.display !== "block") {
+      detailsElement.style.display = "block";
+      rowCells.forEach(cell => {
+        cell.style.borderBottom = "1px solid transparent";
+      });
+      icon.style.transform = "rotate(90deg)"; 
+      icon.style.transition = "transform 0.2s ease"; 
+    } else {
+      detailsElement.style.display = "none";
+      rowCells.forEach(cell => {
+        cell.style.borderBottom = "1px solid rgba(255, 255, 255, 0.12)";
+      });
+      icon.style.transform = "rotate(0deg)"; 
+      icon.style.transition = "transform 0.2s ease"; 
+    }
+  }
+
+  function openVulnInNewTab(inputString) {
+    const osvURL = `https://osv.dev/${inputString}`;
+    const tabs = document.getElementById("tabs");
+    const tabSwitches = document.getElementById("tab-switch");
+
+    const existingTab = document.getElementById(inputString);
+    if (existingTab) {
+      openTab(inputString);
+      return;
+    }
+
+    
+    const newTab = document.createElement("div");
+    newTab.id = inputString; 
+    newTab.className = "tab osv-tab"; 
+
+    
+    const iframe = document.createElement("iframe");
+    iframe.src = osvURL;
+
+    
+    const newTabButton = document.createElement("div");
+    newTabButton.id = inputString + "-button";
+    newTabButton.className = "tab-switch-button";
+    newTabButton.onclick = function () {
+      openTab(inputString);
+    };
+
+    
+    const newTabTextContainer = document.createElement("div");
+    newTabTextContainer.className = "tab-button-text-container";
+    const newTabText = document.createElement("p");
+    newTabText.textContent = inputString;
+    newTabTextContainer.appendChild(newTabText);
+
+    const newTabButtonBorder = document.createElement("div");
+    newTabButtonBorder.className = "tab-switch-button-border";
+    newTabTextContainer.appendChild(newTabButtonBorder);
+
+    newTabButton.appendChild(newTabTextContainer);
+
+    const closeIcon = document.createElement("span");
+    closeIcon.className = "material-icons";
+    closeIcon.textContent = "close";
+    
+    closeIcon.onclick = function (event) {
+      event.stopPropagation(); 
+      closeVulnTab(inputString);
+    };
+
+    newTabButton.appendChild(closeIcon);
+
+    
+    newTab.appendChild(iframe);
+    
+    tabs.appendChild(newTab);
+    tabSwitches.appendChild(newTabButton);
+
+    openTab(newTab.id);
+  }
+
+  function closeVulnTab(inputString) {
+    const tabToRemove = document.getElementById(inputString);
+    const buttonToRemove = document.getElementById(inputString + "-button");
+    const tabs = document.getElementById("tabs");
+    const tabSwitches = document.getElementById("tab-switch");
+
+    if (tabToRemove && buttonToRemove) {
+      const nextTabButton =
+        buttonToRemove.nextElementSibling ||
+        buttonToRemove.previousElementSibling;
+
+      tabs.removeChild(tabToRemove);
+      tabSwitches.removeChild(buttonToRemove);
+
+      if (nextTabButton) {
+        const nextTabId = nextTabButton.id.replace("-button", "");
+        openTab(nextTabId);
+      }
+    }
+  }
+
+  function openTab(activeTabId) {
+    const tabs = document.getElementsByClassName("tab");
+    const tabButtons = document.getElementsByClassName("tab-switch-button");
+    for (let i = 0; i < tabs.length; i++) {
+      if (tabs[i].id === activeTabId) {
+        tabs[i].style.display = "block"; 
+        tabButtons[i].classList.add("tab-switch-button-selected");
+      } else {
+        tabs[i].style.display = "none"; 
+        tabButtons[i].classList.remove("tab-switch-button-selected");
+      }
+    }
+  }
+
+  function hideAllFilterOptions() {
+    const containers = document.getElementsByClassName(
+      "filter-option-container"
+    );
+    for (let i = 0; i < containers.length; i++) {
+      containers[i].style.display = "none";
+    }
+  }
+
+  function toggleFilter(input) {
+    targetID = input + "-filter-option-container";
+    var optionContainer = document.getElementById(targetID);
+    const containers = document.getElementsByClassName(
+      "filter-option-container"
+    );
+    for (let i = 0; i < containers.length; i++) {
+      if (containers[i].id === targetID) {
+        if (optionContainer.style.display !== "block") {
+          optionContainer.style.display = "block";
+        } else {
+          optionContainer.style.display = "none";
+        }
+      } else {
+        containers[i].style.display = "none";
+      }
+    }
+  }
+
+  function showAndHideParentSections() {
+    const ecosystemContainers = document.querySelectorAll(
+      ".ecosystem-container"
+    );
+
+    ecosystemContainers.forEach(ecosystemContainer => {
+      const sourceContainers =
+        ecosystemContainer.querySelectorAll(".source-container");
+      let ecosystemHasVisibleSources = false;
+
+      sourceContainers.forEach(sourceContainer => {
+        const packageRows = sourceContainer.querySelectorAll(".package-tr");
+        let sourceHasVisibleRows = false;
+
+        packageRows.forEach(packageRow => {
+          packageDetails = document.getElementById(packageRow.id + "-details");
+          const vulnRows = packageDetails.querySelectorAll(".vuln-tr");
+          let packageHasVisibleRows = false;
+          vulnRows.forEach(vulnRow => {
+            if (window.getComputedStyle(vulnRow).display !== "none") {
+              packageHasVisibleRows = true;
+              return;
+            }
+          });
+          if (packageHasVisibleRows) {
+            sourceHasVisibleRows = true;
+            packageRow.style.display = "table-row";
+            return;
+          } else {
+            packageRow.style.display = "none";
+            packageDetails.style.display = "none";
+            const icon = document.querySelector(
+              `#${packageRow.id} .material-icons`
+            );
+            icon.style.transform = "rotate(0deg)"; 
+          }
+        });
+
+        if (!sourceHasVisibleRows) {
+          sourceContainer.style.display = "none";
+        } else {
+          ecosystemHasVisibleSources = true;
+          sourceContainer.style.display = "block";
+          return;
+        }
+      });
+
+      if (!ecosystemHasVisibleSources) {
+        ecosystemContainer.style.display = "none";
+      } else {
+        ecosystemContainer.style.display = "block";
+      }
+    });
+  }
+
+  function showAllVulns() {
+    const vulnRows = document.getElementsByClassName("vuln-tr");
+    for (let i = 0; i < vulnRows.length; i++) {
+      if (vulnRows[i].classList.contains("uncalled-tr")) {
+        vulnRows[i].style.display = "none";
+        continue;
+      }
+      vulnRows[i].style.display = "table-row";
+    }
+
+    showAndHideParentSections();
+  }
+
+  function applyFilters(selectedTypeFilterValue, selectedLayerFilterValue) {
+    
+    showAllVulns();
+    applyTypeFilter(selectedTypeFilterValue);
+    applyLayerFilter(selectedLayerFilterValue);
+    showAndHideParentSections();
+  }
+
+  function applyTypeFilter(selectedValue) {
+    updateTypeFilterText(selectedValue);
+    selectedAll = selectedValue.has("all");
+    selectedProject = selectedValue.has("project");
+    selectedOS = selectedValue.has("os");
+    selectedUncalled = selectedValue.has("uncalled");
+    if (selectedAll) {
+      selectedProject = true;
+      selectedOS = true;
+    }
+
+    const ecosystemElements = document.querySelectorAll(".ecosystem-container");
+
+    ecosystemElements.forEach(ecosystemElement => {
+      const vulnElements = ecosystemElement.querySelectorAll(".vuln-tr");
+      vulnElements.forEach(vuln => {
+        if (vuln.classList.contains("uncalled-tr")) {
+          if (selectedUncalled) {
+            vuln.style.display = "table-row";
+          } else {
+            vuln.style.display = "none";
+          }
+        }
+        if (
+          (ecosystemElement.classList.contains("os-type") && !selectedOS) ||
+          (ecosystemElement.classList.contains("project-type") &&
+            !selectedProject)
+        ) {
+          vuln.style.display = "none";
+        }
+      });
+    });
+  }
+
+  function applyLayerFilter(selectedLayerID) {
+    const tableRows = document.querySelectorAll("tr.has-layer-info");
+    tableRows.forEach(row => {
+      const rowLayerID = row.getAttribute("data-layer");
+      if (selectedLayerID !== "all" && rowLayerID !== selectedLayerID) {
+        const packageDetails = document.getElementById(row.id + "-details");
+        const vulnElements = packageDetails.querySelectorAll(".vuln-tr");
+        vulnElements.forEach(vuln => {
+          vuln.style.display = "none";
+        });
+      }
+    });
+  }
+
+  function updateTypeFilterText(selectedValue) {
+    selectedAll = selectedValue.has("all");
+    selectedProject = selectedValue.has("project");
+    selectedOS = selectedValue.has("os");
+    selectedUncalled = selectedValue.has("uncalled");
+    if (selectedAll) {
+      selectedProject = true;
+      selectedOS = true;
+    }
+
+    const typeSelected = document.getElementById("type-filter-selected");
+    const selectedVulnCount = document.getElementById("selected-count");
+
+    const allTypeCheckbox = document.getElementById("all-type-checkbox");
+    const osTypeCheckbox = document.getElementById("os-type-checkbox");
+    const projectTypeCheckbox = document.getElementById(
+      "project-type-checkbox"
+    );
+    const uncalledTypeCheckbox = document.getElementById(
+      "uncalled-type-checkbox"
+    );
+
+    let selectedText = "";
+    let selectedCount = 0;
+
+    if (projectTypeCheckbox && projectTypeCheckbox.checked) {
+      selectedText += (selectedText ? ", " : "") + "Project";
+      const projectTypeVulnCount = projectTypeCheckbox.getAttribute(
+        "data-type-project-count"
+      );
+      selectedCount += parseInt(projectTypeVulnCount, 10);
+    }
+    if (osTypeCheckbox && osTypeCheckbox.checked) {
+      selectedText += (selectedText ? ", " : "") + "OS";
+      const osTypeVulnCount = osTypeCheckbox.getAttribute("data-type-os-count");
+      selectedCount += parseInt(osTypeVulnCount, 10);
+    }
+    if (uncalledTypeCheckbox && uncalledTypeCheckbox.checked) {
+      selectedText += (selectedText ? ", " : "") + "Unimportant";
+      const uncalledTypeVulnCount = uncalledTypeCheckbox.getAttribute(
+        "data-type-uncalled-count"
+      );
+      selectedCount += parseInt(uncalledTypeVulnCount, 10);
+    }
+
+    typeSelected.textContent = selectedText;
+    selectedVulnCount.textContent = selectedCount;
+  }
+
+  function resetFilterText() {
+    const layerSelected = document.getElementById("layer-filter-selected");
+    const allLayerCheckedBox = document.getElementById("all-layer-checkbox");
+    if (layerSelected) {
+      layerSelected.textContent =
+        "All layers (" +
+        allLayerCheckedBox.getAttribute("data-layer-all-count") +
+        ")";
+    }
+
+    const typeSelected = document.getElementById("type-filter-selected");
+    const selectedVulnCount = document.getElementById("selected-count");
+    const allTypeCheckedBox = document.getElementById("all-type-checkbox");
+    const uncalledTypeCheckBox = document.getElementById(
+      "uncalled-type-checkbox"
+    );
+    if (allTypeCheckedBox) {
+      typeSelected.textContent = "Default";
+      selectedVulnCount.textContent = allTypeCheckedBox.getAttribute(
+        "data-type-all-count"
+      );
+      allLayerCheckedBox.checked = true;
+      uncalledTypeCheckBox.checked = false;
+    } else {
+      const projectTypeCheckedBox = document.getElementById(
+        "project-type-checkbox"
+      );
+      projectTypeCheckedBox.checked = true;
+      typeSelected.textContent = "Default";
+      selectedVulnCount.textContent = projectTypeCheckedBox.getAttribute(
+        "data-type-project-count"
+      );
+      uncalledTypeCheckBox.checked = false;
+    }
+  }
+
+  function resetSearchText() {
+    const vulnSearchInput = document.getElementById("vuln-search");
+    if (vulnSearchInput.value != "") {
+      vulnSearchInput.value = "";
+      showAllVulns();
+    }
+  }
+
+  function resetTypeCheckbox() {
+    const allTypeCheckbox = document.getElementById("all-type-checkbox");
+    const osTypeCheckbox = document.getElementById("os-type-checkbox");
+    const projectTypeCheckbox = document.getElementById(
+      "project-type-checkbox"
+    );
+    const uncalledTypeCheckbox = document.getElementById(
+      "uncalled-type-checkbox"
+    );
+
+    if (allTypeCheckbox) {
+      allTypeCheckbox.checked = true;
+      projectTypeCheckbox.checked = true;
+      if (osTypeCheckbox) {
+        osTypeCheckbox.checked = true;
+      }
+      uncalledTypeCheckbox.checked = false;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    resetFilterText();
+    showAndHideParentSections();
+    let selectedTypeFilterValue = new Set();
+    selectedTypeFilterValue.add("all");
+    let selectedLayer = "all";
+
+    
+    const typeFilterOptions = document.getElementById(
+      "type-filter-option-container"
+    );
+
+    typeFilterOptions.addEventListener("change", function () {
+      resetSearchText();
+      const changedElement = event.target;
+      const allTypesCheckbox = document.getElementById("all-type-checkbox");
+      const projectCheckbox = document.getElementById("project-type-checkbox"); 
+      const osCheckbox = document.getElementById("os-type-checkbox"); 
+      const uncalledCheckbox = document.getElementById(
+        "uncalled-type-checkbox"
+      ); 
+      selectedTypeFilterValue.clear();
+
+      if (allTypesCheckbox != null) {
+        if (changedElement == allTypesCheckbox) {
+          osCheckbox.checked = allTypesCheckbox.checked;
+          projectCheckbox.checked = allTypesCheckbox.checked;
+          if (allTypesCheckbox.checked === true) {
+            selectedTypeFilterValue.add("all");
+          }
+        }
+        if (osCheckbox.checked === false || projectCheckbox.checked === false) {
+          allTypesCheckbox.checked = false;
+        }
+
+        if (osCheckbox.checked) {
+          selectedTypeFilterValue.add("os");
+        }
+      }
+
+      if (projectCheckbox.checked) {
+        selectedTypeFilterValue.add("project");
+      }
+
+      if (uncalledCheckbox.checked) {
+        selectedTypeFilterValue.add("uncalled");
+      }
+
+      applyFilters(selectedTypeFilterValue, selectedLayer);
+    });
+
+    
+    const layerFilterOptionsContainer = document.getElementById(
+      "layer-filter-option-container"
+    );
+
+    if (layerFilterOptionsContainer) {
+      layerFilterOptionsContainer.addEventListener("click", event => {
+        const clickedOption = event.target.closest(".layer-filter-option");
+        if (clickedOption) {
+          resetSearchText();
+          selectedLayer = clickedOption.getAttribute("title");
+          selectedDisplay = document.getElementById("layer-filter-selected");
+          layerCommand = clickedOption.querySelector("p:first-child");
+          selectedDisplay.textContent = layerCommand.textContent;
+
+          hideAllFilterOptions();
+          applyFilters(selectedTypeFilterValue, selectedLayer);
+        }
+      });
+    }
+
+    
+    const filterSection = document.getElementById("filter-section");
+
+    document.addEventListener("click", event => {
+      if (!filterSection.contains(event.target)) {
+        hideAllFilterOptions();
+      }
+    });
+
+    
+    const vulnSearchInput = document.getElementById("vuln-search");
+    vulnSearchInput.addEventListener("keyup", event => {
+      resetFilterText();
+      selectedTypeFilterValue.clear();
+      selectedTypeFilterValue.add("all");
+      selectedLayer = "all";
+      resetTypeCheckbox();
+
+      const searchTerm = vulnSearchInput.value.trim().toLowerCase();
+
+      const vulnRows = document.querySelectorAll("[data-vuln-id]");
+
+      if (searchTerm === "") {
+        showAllVulns();
+        return;
+      }
+
+      vulnRows.forEach(row => {
+        const vulnID = row.getAttribute("data-vuln-id").toLowerCase();
+
+        if (vulnID.includes(searchTerm)) {
+          row.style.display = "table-row";
+        } else {
+          row.style.display = "none";
+        }
+      });
+      showAndHideParentSections();
+    });
+  });
+</script>
+
+  <div class="container">
+    <header>
+      <img src="https://osv.dev/static/img/logo.png" alt="OSV-Scanner Logo" class="logo" />
+      <div class="vl"></div>
+      <h1>Open Source Vulnerabilities</h1>
+    </header>
+
+    <div id="tab-switch">
+      <div id="summary-tab-button" class="tab-switch-button tab-switch-button-selected"
+        onclick="openTab('summary-tab')">
+        <div class="tab-button-text-container">
+          <p>Scanning summary</p>
+          <div class="tab-switch-button-border"></div>
+        </div>
+      </div>
+    </div>
+
+
+    <div id="tabs">
+      <div id="summary-tab" class="tab">
+        <div id="summary-section">
+  <div id="filter-section">
+    
+    <div class="filter-container">
+      <span>Layer<br></span>
+      <div id="layer-filter" class="filter" onclick="toggleFilter('layer')">
+        <p id="layer-filter-selected" class="filter-selected"></p>
+        <div class="filter-icon">
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </div>
+      <div id="layer-filter-option-container" class="filter-option-container">
+        <div title="all" class="filter-option layer-filter-option" id="all-layer-checkbox"
+          data-layer-all-count="22">
+          <p>All layers (22)</p>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">4</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">3</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">6</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">9</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        
+        <div title="b895814e9e6408217eb0bf6d743ed1a1e2b7273a6b3ff66405b7a9c977a0c8e4" class="filter-option layer-filter-option">
+          <div >
+            <p class="layer-command">0 /bin/sh -c #(nop) ADD file:UNKNOWN in / </p>
+            
+            </div>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">2</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div title="28d40eb137936e3c101810b152b9a0c6b2ace2da4e09085a6b6cb25d015cf86e" class="filter-option layer-filter-option">
+          <div  class="tooltip" >
+            <p class="layer-command">17 RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</p>
+            
+            <span class="tooltiptext layer-tooltiptext">RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</span>
+            
+            </div>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">2</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">2</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">7</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        <div title="92c794fa7c69086db838fde737678361bdca4cac8fbbdd8fbaf77faf0be1214e" class="filter-option layer-filter-option">
+          <div >
+            <p class="layer-command">26 /bin/sh -c cd /src &amp;&amp; npm install</p>
+            
+            </div>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">1</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        
+        
+        <div title="338c9435320173733645f726dd72f3c3e64c55bf27aa87ba7c37a4a1bbe34b1c" class="filter-option layer-filter-option">
+          <div >
+            <p class="layer-command">27 /bin/sh -c cd /artifact &amp;&amp; npm install</p>
+            
+            </div>
+          <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">2</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+      </div>
+    </div>
+    
+
+    <div class="filter-container">
+      <span>Filters<br></span>
+      <div id="type-filter" class="filter" onclick="toggleFilter('type')">
+        <p class="filter-selected">
+          <span id="type-filter-selected"></span>
+          <span>(<span id="selected-count"></span>/22)</span>
+        </p>
+        <div class="filter-icon">
+          <i class="material-icons">keyboard_arrow_down</i>
+        </div>
+      </div>
+      <div id="type-filter-option-container" class="filter-option-container">
+        
+        <div class="filter-option">
+          <input type="checkbox" checked id="all-type-checkbox" data-type-all-count="22">
+          <label for="all-type-checkbox">Default (22)</label>
+        </div>
+        
+        <div class="filter-option">
+          <input type="checkbox" checked id="project-type-checkbox"
+            data-type-project-count="6">
+          <label for="project-type-checkbox"> Project Vulnerabilities (6)</label>
+        </div>
+        
+        <div class="filter-option">
+          <input type="checkbox" checked id="os-type-checkbox" data-type-os-count="16">
+          <label for="os-type-checkbox"> Operating system vulnerabilities (16)</label>
+        </div>
+        
+        <div class="filter-option">
+          <input type="checkbox" id="uncalled-type-checkbox" data-type-uncalled-count="0">
+          <label for="uncalled-type-checkbox">Uncalled/Unimportant (0)</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="severity-section">
+    <span>Overall Severity</span>
+    <div class="flex-box">
+      <div id="critical-long" class="severity-long">
+        <p class="critical">4 Critical</p>
+      </div>
+      <div id="high-long" class="severity-long">
+        <p class="high">3 High</p>
+      </div>
+      <div id="medium-long" class="severity-long">
+        <p class="medium">6 Medium</p>
+      </div>
+      <div id="low-long" class="severity-long">
+        <p class="low">0 Low</p>
+      </div>
+      <div id="unknow-long" class="severity-long">
+        <p class="unknown">9 Unknown</p>
+      </div>
+    </div>
+  </div>
+
+
+</div>
+
+
+        
+        
+<div id="base-image-section">
+  <table id="base-image-table">
+    <tr>
+      <th></th>
+      <th class="base-image-title">OS version:</th>
+      <th>Unknown</th>
+    </tr>
+    
+    
+
+    <tr 
+      id="base-image-summary-3"
+      class="base-image-summary"
+      onclick="showBaseImageLayer('3')"
+      >
+      <td class="icon-td">
+      
+        <div class="expand-icon">
+          <i class="material-icons">play_arrow</i>
+        </div>
+      
+      </td>
+      <td class="base-image-title">
+      
+      Base image 3:
+      
+      </td>
+      <td>
+        alpine, library/alpine<span class="base-image-title"> (2/22 vulnerabilities)</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="100%">
+        <div id="base-image-details-3" class="base-image-details">
+          
+          <div title="b895814e9e6408217eb0bf6d743ed1a1e2b7273a6b3ff66405b7a9c977a0c8e4" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">0</span> /bin/sh -c #(nop) ADD file:UNKNOWN in / </p>
+                
+            </div>
+            
+            <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">2</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+            
+          </div>
+          
+        </div>
+      </td>
+    </tr>
+
+    
+
+    <tr 
+      id="base-image-summary-2"
+      class="base-image-summary"
+      onclick="showBaseImageLayer('2')"
+      >
+      <td class="icon-td">
+      
+        <div class="expand-icon">
+          <i class="material-icons">play_arrow</i>
+        </div>
+      
+      </td>
+      <td class="base-image-title">
+      
+      Base image 2:
+      
+      </td>
+      <td>
+        nginx, library/nginx<span class="base-image-title"> (0/22 vulnerabilities)</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="100%">
+        <div id="base-image-details-2" class="base-image-details">
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">1</span> /bin/sh -c #(nop)  CMD [&#34;/bin/sh&#34;]</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">2</span> LABEL maintainer=NGINX Docker Maintainers &lt;docker-maint@nginx.com&gt;</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">3</span> ENV NGINX_VERSION=1.27.0</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">4</span> ENV PKG_RELEASE=2</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="9dca7439e1b30acab0ba61d2f42530c5835380f59d9bae541e7c034a413d2131" class="layer-entry" >
+            <div  class="tooltip" >
+              <p class="layer-command"><span class="base-image-title">5</span> RUN /bin/sh -c set -x     &amp;&amp; addgroup -g 101 -S nginx     &amp;&amp; adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             set -x             &amp;&amp; KEY_SHA512=&#34;e09fa32f0a0eab2b879ccbbc4d0e4fb9751486eedda75e35fac65802cc9faa266425edf83e261137a2f4d16281ce2c1a5f4502930fe75154723da014214f0655&#34;             &amp;&amp; wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub             &amp;&amp; if echo &#34;$KEY_SHA512 */tmp/nginx_signing.rsa.pub&#34; | sha512sum -c -; then                 echo &#34;key verification succeeded!&#34;;                 mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/;             else                 echo &#34;key verification failed!&#34;;                 exit 1;             fi             &amp;&amp; apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make base                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache --virtual .gettext gettext     &amp;&amp; mv /usr/bin/envsubst /tmp/         &amp;&amp; runDeps=&#34;$(         scanelf --needed --nobanner /tmp/envsubst             | awk &#39;{ gsub(/,/, &#34;\nso:&#34;, $2); print &#34;so:&#34; $2 }&#39;             | sort -u             | xargs -r apk info --installed             | sort -u     )&#34;     &amp;&amp; apk add --no-cache $runDeps     &amp;&amp; apk del --no-network .gettext     &amp;&amp; mv /tmp/envsubst /usr/local/bin/     &amp;&amp; apk add --no-cache tzdata     &amp;&amp; ln -sf /dev/stdout /var/log/nginx/access.log     &amp;&amp; ln -sf /dev/stderr /var/log/nginx/error.log     &amp;&amp; mkdir /docker-entrypoint.d # buildkit</p>
+                
+                <span class="tooltiptext layer-tooltiptext">RUN /bin/sh -c set -x     &amp;&amp; addgroup -g 101 -S nginx     &amp;&amp; adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx -g nginx nginx     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             set -x             &amp;&amp; KEY_SHA512=&#34;e09fa32f0a0eab2b879ccbbc4d0e4fb9751486eedda75e35fac65802cc9faa266425edf83e261137a2f4d16281ce2c1a5f4502930fe75154723da014214f0655&#34;             &amp;&amp; wget -O /tmp/nginx_signing.rsa.pub https://nginx.org/keys/nginx_signing.rsa.pub             &amp;&amp; if echo &#34;$KEY_SHA512 */tmp/nginx_signing.rsa.pub&#34; | sha512sum -c -; then                 echo &#34;key verification succeeded!&#34;;                 mv /tmp/nginx_signing.rsa.pub /etc/apk/keys/;             else                 echo &#34;key verification failed!&#34;;                 exit 1;             fi             &amp;&amp; apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make base                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache --virtual .gettext gettext     &amp;&amp; mv /usr/bin/envsubst /tmp/         &amp;&amp; runDeps=&#34;$(         scanelf --needed --nobanner /tmp/envsubst             | awk &#39;{ gsub(/,/, &#34;\nso:&#34;, $2); print &#34;so:&#34; $2 }&#39;             | sort -u             | xargs -r apk info --installed             | sort -u     )&#34;     &amp;&amp; apk add --no-cache $runDeps     &amp;&amp; apk del --no-network .gettext     &amp;&amp; mv /tmp/envsubst /usr/local/bin/     &amp;&amp; apk add --no-cache tzdata     &amp;&amp; ln -sf /dev/stdout /var/log/nginx/access.log     &amp;&amp; ln -sf /dev/stderr /var/log/nginx/error.log     &amp;&amp; mkdir /docker-entrypoint.d # buildkit</span>
+                
+            </div>
+            
+          </div>
+          
+          <div title="eadc278e8f9e4ef784a85388ac43799a0657779dfe5d9feeffc5f54fde25de8e" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">6</span> COPY docker-entrypoint.sh / # buildkit</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="fb5df5db7bbda03510936890f8bf2992709998361c70296c7177d25fa3a25a02" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">7</span> COPY 10-listen-on-ipv6-by-default.sh /docker-entrypoint.d # buildkit</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="3be2be874bba2e1c509ffbec5e7eaae5b65fc8ad8a7ed8f3f9456db389b30a49" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">8</span> COPY 15-local-resolvers.envsh /docker-entrypoint.d # buildkit</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="a0bde08c3815e5abdc5fb4007ed00c6a60eb9e0de19ce6f6b86e40edd722aa17" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">9</span> COPY 20-envsubst-on-templates.sh /docker-entrypoint.d # buildkit</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="2ee64cbdc81d9cc2ea65dd9511f2cd8343c85e567649bb4d40d0b198d2d2006c" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">10</span> COPY 30-tune-worker-processes.sh /docker-entrypoint.d # buildkit</p>
+                
+            </div>
+            
+          </div>
+          
+        </div>
+      </td>
+    </tr>
+
+    
+
+    <tr 
+      id="base-image-summary-1"
+      class="base-image-summary"
+      onclick="showBaseImageLayer('1')"
+      >
+      <td class="icon-td">
+      
+        <div class="expand-icon">
+          <i class="material-icons">play_arrow</i>
+        </div>
+      
+      </td>
+      <td class="base-image-title">
+      
+      Base image 1:
+      
+      </td>
+      <td>
+        nginx, library/nginx<span class="base-image-title"> (14/22 vulnerabilities)</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="100%">
+        <div id="base-image-details-1" class="base-image-details">
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">11</span> ENTRYPOINT [&#34;/docker-entrypoint.sh&#34;]</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">12</span> EXPOSE map[80/tcp:{}]</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">13</span> STOPSIGNAL SIGQUIT</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">14</span> CMD [&#34;nginx&#34; &#34;-g&#34; &#34;daemon off;&#34;]</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">15</span> ENV NJS_VERSION=0.8.4</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">16</span> ENV NJS_RELEASE=2</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="28d40eb137936e3c101810b152b9a0c6b2ace2da4e09085a6b6cb25d015cf86e" class="layer-entry" >
+            <div  class="tooltip" >
+              <p class="layer-command"><span class="base-image-title">17</span> RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</p>
+                
+                <span class="tooltiptext layer-tooltiptext">RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</span>
+                
+            </div>
+            
+            <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">2</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">2</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">7</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+            
+          </div>
+          
+        </div>
+      </td>
+    </tr>
+
+    
+
+    <tr 
+      id="base-image-summary-0"
+      class="base-image-summary"
+      onclick="showBaseImageLayer('0')"
+      >
+      <td class="icon-td">
+      
+        <div class="expand-icon">
+          <i class="material-icons">play_arrow</i>
+        </div>
+      
+      </td>
+      <td class="base-image-title">
+      
+      Your image:
+      
+      </td>
+      <td>
+        <span class="base-image-title"> (6/22 vulnerabilities)</span>
+      </td>
+    </tr>
+
+    <tr>
+      <td></td>
+      <td colspan="100%">
+        <div id="base-image-details-0" class="base-image-details">
+          
+          <div title="f64be00d65123de67fe21e1146d5a7b409eb23b5ea82a5a21609ef9bc3505dd8" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">18</span> /bin/sh -c apk add --update nodejs npm</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="cafafd20a6ffd721d1ac6cfb4f46cfd0b6cd210fa0010a800f3b719030077849" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">19</span> /bin/sh -c mkdir /src</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="db68da2d89e0b2ff577ec8c812fa962ae6e86a76b91f7894412466ee084922bd" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">20</span> /bin/sh -c mkdir /lockfile</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="353d97528d474f7a3fc2ef1a4cdb8787a29c58cb402f5f917cfca43af7b755f2" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">21</span> /bin/sh -c mkdir /artifact</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">22</span> /bin/sh -c #(nop) WORKDIR /src</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="e0bda29a557b73a92c00fcef10428dca521342bb8397075bb03df27e71826ac2" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">23</span> /bin/sh -c #(nop) COPY dir:UNKNOWN in /src </p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="deb0a2e48f10bc303b2788772a9a01ca6ea615d8be0486fa7d5ca4e0212f1f71" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">24</span> /bin/sh -c #(nop) COPY dir:UNKNOWN in /lockfile </p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="c9caf595ca9873e5564c30d9154bf87ecc6efa2b66cb579a9ef35c5e5036eccb" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">25</span> /bin/sh -c #(nop) COPY dir:UNKNOWN in /artifact </p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="92c794fa7c69086db838fde737678361bdca4cac8fbbdd8fbaf77faf0be1214e" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">26</span> /bin/sh -c cd /src &amp;&amp; npm install</p>
+                
+            </div>
+            
+            <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">1</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+            
+          </div>
+          
+          <div title="338c9435320173733645f726dd72f3c3e64c55bf27aa87ba7c37a4a1bbe34b1c" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">27</span> /bin/sh -c cd /artifact &amp;&amp; npm install</p>
+                
+            </div>
+            
+            <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">2</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+            
+          </div>
+          
+          <div title="4ff1b5d3d5a1bd4332515db0a8ccf937ab88b7217866843f5d6610efd9a2ba46" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">28</span> /bin/sh -c rm /artifact/package.json</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="74ef187b2fd454387be15c19e3b28c2519f00af8d28b49191b34ae0513e690ee" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">29</span> /bin/sh -c rm /artifact/package-lock.json</p>
+                
+            </div>
+            
+          </div>
+          
+          <div title="" class="layer-entry" >
+            <div >
+              <p class="layer-command"><span class="base-image-title">30</span> /bin/sh -c #(nop)  ENTRYPOINT [&#34;/bin/bash&#34;]</p>
+                
+            </div>
+            
+          </div>
+          
+        </div>
+      </td>
+    </tr>
+
+    
+
+  </table>
+
+</div>
+
+        
+
+        <div class="search-box">
+          <div class="search-icon">
+            <i class="material-icons">search</i>
+          </div>
+          <input type="text" id="vuln-search" placeholder="Search vulnerability ID...">
+        </div>
+
+        <div id="vuln-tab" class="view-tab">
+          
+<div class="ecosystem-container project-type">
+  <h2 class="ecosystem-heading">npm</h2>
+  <div class="ecosystem-sources-container">
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:artifact/node_modules/.package-lock.json</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="338c9435320173733645f726dd72f3c3e64c55bf27aa87ba7c37a4a1bbe34b1c" id="table-tr-1" onclick="showPackageDetails('1')">
+    <td class="icon-td">
+      <div class="expand-icon">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >hono</td>
+    <td >4.2.6</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-1-details" class="package-details">
+        
+        <div class="layer-command-container">
+          
+          <div class="layer-command"><span class="package-detail-title">Layer introduced in:</span> 27 /bin/sh -c cd /artifact &amp;&amp; npm install</div>
+          
+        </div>
+        <p><span class="package-detail-title">Layer ID:</span> 338c9435320173733645f726dd72f3c3e64c55bf27aa87ba7c37a4a1bbe34b1c</p>
+        <p><span class="package-detail-title">In base image:</span>  False </p>
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-2" data-vuln-id="GHSA-2234-fmw7-43wr">
+    <td>
+      
+      <div class="tooltip">
+        GHSA-2234-fmw7-43wr
+        <span class="tooltiptext">Group IDs: GHSA-2234-fmw7-43wr</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-48913, ...
+        <span class="tooltiptext">CVE-2024-48913, GHSA-2234-fmw7-43wr</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        4.6.5</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.9</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-2234-fmw7-43wr')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-3" data-vuln-id="GHSA-3mpf-rcc7-5347">
+    <td>
+      
+      <div class="tooltip">
+        GHSA-3mpf-rcc7-5347
+        <span class="tooltiptext">Group IDs: GHSA-3mpf-rcc7-5347</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-32869, ...
+        <span class="tooltiptext">CVE-2024-32869, GHSA-3mpf-rcc7-5347</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        4.2.7</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-3mpf-rcc7-5347')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-4" data-vuln-id="GHSA-rpfr-3m35-5vx5">
+    <td>
+      
+      <div class="tooltip">
+        GHSA-rpfr-3m35-5vx5
+        <span class="tooltiptext">Group IDs: GHSA-rpfr-3m35-5vx5</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-43787, ...
+        <span class="tooltiptext">CVE-2024-43787, GHSA-rpfr-3m35-5vx5</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        4.5.8</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.0</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-rpfr-3m35-5vx5')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+      </div>
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="338c9435320173733645f726dd72f3c3e64c55bf27aa87ba7c37a4a1bbe34b1c" id="table-tr-5" onclick="showPackageDetails('5')">
+    <td class="icon-td">
+      <div class="expand-icon">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >libxmljs</td>
+    <td >1.0.10</td>
+    <td>
+      
+      
+      <p class="fixable-tag no-fix">No fix available</p>
+      
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">2</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-5-details" class="package-details">
+        
+        <div class="layer-command-container">
+          
+          <div class="layer-command"><span class="package-detail-title">Layer introduced in:</span> 27 /bin/sh -c cd /artifact &amp;&amp; npm install</div>
+          
+        </div>
+        <p><span class="package-detail-title">Layer ID:</span> 338c9435320173733645f726dd72f3c3e64c55bf27aa87ba7c37a4a1bbe34b1c</p>
+        <p><span class="package-detail-title">In base image:</span>  False </p>
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-6" data-vuln-id="GHSA-6433-x5p4-8jc7">
+    <td>
+      
+      <div class="tooltip">
+        GHSA-6433-x5p4-8jc7
+        <span class="tooltiptext">Group IDs: GHSA-6433-x5p4-8jc7</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-34391, ...
+        <span class="tooltiptext">CVE-2024-34391, GHSA-6433-x5p4-8jc7</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="critical-short" class="severity-short">
+        <p class="critical">9.2</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-6433-x5p4-8jc7')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-7" data-vuln-id="GHSA-mg49-jqgw-gcj6">
+    <td>
+      
+      <div class="tooltip">
+        GHSA-mg49-jqgw-gcj6
+        <span class="tooltiptext">Group IDs: GHSA-mg49-jqgw-gcj6</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-34392, ...
+        <span class="tooltiptext">CVE-2024-34392, GHSA-mg49-jqgw-gcj6</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="critical-short" class="severity-short">
+        <p class="critical">9.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-mg49-jqgw-gcj6')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+      </div>
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: lockfile:src/node_modules/.package-lock.json</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="92c794fa7c69086db838fde737678361bdca4cac8fbbdd8fbaf77faf0be1214e" id="table-tr-8" onclick="showPackageDetails('8')">
+    <td class="icon-td">
+      <div class="expand-icon">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >static-server</td>
+    <td >2.2.0</td>
+    <td>
+      
+      
+      <p class="fixable-tag no-fix">No fix available</p>
+      
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">1</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">0</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-8-details" class="package-details">
+        
+        <div class="layer-command-container">
+          
+          <div class="layer-command"><span class="package-detail-title">Layer introduced in:</span> 26 /bin/sh -c cd /src &amp;&amp; npm install</div>
+          
+        </div>
+        <p><span class="package-detail-title">Layer ID:</span> 92c794fa7c69086db838fde737678361bdca4cac8fbbdd8fbaf77faf0be1214e</p>
+        <p><span class="package-detail-title">In base image:</span>  False </p>
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-9" data-vuln-id="GHSA-v834-rhv4-65m3">
+    <td>
+      
+      <div class="tooltip">
+        GHSA-v834-rhv4-65m3
+        <span class="tooltiptext">Group IDs: GHSA-v834-rhv4-65m3</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2023-26152, ...
+        <span class="tooltiptext">CVE-2023-26152, GHSA-v834-rhv4-65m3</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p  class="fixable-tag no-fix" >
+        No fix available</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('GHSA-v834-rhv4-65m3')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+      </div>
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+  </div>
+</div>
+
+<div class="ecosystem-container os-type">
+  <h2 class="ecosystem-heading">Alpine:v3.19</h2>
+  <div class="ecosystem-sources-container">
+    
+    <div class="source-container">
+      <h3 class="source-heading">Source: os:lib/apk/db/installed</h3>
+      <table class="vuln-table">
+  <tr>
+    <th></th>
+    <th>Package</th>
+    <th>Installed version</th>
+    <th>
+      <div class="tooltip">
+        <p>Fix available</p>
+        <span class="tooltiptext">Fix available indicates whether a patch or update exists to address the
+          vulnerabilities found in the corresponding package.</span>
+      </div>
+    </th>
+    <th>
+      <div class="tooltip">
+        <p>Vulnerability count</p>
+        <span class="tooltiptext">Vulnerability count shows the number of vulnerabilities found in the package, counted
+          by each severity level.</span>
+      </div>
+    </th>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="28d40eb137936e3c101810b152b9a0c6b2ace2da4e09085a6b6cb25d015cf86e" id="table-tr-10" onclick="showPackageDetails('10')">
+    <td class="icon-td">
+      <div class="expand-icon">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >curl</td>
+    <td >8.5.0-r0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">1</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">3</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">6</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-10-details" class="package-details">
+        
+        <div class="layer-command-container">
+          
+          <div class="tooltip">
+            <p class="layer-command"><span class="package-detail-title">Layer introduced in:</span> 17 RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</p>
+            <span class="tooltiptext layer-tooltiptext">RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</span>
+          </div>
+          
+        </div>
+        <p><span class="package-detail-title">Layer ID:</span> 28d40eb137936e3c101810b152b9a0c6b2ace2da4e09085a6b6cb25d015cf86e</p>
+        <p><span class="package-detail-title">In base image:</span>  True (nginx, library/nginx)</p>
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-11" data-vuln-id="CVE-2024-0853">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-0853
+        <span class="tooltiptext">Group IDs: CVE-2024-0853</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-0853, ...
+        <span class="tooltiptext">CVE-2024-0853, CURL-CVE-2024-0853</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.6.0-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">5.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-0853')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-12" data-vuln-id="CVE-2024-2004">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2004
+        <span class="tooltiptext">Group IDs: CVE-2024-2004</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2004, ...
+        <span class="tooltiptext">CVE-2024-2004, CURL-CVE-2024-2004</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.7.1-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-2004')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-13" data-vuln-id="CVE-2024-2379">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2379
+        <span class="tooltiptext">Group IDs: CVE-2024-2379</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2379, ...
+        <span class="tooltiptext">CVE-2024-2379, CURL-CVE-2024-2379</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.7.1-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-2379')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-14" data-vuln-id="CVE-2024-2398">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2398
+        <span class="tooltiptext">Group IDs: CVE-2024-2398</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2398, ...
+        <span class="tooltiptext">CVE-2024-2398, CURL-CVE-2024-2398</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.7.1-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-2398')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-15" data-vuln-id="CVE-2024-2466">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2466
+        <span class="tooltiptext">Group IDs: CVE-2024-2466</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-2466, ...
+        <span class="tooltiptext">CVE-2024-2466, CURL-CVE-2024-2466</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.7.1-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-2466')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-16" data-vuln-id="CVE-2024-6197">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-6197
+        <span class="tooltiptext">Group IDs: CVE-2024-6197</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-6197, ...
+        <span class="tooltiptext">CVE-2024-6197, CURL-CVE-2024-6197</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.9.0-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-6197')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-17" data-vuln-id="CVE-2024-6874">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-6874
+        <span class="tooltiptext">Group IDs: CVE-2024-6874</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-6874, ...
+        <span class="tooltiptext">CVE-2024-6874, CURL-CVE-2024-6874</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.9.0-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">4.3</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-6874')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-18" data-vuln-id="CVE-2024-7264">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-7264
+        <span class="tooltiptext">Group IDs: CVE-2024-7264</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-7264, ...
+        <span class="tooltiptext">CVE-2024-7264, CURL-CVE-2024-7264</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.9.1-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="medium-short" class="severity-short">
+        <p class="medium">6.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-7264')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-19" data-vuln-id="CVE-2024-8096">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-8096
+        <span class="tooltiptext">Group IDs: CVE-2024-8096</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-8096, ...
+        <span class="tooltiptext">CVE-2024-8096, CURL-CVE-2024-8096</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.10.0-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-8096')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-20" data-vuln-id="CVE-2024-9681">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-9681
+        <span class="tooltiptext">Group IDs: CVE-2024-9681</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-9681, ...
+        <span class="tooltiptext">CVE-2024-9681, CURL-CVE-2024-9681</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        8.11.0-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-9681')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+      </div>
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="28d40eb137936e3c101810b152b9a0c6b2ace2da4e09085a6b6cb25d015cf86e" id="table-tr-21" onclick="showPackageDetails('21')">
+    <td class="icon-td">
+      <div class="expand-icon">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >expat</td>
+    <td >2.6.2-r0</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">2</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">1</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">1</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-21-details" class="package-details">
+        
+        <div class="layer-command-container">
+          
+          <div class="tooltip">
+            <p class="layer-command"><span class="package-detail-title">Layer introduced in:</span> 17 RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</p>
+            <span class="tooltiptext layer-tooltiptext">RUN /bin/sh -c set -x     &amp;&amp; apkArch=&#34;$(cat /etc/apk/arch)&#34;     &amp;&amp; nginxPackages=&#34;         nginx=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-xslt=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-geoip=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-image-filter=${NGINX_VERSION}-r${PKG_RELEASE}         nginx-module-njs=${NGINX_VERSION}.${NJS_VERSION}-r${NJS_RELEASE}     &#34;     &amp;&amp; apk add --no-cache --virtual .checksum-deps         openssl     &amp;&amp; case &#34;$apkArch&#34; in         x86_64|aarch64)             apk add -X &#34;https://nginx.org/packages/mainline/alpine/v$(egrep -o &#39;^[0-9]&#43;\.[0-9]&#43;&#39; /etc/alpine-release)/main&#34; --no-cache $nginxPackages             ;;         *)             set -x             &amp;&amp; tempDir=&#34;$(mktemp -d)&#34;             &amp;&amp; chown nobody:nobody $tempDir             &amp;&amp; apk add --no-cache --virtual .build-deps                 gcc                 libc-dev                 make                 openssl-dev                 pcre2-dev                 zlib-dev                 linux-headers                 libxslt-dev                 gd-dev                 geoip-dev                 libedit-dev                 bash                 alpine-sdk                 findutils             &amp;&amp; su nobody -s /bin/sh -c &#34;                 export HOME=${tempDir}                 &amp;&amp; cd ${tempDir}                 &amp;&amp; curl -f -O https://hg.nginx.org/pkg-oss/archive/${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; PKGOSSCHECKSUM=\&#34;cd3333f4dfa4a873f6df73dfe24e047adc092d779aefb46577b6307ff0d0125543508694a80158b2bfc891167ad763b0d08287829df9924d4c22f50d063e76c0 *${NGINX_VERSION}-${PKG_RELEASE}.tar.gz\&#34;                 &amp;&amp; if [ \&#34;\$(openssl sha512 -r ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz)\&#34; = \&#34;\$PKGOSSCHECKSUM\&#34; ]; then                     echo \&#34;pkg-oss tarball checksum verification succeeded!\&#34;;                 else                     echo \&#34;pkg-oss tarball checksum verification failed!\&#34;;                     exit 1;                 fi                 &amp;&amp; tar xzvf ${NGINX_VERSION}-${PKG_RELEASE}.tar.gz                 &amp;&amp; cd pkg-oss-${NGINX_VERSION}-${PKG_RELEASE}                 &amp;&amp; cd alpine                 &amp;&amp; make module-geoip module-image-filter module-njs module-xslt                 &amp;&amp; apk index --allow-untrusted -o ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz ${tempDir}/packages/alpine/${apkArch}/*.apk                 &amp;&amp; abuild-sign -k ${tempDir}/.abuild/abuild-key.rsa ${tempDir}/packages/alpine/${apkArch}/APKINDEX.tar.gz                 &#34;             &amp;&amp; cp ${tempDir}/.abuild/abuild-key.rsa.pub /etc/apk/keys/             &amp;&amp; apk del --no-network .build-deps             &amp;&amp; apk add -X ${tempDir}/packages/alpine/ --no-cache $nginxPackages             ;;     esac     &amp;&amp; apk del --no-network .checksum-deps     &amp;&amp; if [ -n &#34;$tempDir&#34; ]; then rm -rf &#34;$tempDir&#34;; fi     &amp;&amp; if [ -f &#34;/etc/apk/keys/abuild-key.rsa.pub&#34; ]; then rm -f /etc/apk/keys/abuild-key.rsa.pub; fi     &amp;&amp; apk add --no-cache curl ca-certificates # buildkit</span>
+          </div>
+          
+        </div>
+        <p><span class="package-detail-title">Layer ID:</span> 28d40eb137936e3c101810b152b9a0c6b2ace2da4e09085a6b6cb25d015cf86e</p>
+        <p><span class="package-detail-title">In base image:</span>  True (nginx, library/nginx)</p>
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-22" data-vuln-id="CVE-2024-45490">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-45490
+        <span class="tooltiptext">Group IDs: CVE-2024-45490</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      CVE-2024-45490
+      
+    </td>
+
+    <td>
+      <p >
+        2.6.3-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="high-short" class="severity-short">
+        <p class="high">7.5</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-45490')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-23" data-vuln-id="CVE-2024-45491">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-45491
+        <span class="tooltiptext">Group IDs: CVE-2024-45491</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      CVE-2024-45491
+      
+    </td>
+
+    <td>
+      <p >
+        2.6.3-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="critical-short" class="severity-short">
+        <p class="critical">9.8</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-45491')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-24" data-vuln-id="CVE-2024-45492">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-45492
+        <span class="tooltiptext">Group IDs: CVE-2024-45492</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      CVE-2024-45492
+      
+    </td>
+
+    <td>
+      <p >
+        2.6.3-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="critical-short" class="severity-short">
+        <p class="critical">9.8</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-45492')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-25" data-vuln-id="CVE-2024-50602">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-50602
+        <span class="tooltiptext">Group IDs: CVE-2024-50602</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-50602, ...
+        <span class="tooltiptext">CVE-2024-50602, BIT-python-2024-50602</span>
+      </div>
+      
+    </td>
+
+    <td>
+      <p >
+        2.6.4-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-50602')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+      </div>
+
+    </td>
+  </tr>
+  
+  
+  <tr class="table-tr package-tr has-layer-info"
+    data-layer="b895814e9e6408217eb0bf6d743ed1a1e2b7273a6b3ff66405b7a9c977a0c8e4" id="table-tr-26" onclick="showPackageDetails('26')">
+    <td class="icon-td">
+      <div class="expand-icon">
+        <i class="material-icons">play_arrow</i>
+      </div>
+    </td>
+    <td >openssl</td>
+    <td >3.1.6-r2</td>
+    <td>
+      
+      <p class="fixable-tag has-fix">Fix available</p>
+      
+    </td>
+    <td>
+      
+      <div class="severity-count-summary">
+  <div id="critical-short" class="severity-short tooltip severity-short-first">
+    <p class="critical">0</p>
+    <span class="tooltiptext">Critical</span>
+  </div>
+  <div id="high-short" class="severity-short tooltip">
+    <p class="high">0</p>
+    <span class="tooltiptext">High</span>
+  </div>
+  <div id="medium-short" class="severity-short tooltip">
+    <p class="medium">0</p>
+    <span class="tooltiptext">Medium</span>
+  </div>
+  <div id="low-short" class="severity-short tooltip">
+    <p class="low">0</p>
+    <span class="tooltiptext">Low</span>
+  </div>
+  <div id="unknown-short" class="severity-short tooltip severity-short-last">
+    <p class="unknown">2</p>
+    <span class="tooltiptext">Unknown</span>
+  </div>
+</div>
+
+      
+    </td>
+  </tr>
+  <tr>
+    <td colspan="100%">
+      <div id="table-tr-26-details" class="package-details">
+        
+        <div class="layer-command-container">
+          
+          <div class="tooltip">
+            <span class="layer-command"><span class="package-detail-title">Layer introduced in:</span> 0 /bin/sh -c #(nop) ADD file:UNKNOWN in / </span>
+            <span class="tooltiptext">File ID: c644b15c170e2ca46176a566910d40a21dce66518ed8fdfd34ebcf0e9dc90c55</span>
+          </div>
+          
+        </div>
+        <p><span class="package-detail-title">Layer ID:</span> b895814e9e6408217eb0bf6d743ed1a1e2b7273a6b3ff66405b7a9c977a0c8e4</p>
+        <p><span class="package-detail-title">In base image:</span>  True (alpine, library/alpine)</p>
+        
+        <table class="inner-table">
+  <tr>
+    <th>Vulnerability ID</th>
+    <th>Aliases</th>
+    <th>Fixed version</th>
+    <th class="severity-cell">Severity</th>
+    <th class="open-in-tab-cell"></th>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-27" data-vuln-id="CVE-2024-6119">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-6119
+        <span class="tooltiptext">Group IDs: CVE-2024-6119</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      CVE-2024-6119
+      
+    </td>
+
+    <td>
+      <p >
+        3.1.7-r0</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-6119')">Open in tab</p>
+    </td>
+  </tr>
+  
+  
+  <tr class='table-tr vuln-tr' id="table-tr-28" data-vuln-id="CVE-2024-9143">
+    <td>
+      
+      <div class="tooltip">
+        CVE-2024-9143
+        <span class="tooltiptext">Group IDs: CVE-2024-9143</span>
+      </div>
+      
+    </td>
+    <td>
+      
+      CVE-2024-9143
+      
+    </td>
+
+    <td>
+      <p >
+        3.1.7-r1</p>
+    </td>
+    <td class="severity-cell">
+      <div id="unknown-short" class="severity-short">
+        <p class="unknown">N/A</p>
+      </div>
+    </td>
+    <td class="open-in-tab-cell">
+      <p class="open-in-tab-tag" onclick="openVulnInNewTab('CVE-2024-9143')">Open in tab</p>
+    </td>
+  </tr>
+  
+
+  
+</table>
+
+      </div>
+
+    </td>
+  </tr>
+  
+</table>
+
+    </div>
+    
+  </div>
+</div>
+
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>
